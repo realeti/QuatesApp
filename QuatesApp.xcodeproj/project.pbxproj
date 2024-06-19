@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68205742C23743F00D503B2 /* QuoteDTO.swift */; };
 		C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCED2C21FE2800914376 /* AppDelegate.swift */; };
 		C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */; };
 		C6A3DCF22C21FE2800914376 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCF12C21FE2800914376 /* CategoriesViewController.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C68205742C23743F00D503B2 /* QuoteDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteDTO.swift; sourceTree = "<group>"; };
 		C6A3DCEA2C21FE2800914376 /* QuatesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuatesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A3DCED2C21FE2800914376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +57,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C68205732C23743700D503B2 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				C68205742C23743F00D503B2 /* QuoteDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		C6A3DCE12C21FE2700914376 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +128,7 @@
 		C6A3DD042C22000F00914376 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				C68205732C23743700D503B2 /* DTO */,
 				C6A3DD112C22011600914376 /* QuoteStorage.swift */,
 				C6A3DD192C22216C00914376 /* NetworkController.swift */,
 			);
@@ -228,6 +239,7 @@
 				C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */,
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
 				C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */,
+				C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */,
 				C6A3DD082C22007000914376 /* Quote.swift in Sources */,
 				C6A3DD0C2C22009E00914376 /* QuotesViewModel.swift in Sources */,
 				C6A3DD0A2C22007C00914376 /* Category.swift in Sources */,

@@ -11,12 +11,11 @@ class CategoriesViewController: UIViewController {
     // MARK: - UI
     private let searchBar = UISearchBar()
     private let pickerView = UIPickerView()
+    private let fetchButton = UIButton(type: .system)
     
-    // MARK: - Private Properties
-    private let categories: [CategoryList] = CategoryList.allCases
-    
-    // MARK: - Public Properties
-    let viewModel = CategoryViewModel()
+    // MARK: - View Model
+    let viewModel = QuotesViewModel()
+    let categoryViewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -32,6 +31,9 @@ class CategoriesViewController: UIViewController {
     private func setupUI() {
         view.addSubview(searchBar)
         view.addSubview(pickerView)
+        view.addSubview(fetchButton)
+        
+        fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
     }
 }
 
@@ -41,6 +43,7 @@ extension CategoriesViewController {
     private func configureUI() {
         view.backgroundColor = .white
         configureSearchBar()
+        configureFetchButton()
     }
     
     private func configureSearchBar() {
@@ -48,12 +51,23 @@ extension CategoriesViewController {
         searchBar.backgroundColor = .white
         searchBar.placeholder = K.searchPlaceholder
     }
+    
+    private func configureFetchButton() {
+        fetchButton.setTitle(K.fetchButtonTitle, for: .normal)
+        fetchButton.setTitleColor(.black, for: .normal)
+        fetchButton.backgroundColor = .systemGray6
+        fetchButton.layer.cornerRadius = 14
+        fetchButton.layer.borderWidth = 1
+        fetchButton.layer.borderColor = UIColor.systemCyan.cgColor
+    }
 }
 
 extension CategoriesViewController {
     // MARK: - Setup Delegates
 
     private func setupDelegates() {
+        categoryViewModel.delegate = self
+        searchBar.delegate = self
         pickerView.delegate = self
     }
 }
@@ -64,15 +78,41 @@ extension CategoriesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categories.count
+        return categoryViewModel.categories.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categories[row].name
+        return categoryViewModel.categories[row].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("select row \(row)")
+        categoryViewModel.selectedCategory = categoryViewModel.categories[row]
+    }
+}
+
+extension CategoriesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        categoryViewModel.filterCategories(with: searchText)
+    }
+}
+
+extension CategoriesViewController: CategoryViewModelDelegate {
+    func didUpdateCategories() {
+        pickerView.reloadAllComponents()
+    }
+}
+
+extension CategoriesViewController {
+    // MARK: - Actions
+    
+    @objc private func fetchButtonPressed(_ sender: UIButton) {
+        guard let selectedCategory = categoryViewModel.selectedCategory?.rawValue else { return }
+        
+        viewModel.fetchQuote(for: selectedCategory) { [weak self] in
+            DispatchQueue.main.async {
+                print("fetched")
+            }
+        }
     }
 }
 
@@ -82,6 +122,7 @@ extension CategoriesViewController {
     private func setupConstraints() {
         setupSearchBarConstraints()
         setupPickerViewConstraints()
+        setupFetchButtonConstraints()
     }
     
     private func setupSearchBarConstraints() {
@@ -95,6 +136,14 @@ extension CategoriesViewController {
         pickerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
             make.center.equalToSuperview()
+        }
+    }
+    
+    private func setupFetchButtonConstraints() {
+        fetchButton.snp.makeConstraints { make in
+            make.top.equalTo(pickerView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(25)
+            make.height.equalTo(50)
         }
     }
 }

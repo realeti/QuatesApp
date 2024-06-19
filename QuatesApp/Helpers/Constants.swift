@@ -9,7 +9,8 @@ import Foundation
 
 struct K {
     
-    static let searchPlaceholder = "Fitness..."
+    static let searchPlaceholder = "Search categories"
+    static let fetchButtonTitle = "Get random quote!"
     
     private init() {}
 }

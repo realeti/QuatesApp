@@ -20,8 +20,10 @@ enum CategoryList: String, CaseIterable {
     case funny
     case future
     case god
+    case government
+    case graduation
     case great
-    case  happiness
+    case happiness
     case hope
     case humor
     case intelligence
