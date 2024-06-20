@@ -16,10 +16,10 @@ protocol CategoryViewModelDelegate: AnyObject {
     func didUpdateCategories()
 }
 
-class CategoryViewModel: CategoryModeling {
+final class CategoryViewModel: CategoryModeling {
     private let allCategories: [CategoryList] = CategoryList.allCases
     private(set) var categories: [CategoryList] = CategoryList.allCases
-    var selectedCategory: CategoryList?
+    var selectedCategory: CategoryList = .age
     
     weak var delegate: CategoryViewModelDelegate?
     

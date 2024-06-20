@@ -15,9 +15,9 @@
 		C6A3DCFA2C21FE2900914376 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C6A3DCF92C21FE2900914376 /* Base */; };
 		C6A3DD082C22007000914376 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD072C22007000914376 /* Quote.swift */; };
 		C6A3DD0A2C22007C00914376 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD092C22007C00914376 /* Category.swift */; };
-		C6A3DD0C2C22009E00914376 /* QuotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0B2C22009E00914376 /* QuotesViewModel.swift */; };
+		C6A3DD0C2C22009E00914376 /* QuoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0B2C22009E00914376 /* QuoteViewModel.swift */; };
 		C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0D2C2200AD00914376 /* CategoryViewModel.swift */; };
-		C6A3DD102C2200D900914376 /* QuotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0F2C2200D900914376 /* QuotesViewController.swift */; };
+		C6A3DD102C2200D900914376 /* QuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0F2C2200D900914376 /* QuoteViewController.swift */; };
 		C6A3DD122C22011600914376 /* QuoteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD112C22011600914376 /* QuoteStorage.swift */; };
 		C6A3DD152C22050700914376 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6A3DD142C22050700914376 /* SnapKit */; };
 		C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD192C22216C00914376 /* NetworkController.swift */; };
@@ -36,9 +36,9 @@
 		C6A3DCFB2C21FE2900914376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6A3DD072C22007000914376 /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		C6A3DD092C22007C00914376 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		C6A3DD0B2C22009E00914376 /* QuotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesViewModel.swift; sourceTree = "<group>"; };
+		C6A3DD0B2C22009E00914376 /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
 		C6A3DD0D2C2200AD00914376 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
-		C6A3DD0F2C2200D900914376 /* QuotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesViewController.swift; sourceTree = "<group>"; };
+		C6A3DD0F2C2200D900914376 /* QuoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewController.swift; sourceTree = "<group>"; };
 		C6A3DD112C22011600914376 /* QuoteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStorage.swift; sourceTree = "<group>"; };
 		C6A3DD192C22216C00914376 /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		C6A3DD1B2C22227900914376 /* CategoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryList.swift; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 		C6A3DD022C22000100914376 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				C6A3DD0B2C22009E00914376 /* QuotesViewModel.swift */,
+				C6A3DD0B2C22009E00914376 /* QuoteViewModel.swift */,
 				C6A3DD0D2C2200AD00914376 /* CategoryViewModel.swift */,
 			);
 			path = ViewModels;
@@ -119,7 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				C6A3DCF12C21FE2800914376 /* CategoriesViewController.swift */,
-				C6A3DD0F2C2200D900914376 /* QuotesViewController.swift */,
+				C6A3DD0F2C2200D900914376 /* QuoteViewController.swift */,
 				C6A3DCF82C21FE2900914376 /* LaunchScreen.storyboard */,
 			);
 			path = Views;
@@ -241,10 +241,10 @@
 				C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */,
 				C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */,
 				C6A3DD082C22007000914376 /* Quote.swift in Sources */,
-				C6A3DD0C2C22009E00914376 /* QuotesViewModel.swift in Sources */,
+				C6A3DD0C2C22009E00914376 /* QuoteViewModel.swift in Sources */,
 				C6A3DD0A2C22007C00914376 /* Category.swift in Sources */,
 				C6A3DCF22C21FE2800914376 /* CategoriesViewController.swift in Sources */,
-				C6A3DD102C2200D900914376 /* QuotesViewController.swift in Sources */,
+				C6A3DD102C2200D900914376 /* QuoteViewController.swift in Sources */,
 				C6A3DD122C22011600914376 /* QuoteStorage.swift in Sources */,
 				C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */,
 				C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */,

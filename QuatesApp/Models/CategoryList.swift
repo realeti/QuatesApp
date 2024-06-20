@@ -8,6 +8,7 @@
 import Foundation
 
 enum CategoryList: String, CaseIterable {
+    case age
     case alone
     case amazing
     case anger

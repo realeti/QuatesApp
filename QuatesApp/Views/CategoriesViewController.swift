@@ -14,7 +14,7 @@ class CategoriesViewController: UIViewController {
     private let fetchButton = UIButton(type: .system)
     
     // MARK: - View Model
-    let viewModel = QuotesViewModel()
+    let quoteViewModel = QuoteViewModel()
     let categoryViewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
@@ -67,6 +67,7 @@ extension CategoriesViewController {
 
     private func setupDelegates() {
         categoryViewModel.delegate = self
+        quoteViewModel.delegate = self
         searchBar.delegate = self
         pickerView.delegate = self
     }
@@ -106,12 +107,23 @@ extension CategoriesViewController {
     // MARK: - Actions
     
     @objc private func fetchButtonPressed(_ sender: UIButton) {
-        guard let selectedCategory = categoryViewModel.selectedCategory?.rawValue else { return }
-        
-        viewModel.fetchQuote(for: selectedCategory) { [weak self] in
-            DispatchQueue.main.async {
-                print("fetched")
-            }
+        let selectedCategory = categoryViewModel.selectedCategory.rawValue
+        quoteViewModel.fetchQuote(for: selectedCategory)
+    }
+}
+
+extension CategoriesViewController: QuoteViewModelDelegate {
+    func didFetchQuote(_ quote: Quote) {
+        DispatchQueue.main.async { [weak self] in
+            let quoteVC = QuoteViewController()
+            quoteVC.quote = quote
+            self?.present(quoteVC, animated: true)
+        }
+    }
+    
+    func didFailFetchingQuote(_ error: any Error) {
+        DispatchQueue.main.async { [weak self] in
+            print(error.localizedDescription)
         }
     }
 }
