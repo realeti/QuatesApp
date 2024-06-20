@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C67B87462C249B84001BD1BF /* ccrickveitchw05.otf in Resources */ = {isa = PBXBuildFile; fileRef = C67B87452C249B84001BD1BF /* ccrickveitchw05.otf */; };
+		C67B874B2C24A6D4001BD1BF /* NeueMachina-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C67B874A2C24A6D4001BD1BF /* NeueMachina-Regular.otf */; };
 		C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68205742C23743F00D503B2 /* QuoteDTO.swift */; };
 		C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCED2C21FE2800914376 /* AppDelegate.swift */; };
 		C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C67B87452C249B84001BD1BF /* ccrickveitchw05.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ccrickveitchw05.otf; sourceTree = "<group>"; };
+		C67B874A2C24A6D4001BD1BF /* NeueMachina-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NeueMachina-Regular.otf"; sourceTree = "<group>"; };
 		C68205742C23743F00D503B2 /* QuoteDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteDTO.swift; sourceTree = "<group>"; };
 		C6A3DCEA2C21FE2800914376 /* QuatesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuatesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A3DCED2C21FE2800914376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +61,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C67B87472C249D53001BD1BF /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C67B874A2C24A6D4001BD1BF /* NeueMachina-Regular.otf */,
+				C67B87452C249B84001BD1BF /* ccrickveitchw05.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		C68205732C23743700D503B2 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +151,7 @@
 		C6A3DD052C22002D00914376 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C67B87472C249D53001BD1BF /* Fonts */,
 				C6A3DCF62C21FE2900914376 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -225,7 +239,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6A3DCF72C21FE2900914376 /* Assets.xcassets in Resources */,
+				C67B87462C249B84001BD1BF /* ccrickveitchw05.otf in Resources */,
 				C6A3DCFA2C21FE2900914376 /* Base in Resources */,
+				C67B874B2C24A6D4001BD1BF /* NeueMachina-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

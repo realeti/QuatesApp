@@ -9,7 +9,35 @@ import UIKit
 
 class CategoriesViewController: UIViewController {
     // MARK: - UI
-    private let searchBar = UISearchBar()
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.searchBarStyle = .minimal
+        searchBar.backgroundColor = .white
+        searchBar.placeholder = K.searchPlaceholder
+        return searchBar
+    }()
+    
+    private let quoteImageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(resource: .quote)
+        
+        imageView.image = UIImage(resource: .quote)
+            .withRenderingMode(.alwaysOriginal)
+            .withTintColor(.heavyGray.withAlphaComponent(0.1))
+        
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
+    
+    private let categoriesLabel: UILabel = {
+        let label = UILabel()
+        label.text = K.categoriesTitle
+        label.font = UIFont(name: K.fontNeueMachina, size: 36)
+        label.numberOfLines = 2
+        return label
+    }()
+    
     private let pickerView = UIPickerView()
     private let fetchButton = UIButton(type: .system)
     
@@ -30,10 +58,16 @@ class CategoriesViewController: UIViewController {
     // MARK: - Set Views
     private func setupUI() {
         view.addSubview(searchBar)
+        view.addSubview(quoteImageView)
+        view.addSubview(categoriesLabel)
         view.addSubview(pickerView)
         view.addSubview(fetchButton)
         
         fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
 }
 
@@ -42,21 +76,25 @@ extension CategoriesViewController {
 
     private func configureUI() {
         view.backgroundColor = .white
-        configureSearchBar()
         configureFetchButton()
     }
     
-    private func configureSearchBar() {
-        searchBar.searchBarStyle = .minimal
-        searchBar.backgroundColor = .white
-        searchBar.placeholder = K.searchPlaceholder
-    }
-    
     private func configureFetchButton() {
-        fetchButton.setTitle(K.fetchButtonTitle, for: .normal)
-        fetchButton.setTitleColor(.black, for: .normal)
-        fetchButton.backgroundColor = .systemGray6
-        fetchButton.layer.cornerRadius = 14
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor.systemCyan
+        shadow.shadowBlurRadius = 5
+        
+        let attributes: [NSAttributedString.Key : Any] = [
+            .font: UIFont(name: K.fontNeueMachina, size: 19) ?? UIFont.systemFont(ofSize: 19),
+            .foregroundColor: UIColor.white,
+            .shadow: shadow
+        ]
+        
+        let attributesString = NSAttributedString(string: K.fetchButtonTitle, attributes: attributes)
+        
+        fetchButton.setAttributedTitle(attributesString, for: .normal)
+        fetchButton.backgroundColor = .label
+        fetchButton.layer.cornerRadius = 16
         fetchButton.layer.borderWidth = 1
         fetchButton.layer.borderColor = UIColor.systemCyan.cgColor
     }
@@ -133,6 +171,8 @@ extension CategoriesViewController {
     
     private func setupConstraints() {
         setupSearchBarConstraints()
+        setupQuoteImageViewConstraints()
+        setupCategoriesLabelConstraints()
         setupPickerViewConstraints()
         setupFetchButtonConstraints()
     }
@@ -140,21 +180,36 @@ extension CategoriesViewController {
     private func setupSearchBarConstraints() {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.trailing.equalToSuperview().inset(10)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
+        }
+    }
+    
+    private func setupQuoteImageViewConstraints() {
+        quoteImageView.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom).offset(10)
+            make.leading.equalTo(categoriesLabel.snp.leading).offset(22)
+            make.width.height.equalTo(85)
+        }
+    }
+    
+    private func setupCategoriesLabelConstraints() {
+        categoriesLabel.snp.makeConstraints { make in
+            make.top.equalTo(quoteImageView.snp.bottom).offset(-18)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(25)
         }
     }
     
     private func setupPickerViewConstraints() {
         pickerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.center.equalToSuperview()
+            make.top.equalTo(categoriesLabel.snp.bottom).offset(10)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
     }
     
     private func setupFetchButtonConstraints() {
         fetchButton.snp.makeConstraints { make in
             make.top.equalTo(pickerView.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(25)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.height.equalTo(50)
         }
     }
