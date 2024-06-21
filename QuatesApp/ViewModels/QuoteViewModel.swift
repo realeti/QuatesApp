@@ -14,6 +14,7 @@ protocol QuoteModeling {
 protocol QuoteViewModelDelegate: AnyObject {
     func didFetchQuote(_ quote: Quote)
     func didFailFetchingQuote(_ error: Error)
+    func didChangeLoadingState(isLoading: Bool)
 }
 
 final class QuoteViewModel: QuoteModeling {
@@ -21,7 +22,11 @@ final class QuoteViewModel: QuoteModeling {
     weak var delegate: QuoteViewModelDelegate?
     
     func fetchQuote(for category: String) {
+        delegate?.didChangeLoadingState(isLoading: true)
+        
         fetchingController.loadQuote(category: category) { [weak self] result in
+            self?.delegate?.didChangeLoadingState(isLoading: false)
+            
             do {
                 let quoteData = try result.get()
                 self?.delegate?.didFetchQuote(quoteData)
