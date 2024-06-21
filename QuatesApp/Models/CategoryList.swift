@@ -25,15 +25,22 @@ enum CategoryList: String, CaseIterable {
     case graduation
     case great
     case happiness
+    case health
+    case history
+    case home
     case hope
     case humor
     case intelligence
     case leadership
     case life
     case love
+    case medical
+    case men
+    case mom
     case money
     case morning
     case movies
+    case success
 
     var name: String {
         return self.rawValue.capitalized

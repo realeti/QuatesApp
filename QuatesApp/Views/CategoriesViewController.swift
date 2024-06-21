@@ -12,37 +12,23 @@ class CategoriesViewController: UIViewController {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        searchBar.backgroundColor = .white
+        searchBar.backgroundColor = UIColor(resource: .snow)
         searchBar.placeholder = K.searchPlaceholder
         return searchBar
     }()
     
-    private let quoteImageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(resource: .quote)
-        
-        imageView.image = UIImage(resource: .quote)
-            .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.heavyGray.withAlphaComponent(0.1))
-        
-        imageView.contentMode = .scaleAspectFit
-        
-        return imageView
-    }()
+    private let quoteImageView = UIImageView()
     
-    private let categoriesLabel: UILabel = {
-        let label = UILabel()
-        label.text = K.categoriesTitle
-        label.font = UIFont(name: K.fontNeueMachina, size: 36)
-        label.numberOfLines = 2
-        return label
-    }()
+    private let categoriesLabel = UILabel(
+        text: K.categoriesTitle,
+        lines: 2,
+        font: UIFont(name: K.fontMontserrat400, size: 36)
+    )
     
     private let pickerView = UIPickerView()
     private let fetchButton = UIButton(type: .system)
     
     // MARK: - View Model
-    let quoteViewModel = QuoteViewModel()
     let categoryViewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
@@ -65,18 +51,22 @@ class CategoriesViewController: UIViewController {
         
         fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
 }
 
 extension CategoriesViewController {
     // MARK: - Configure UI
 
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(resource: .snow)
+        configureQuoteImageView()
         configureFetchButton()
+    }
+    
+    private func configureQuoteImageView() {
+        let image = UIImage(resource: .quote)
+            .withTintColor(.heavyGray.withAlphaComponent(0.1))
+        
+        quoteImageView.image = image
     }
     
     private func configureFetchButton() {
@@ -85,7 +75,7 @@ extension CategoriesViewController {
         shadow.shadowBlurRadius = 5
         
         let attributes: [NSAttributedString.Key : Any] = [
-            .font: UIFont(name: K.fontNeueMachina, size: 19) ?? UIFont.systemFont(ofSize: 19),
+            .font: UIFont(name: K.fontMontserrat400, size: 19) ?? UIFont.systemFont(ofSize: 19),
             .foregroundColor: UIColor.white,
             .shadow: shadow
         ]
@@ -105,7 +95,6 @@ extension CategoriesViewController {
 
     private func setupDelegates() {
         categoryViewModel.delegate = self
-        quoteViewModel.delegate = self
         searchBar.delegate = self
         pickerView.delegate = self
     }
@@ -145,24 +134,15 @@ extension CategoriesViewController {
     // MARK: - Actions
     
     @objc private func fetchButtonPressed(_ sender: UIButton) {
+        let quoteVC = QuoteViewController()
+        let quoteViewModel = QuoteViewModel()
         let selectedCategory = categoryViewModel.selectedCategory.rawValue
-        quoteViewModel.fetchQuote(for: selectedCategory)
-    }
-}
-
-extension CategoriesViewController: QuoteViewModelDelegate {
-    func didFetchQuote(_ quote: Quote) {
-        DispatchQueue.main.async { [weak self] in
-            let quoteVC = QuoteViewController()
-            quoteVC.quote = quote
-            self?.present(quoteVC, animated: true)
-        }
-    }
-    
-    func didFailFetchingQuote(_ error: any Error) {
-        DispatchQueue.main.async { [weak self] in
-            print(error.localizedDescription)
-        }
+        
+        quoteVC.viewModel = quoteViewModel
+        quoteVC.viewModel?.delegate = quoteVC
+        quoteVC.category = selectedCategory
+        
+        self.present(quoteVC, animated: true)
     }
 }
 

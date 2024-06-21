@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C67B87462C249B84001BD1BF /* ccrickveitchw05.otf in Resources */ = {isa = PBXBuildFile; fileRef = C67B87452C249B84001BD1BF /* ccrickveitchw05.otf */; };
-		C67B874B2C24A6D4001BD1BF /* NeueMachina-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C67B874A2C24A6D4001BD1BF /* NeueMachina-Regular.otf */; };
+		C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */; };
 		C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68205742C23743F00D503B2 /* QuoteDTO.swift */; };
+		C68BDB5F2C25E65900D156D7 /* PTSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB5E2C25E65900D156D7 /* PTSerif-Regular.ttf */; };
+		C68BDB612C25E82900D156D7 /* PTSerif-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */; };
+		C68BDB632C260BCE00D156D7 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */; };
+		C68BDB652C260D4200D156D7 /* UILabel + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */; };
 		C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCED2C21FE2800914376 /* AppDelegate.swift */; };
 		C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */; };
 		C6A3DCF22C21FE2800914376 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCF12C21FE2800914376 /* CategoriesViewController.swift */; };
@@ -28,9 +31,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C67B87452C249B84001BD1BF /* ccrickveitchw05.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ccrickveitchw05.otf; sourceTree = "<group>"; };
-		C67B874A2C24A6D4001BD1BF /* NeueMachina-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NeueMachina-Regular.otf"; sourceTree = "<group>"; };
+		C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
 		C68205742C23743F00D503B2 /* QuoteDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteDTO.swift; sourceTree = "<group>"; };
+		C68BDB5E2C25E65900D156D7 /* PTSerif-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSerif-Regular.ttf"; sourceTree = "<group>"; };
+		C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSerif-Italic.ttf"; sourceTree = "<group>"; };
+		C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extensions.swift"; sourceTree = "<group>"; };
 		C6A3DCEA2C21FE2800914376 /* QuatesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuatesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A3DCED2C21FE2800914376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,10 +70,20 @@
 		C67B87472C249D53001BD1BF /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				C67B874A2C24A6D4001BD1BF /* NeueMachina-Regular.otf */,
-				C67B87452C249B84001BD1BF /* ccrickveitchw05.otf */,
+				C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */,
+				C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */,
+				C68BDB5E2C25E65900D156D7 /* PTSerif-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		C67DB9CA2C258C2E00A06D1A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */,
+				C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C68205732C23743700D503B2 /* DTO */ = {
@@ -169,6 +185,7 @@
 		C6A3DD1D2C222AE300914376 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				C67DB9CA2C258C2E00A06D1A /* Extensions */,
 				C6A3DD1E2C222AEB00914376 /* Constants.swift */,
 			);
 			path = Helpers;
@@ -238,10 +255,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C68BDB5F2C25E65900D156D7 /* PTSerif-Regular.ttf in Resources */,
+				C68BDB632C260BCE00D156D7 /* Montserrat-Medium.ttf in Resources */,
 				C6A3DCF72C21FE2900914376 /* Assets.xcassets in Resources */,
-				C67B87462C249B84001BD1BF /* ccrickveitchw05.otf in Resources */,
+				C68BDB612C25E82900D156D7 /* PTSerif-Italic.ttf in Resources */,
 				C6A3DCFA2C21FE2900914376 /* Base in Resources */,
-				C67B874B2C24A6D4001BD1BF /* NeueMachina-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,10 +270,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */,
 				C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */,
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
 				C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */,
 				C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */,
+				C68BDB652C260D4200D156D7 /* UILabel + Extensions.swift in Sources */,
 				C6A3DD082C22007000914376 /* Quote.swift in Sources */,
 				C6A3DD0C2C22009E00914376 /* QuoteViewModel.swift in Sources */,
 				C6A3DD0A2C22007C00914376 /* Category.swift in Sources */,

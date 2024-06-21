@@ -9,13 +9,23 @@ import Foundation
 
 struct K {
     
-    static let searchPlaceholder = "Search categories"
+    // MARK: - Lables
+    static let searchPlaceholder = "Search for category"
     static let fetchButtonTitle = "Get random quote!"
-    static let categoriesTitle = "Categories of \nquotes"
+    static let categoriesTitle = "Categories"
+    static let randomQuote = "Random quote"
+    
+    // MARK: - Buttons
+    static let systemCloseButton = "xmark.circle.fill"
+    
+    // MARK: - Alert
+    static let alertError = "Error"
+    static let alertOk = "OK"
     
     // MARK: - Fonts
-    static let fontVeitch = "CCRickVeitchW05"
-    static let fontNeueMachina = "NeueMachina-Regular"
+    static let fontMontserrat400 = "Montserrat-Medium"
+    static let fontPTSerif400 = "PTSerif-Regular"
+    static let fontPTSerifItalic = "PTSerif-Italic"
     
     private init() {}
 }
