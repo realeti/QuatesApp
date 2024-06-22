@@ -12,20 +12,7 @@ class CategoriesViewController: UIViewController {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        searchBar.backgroundColor = UIColor(resource: .snow)
         searchBar.placeholder = K.searchPlaceholder
-        
-        /*if let textField = searchBar.value(forKey: "searchField") as? UITextField {
-                    textField.backgroundColor = .white // Цвет фона текстового поля
-                    textField.textColor = .black // Цвет текста
-                    if let leftView = textField.leftView as? UIImageView {
-                        leftView.tintColor = .black // Цвет иконки лупы
-                    }
-                    if let clearButton = textField.value(forKey: "clearButton") as? UIButton {
-                        clearButton.setImage(clearButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
-                        clearButton.tintColor = .black // Цвет иконки очистки
-                    }
-                }*/
         return searchBar
     }()
     
@@ -33,7 +20,6 @@ class CategoriesViewController: UIViewController {
     
     private let categoriesLabel = UILabel(
         text: K.categoriesTitle,
-        lines: 2,
         font: UIFont(name: K.fontMontserrat400, size: 36)
     )
     
@@ -235,7 +221,7 @@ extension CategoriesViewController {
     
     private func setupNotFoundImageViewConstraints() {
         notFoundImageView.snp.makeConstraints { make in
-            make.height.equalTo(35)
+            make.height.equalTo(50)
         }
     }
     
