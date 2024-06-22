@@ -9,6 +9,10 @@ import Foundation
 
 struct K {
     
+    // MARK: - TabBar
+    static let homeTabTitle = "Home"
+    static let favoritesTabTitle = "Favorites"
+    
     // MARK: - Lables
     static let searchPlaceholder = "Search for category"
     static let fetchButtonTitle = "Get random quote!"
