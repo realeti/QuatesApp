@@ -14,6 +14,18 @@ class CategoriesViewController: UIViewController {
         searchBar.searchBarStyle = .minimal
         searchBar.backgroundColor = UIColor(resource: .snow)
         searchBar.placeholder = K.searchPlaceholder
+        
+        /*if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+                    textField.backgroundColor = .white // Цвет фона текстового поля
+                    textField.textColor = .black // Цвет текста
+                    if let leftView = textField.leftView as? UIImageView {
+                        leftView.tintColor = .black // Цвет иконки лупы
+                    }
+                    if let clearButton = textField.value(forKey: "clearButton") as? UIButton {
+                        clearButton.setImage(clearButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
+                        clearButton.tintColor = .black // Цвет иконки очистки
+                    }
+                }*/
         return searchBar
     }()
     
@@ -27,6 +39,15 @@ class CategoriesViewController: UIViewController {
     
     private let pickerView = UIPickerView()
     private let fetchButton = UIButton(type: .system)
+    private let notFoundStackView = UIStackView(axis: .vertical, spacing: 8)
+    private let notFoundImageView = UIImageView()
+    
+    private let notFoundLabel = UILabel(
+        text: K.notFound,
+        textColor: .heavyGray.withAlphaComponent(0.8),
+        alignment: .center,
+        font: UIFont(name: K.fontMontserrat400, size: 16)
+    )
     
     // MARK: - View Model
     let categoryViewModel = CategoryViewModel()
@@ -48,8 +69,9 @@ class CategoriesViewController: UIViewController {
         view.addSubview(categoriesLabel)
         view.addSubview(pickerView)
         view.addSubview(fetchButton)
-        
-        fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
+        view.addSubview(notFoundStackView)
+        notFoundStackView.addArrangedSubview(notFoundImageView)
+        notFoundStackView.addArrangedSubview(notFoundLabel)
     }
 }
 
@@ -59,6 +81,7 @@ extension CategoriesViewController {
     private func configureUI() {
         view.backgroundColor = UIColor(resource: .snow)
         configureQuoteImageView()
+        configureNotFoundImageView()
         configureFetchButton()
     }
     
@@ -68,6 +91,12 @@ extension CategoriesViewController {
             .withTintColor(.heavyGray.withAlphaComponent(0.1))
         
         quoteImageView.image = image
+    }
+    
+    private func configureNotFoundImageView() {
+        notFoundImageView.image = UIImage(resource: .turtle)
+        notFoundImageView.contentMode = .scaleAspectFit
+        notFoundStackView.isHidden = true
     }
     
     private func configureFetchButton() {
@@ -84,10 +113,11 @@ extension CategoriesViewController {
         let attributesString = NSAttributedString(string: K.fetchButtonTitle, attributes: attributes)
         
         fetchButton.setAttributedTitle(attributesString, for: .normal)
-        fetchButton.backgroundColor = .label
+        fetchButton.backgroundColor = .black
         fetchButton.layer.cornerRadius = 16
         fetchButton.layer.borderWidth = 1
         fetchButton.layer.borderColor = UIColor.systemCyan.cgColor
+        fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
     }
 }
 
@@ -122,6 +152,14 @@ extension CategoriesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 extension CategoriesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         categoryViewModel.filterCategories(with: searchText)
+        
+        if categoryViewModel.categories.isEmpty {
+            pickerView.isHidden = true
+            notFoundStackView.isHidden = false
+        } else {
+            pickerView.isHidden = false
+            notFoundStackView.isHidden = true
+        }
     }
 }
 
@@ -155,6 +193,8 @@ extension CategoriesViewController {
         setupQuoteImageViewConstraints()
         setupCategoriesLabelConstraints()
         setupPickerViewConstraints()
+        setupNotFoundStackViewConstraints()
+        setupNotFoundImageViewConstraints()
         setupFetchButtonConstraints()
     }
     
@@ -184,6 +224,18 @@ extension CategoriesViewController {
         pickerView.snp.makeConstraints { make in
             make.top.equalTo(categoriesLabel.snp.bottom).offset(10)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
+        }
+    }
+    
+    private func setupNotFoundStackViewConstraints() {
+        notFoundStackView.snp.makeConstraints { make in
+            make.center.equalTo(pickerView)
+        }
+    }
+    
+    private func setupNotFoundImageViewConstraints() {
+        notFoundImageView.snp.makeConstraints { make in
+            make.height.equalTo(35)
         }
     }
     

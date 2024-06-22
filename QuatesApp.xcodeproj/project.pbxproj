@@ -13,6 +13,7 @@
 		C68BDB612C25E82900D156D7 /* PTSerif-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */; };
 		C68BDB632C260BCE00D156D7 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */; };
 		C68BDB652C260D4200D156D7 /* UILabel + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */; };
+		C68BDB672C261D7300D156D7 /* UIStackView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDB662C261D7300D156D7 /* UIStackView + Extensions.swift */; };
 		C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCED2C21FE2800914376 /* AppDelegate.swift */; };
 		C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */; };
 		C6A3DCF22C21FE2800914376 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCF12C21FE2800914376 /* CategoriesViewController.swift */; };
@@ -37,6 +38,7 @@
 		C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSerif-Italic.ttf"; sourceTree = "<group>"; };
 		C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extensions.swift"; sourceTree = "<group>"; };
+		C68BDB662C261D7300D156D7 /* UIStackView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extensions.swift"; sourceTree = "<group>"; };
 		C6A3DCEA2C21FE2800914376 /* QuatesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuatesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A3DCED2C21FE2800914376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			children = (
 				C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */,
 				C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */,
+				C68BDB662C261D7300D156D7 /* UIStackView + Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */,
 				C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */,
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
+				C68BDB672C261D7300D156D7 /* UIStackView + Extensions.swift in Sources */,
 				C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */,
 				C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */,
 				C68BDB652C260D4200D156D7 /* UILabel + Extensions.swift in Sources */,

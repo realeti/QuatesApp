@@ -14,6 +14,7 @@ struct K {
     static let fetchButtonTitle = "Get random quote!"
     static let categoriesTitle = "Categories"
     static let randomQuote = "Random quote"
+    static let notFound = "Nothing found :("
     
     // MARK: - Buttons
     static let systemCloseButton = "xmark.circle.fill"

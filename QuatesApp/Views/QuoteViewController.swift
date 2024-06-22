@@ -21,18 +21,13 @@ class QuoteViewController: UIViewController {
     
     private let containerView = UIView()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
-    
-    private lazy var quoteStackView: UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 20
-        return view
-    }()
+    private let quoteStackView = UIStackView(axis: .vertical, spacing: 20)
     
     private lazy var quoteTextView: UITextView = {
         let view = UITextView()
         view.isEditable = false
         view.isScrollEnabled = false
+        view.textColor = .black
         view.textAlignment = .center
         view.font = UIFont(name: K.fontPTSerifItalic, size: 22)
         view.backgroundColor = .clear
