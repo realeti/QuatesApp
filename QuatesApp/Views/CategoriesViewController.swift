@@ -46,6 +46,19 @@ class CategoriesViewController: UIViewController {
         configureUI()
         setupDelegates()
         setupConstraints()
+        setupTapGesture()
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func hideKeyboard() {
+        if searchBar.isFirstResponder {
+            view.endEditing(true)
+        }
     }
     
     // MARK: - Set Views
