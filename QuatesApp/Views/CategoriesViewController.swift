@@ -64,6 +64,7 @@ extension CategoriesViewController {
     
     private func configureQuoteImageView() {
         let image = UIImage(resource: .quote)
+            .withRenderingMode(.alwaysOriginal)
             .withTintColor(.heavyGray.withAlphaComponent(0.1))
         
         quoteImageView.image = image
