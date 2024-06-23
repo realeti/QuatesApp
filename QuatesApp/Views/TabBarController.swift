@@ -18,6 +18,8 @@ class TabBarController: UITabBarController {
     
     // MARK: - Configure TabBar
     private func configureTabBar() {
+        //tabBar.backgroundColor = UIColor(red: 231/255, green: 231/255, blue: 231/255, alpha: 1.0)
+        //tabBar.backgroundColor = .foggySnow
         tabBar.tintColor = .black
         tabBar.unselectedItemTintColor = UIColor(resource: .heavyGray)
     }
@@ -29,7 +31,7 @@ class TabBarController: UITabBarController {
         
         let home = self.createTabBarItem(
             title: K.homeTabTitle,
-            image: UIImage(resource: .gridOutline),
+            image: UIImage(resource: .gridOutline).withTintColor(UIColor(resource: .heavyGray)),
             selectedImage: UIImage(resource: .gridFilled),
             tag: 0,
             vc: homeVC
@@ -37,7 +39,7 @@ class TabBarController: UITabBarController {
         
         let favorites = self.createTabBarItem(
             title: K.favoritesTabTitle,
-            image: UIImage(resource: .heartOutline),
+            image: UIImage(resource: .heartOutline).withTintColor(UIColor(resource: .heavyGray)),
             selectedImage: UIImage(resource: .heartFilled),
             tag: 1,
             vc: favoritesVC

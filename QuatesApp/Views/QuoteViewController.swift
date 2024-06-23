@@ -128,7 +128,7 @@ extension QuoteViewController {
     
     private func configureRandomImageView() {
         let image = UIImage(resource: .redo)
-            .withTintColor(.heavyGray.withAlphaComponent(0.1))
+            .withTintColor(.heavyGray.withAlphaComponent(0.12))
         randomImageView.image = image
     }
     
@@ -194,7 +194,7 @@ extension QuoteViewController {
     private func closeButtonSetupConstraints() {
         closeButton.snp.makeConstraints { make in
             make.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.width.height.equalTo(22)
+            make.width.height.equalTo(Metrics.closeButtonHeight)
         }
     }
     
@@ -202,7 +202,7 @@ extension QuoteViewController {
         randomImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(32)
             make.leading.equalTo(randomQuoteLabel.snp.leading).offset(22)
-            make.width.height.equalTo(85)
+            make.width.height.equalTo(Metrics.randomImageViewHeight)
         }
     }
     
@@ -217,7 +217,7 @@ extension QuoteViewController {
         containerView.snp.makeConstraints { make in
             make.top.equalTo(randomQuoteLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.height.greaterThanOrEqualTo(400)
+            make.height.greaterThanOrEqualTo(Metrics.containerViewHeight)
         }
     }
     
@@ -239,7 +239,16 @@ extension QuoteViewController {
         heartButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(15).priority(.low)
-            make.height.width.equalTo(32)
+            make.height.width.equalTo(Metrics.heartButtonHeight)
         }
     }
+}
+
+private struct Metrics {
+    static let closeButtonHeight: CGFloat = 22.0
+    static let randomImageViewHeight: CGFloat = 85.0
+    static let containerViewHeight: CGFloat = 400.0
+    static let heartButtonHeight: CGFloat = 32.0
+    
+    init () {}
 }

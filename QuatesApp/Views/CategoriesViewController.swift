@@ -16,11 +16,20 @@ class CategoriesViewController: UIViewController {
         return searchBar
     }()
     
-    private let quoteImageView = UIImageView()
+    private lazy var segmentControl: UISegmentedControl = {
+        let segment = UISegmentedControl()
+        segment.insertSegment(withTitle: K.quoteTitle, at: 0, animated: true)
+        segment.insertSegment(withTitle: K.jokesTitle, at: 1, animated: true)
+        segment.insertSegment(withTitle: K.chuckNorrisTitle, at: 2, animated: true)
+        return segment
+    }()
     
-    private let categoriesLabel = UILabel(
-        text: K.categoriesTitle,
-        font: UIFont(name: K.fontMontserrat400, size: 36)
+    private let sectionImageView = UIImageView()
+    
+    private let sectionLabel = UILabel(
+        text: K.quoteSectionTitle,
+        font: UIFont(name: K.fontMontserrat400, size: 32),
+        lines: 2
     )
     
     private let pickerView = UIPickerView()
@@ -35,6 +44,33 @@ class CategoriesViewController: UIViewController {
         font: UIFont(name: K.fontMontserrat400, size: 16)
     )
     
+    // MARK: - Private Properties
+    private var isSearchBarHidden: Bool = false {
+        didSet {
+            searchBar.snp.updateConstraints { make in
+                make.height.equalTo(isSearchBarHidden ? 0 : Metrics.searchBarHeight)
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    private var isPickerViewHidden: Bool = false {
+        didSet {
+            pickerView.snp.updateConstraints { make in
+                make.height.equalTo(isPickerViewHidden ? 0 : Metrics.pickerViewHeight)
+            }
+            
+            pickerView.isHidden = (isPickerViewHidden ? true : false)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
     // MARK: - View Model
     let categoryViewModel = CategoryViewModel()
     
@@ -47,6 +83,8 @@ class CategoriesViewController: UIViewController {
         setupDelegates()
         setupConstraints()
         setupTapGesture()
+        
+        segmentControl.selectedSegmentIndex = 0
     }
     
     private func setupTapGesture() {
@@ -64,8 +102,9 @@ class CategoriesViewController: UIViewController {
     // MARK: - Set Views
     private func setupUI() {
         view.addSubview(searchBar)
-        view.addSubview(quoteImageView)
-        view.addSubview(categoriesLabel)
+        view.addSubview(segmentControl)
+        view.addSubview(sectionImageView)
+        view.addSubview(sectionLabel)
         view.addSubview(pickerView)
         view.addSubview(fetchButton)
         view.addSubview(notFoundStackView)
@@ -79,17 +118,25 @@ extension CategoriesViewController {
 
     private func configureUI() {
         view.backgroundColor = UIColor(resource: .snow)
-        configureQuoteImageView()
+        configureSegmentControl()
+        configureSectionImageView()
         configureNotFoundImageView()
         configureFetchButton()
     }
     
-    private func configureQuoteImageView() {
-        let image = UIImage(resource: .quote)
+    private func configureSegmentControl() {
+        segmentControl.selectedSegmentIndex = 0
+        segmentControl.selectedSegmentTintColor = UIColor(resource: .snow)
+        segmentControl.addTarget(self, action: #selector(segmentValueDidChanged), for: .valueChanged)
+    }
+    
+    private func configureSectionImageView(image: UIImage = .quote) {
+        let image = image
             .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.heavyGray.withAlphaComponent(0.1))
+            .withTintColor(.heavyGray.withAlphaComponent(0.12))
         
-        quoteImageView.image = image
+        sectionImageView.image = image
+        sectionImageView.contentMode = .scaleAspectFit
     }
     
     private func configureNotFoundImageView() {
@@ -99,24 +146,22 @@ extension CategoriesViewController {
     }
     
     private func configureFetchButton() {
-        let shadow = NSShadow()
-        shadow.shadowColor = UIColor.systemCyan
-        shadow.shadowBlurRadius = 5
-        
-        let attributes: [NSAttributedString.Key : Any] = [
-            .font: UIFont(name: K.fontMontserrat400, size: 19) ?? UIFont.systemFont(ofSize: 19),
-            .foregroundColor: UIColor.white,
-            .shadow: shadow
-        ]
-        
-        let attributesString = NSAttributedString(string: K.fetchButtonTitle, attributes: attributes)
-        
-        fetchButton.setAttributedTitle(attributesString, for: .normal)
+        setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
         fetchButton.backgroundColor = .black
         fetchButton.layer.cornerRadius = 16
         fetchButton.layer.borderWidth = 1
         fetchButton.layer.borderColor = UIColor.systemCyan.cgColor
         fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
+    }
+    
+    private func setFetchButtonTitle(title: String) {
+        fetchButton.customizeTitle(
+            title: title,
+            font: UIFont(name: K.fontMontserrat400, size: 18),
+            foregroundColor: UIColor.white,
+            shadowColor: UIColor.systemCyan,
+            shadowRadius: 5
+        )
     }
 }
 
@@ -182,6 +227,40 @@ extension CategoriesViewController {
         
         self.present(quoteVC, animated: true)
     }
+    
+    @objc private func segmentValueDidChanged(_ sender: UISegmentedControl) {
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            configureSectionImageView(image: .quote)
+            sectionLabel.text = K.quoteSectionTitle
+            setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
+            isSearchBarHidden = false
+            isPickerViewHidden = false
+            
+            if categoryViewModel.categories.isEmpty {
+                notFoundStackView.isHidden = false
+            }
+        case 1:
+            configureSectionImageView(image: .joke)
+            sectionLabel.text = K.jokesSectionTitle
+            
+            setFetchButtonTitle(title: K.fetchButtonJokeTitle)
+            isPickerViewHidden = true
+            isSearchBarHidden = true
+            notFoundStackView.isHidden = true
+        case 2:
+            configureSectionImageView(image: .chuck)
+            sectionLabel.text = K.chuckSectionTitle
+            setFetchButtonTitle(title: K.fetchButtonChuckTitle)
+            isSearchBarHidden = true
+            isPickerViewHidden = true
+            notFoundStackView.isHidden = true
+        default:
+            break
+        }
+        
+        updateSectionLabelConstraints()
+    }
 }
 
 extension CategoriesViewController {
@@ -189,8 +268,9 @@ extension CategoriesViewController {
     
     private func setupConstraints() {
         setupSearchBarConstraints()
-        setupQuoteImageViewConstraints()
-        setupCategoriesLabelConstraints()
+        setupSegmentControlConstraints()
+        setupSectionImageViewConstraints()
+        setupSectionLabelConstraints()
         setupPickerViewConstraints()
         setupNotFoundStackViewConstraints()
         setupNotFoundImageViewConstraints()
@@ -201,28 +281,52 @@ extension CategoriesViewController {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.height.equalTo(Metrics.searchBarHeight)
         }
     }
     
-    private func setupQuoteImageViewConstraints() {
-        quoteImageView.snp.makeConstraints { make in
+    private func setupSegmentControlConstraints() {
+        segmentControl.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(10)
-            make.leading.equalTo(categoriesLabel.snp.leading).offset(22)
-            make.width.height.equalTo(85)
+            make.centerX.equalToSuperview()
         }
     }
     
-    private func setupCategoriesLabelConstraints() {
-        categoriesLabel.snp.makeConstraints { make in
-            make.top.equalTo(quoteImageView.snp.bottom).offset(-18)
+    private func setupSectionImageViewConstraints() {
+        sectionImageView.snp.makeConstraints { make in
+            make.top.equalTo(segmentControl.snp.bottom).offset(10)
+            make.leading.equalTo(sectionLabel.snp.leading).offset(22)
+            make.width.height.equalTo(Metrics.sectionImageHeight)
+        }
+    }
+    
+    private func setupSectionLabelConstraints() {
+        sectionLabel.snp.makeConstraints { make in
+            make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.quotesTitleOffsetTop)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(25)
+        }
+    }
+    
+    private func updateSectionLabelConstraints() {
+        sectionLabel.snp.updateConstraints { make in
+            switch segmentControl.selectedSegmentIndex {
+            case 0:
+                make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.quotesTitleOffsetTop)
+            case 1:
+                make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.jokesTitleOffsetTop)
+            case 2:
+                make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.chuckTitleOffsetTop)
+            default:
+                break
+            }
         }
     }
     
     private func setupPickerViewConstraints() {
         pickerView.snp.makeConstraints { make in
-            make.top.equalTo(categoriesLabel.snp.bottom).offset(10)
+            make.top.equalTo(sectionLabel.snp.bottom).offset(10)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.height.equalTo(Metrics.pickerViewHeight)
         }
     }
     
@@ -234,15 +338,29 @@ extension CategoriesViewController {
     
     private func setupNotFoundImageViewConstraints() {
         notFoundImageView.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(Metrics.notFoundImageHeight)
         }
     }
     
     private func setupFetchButtonConstraints() {
         fetchButton.snp.makeConstraints { make in
-            make.top.equalTo(pickerView.snp.bottom).offset(10)
+            make.top.equalTo(pickerView.snp.bottom).offset(15)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.height.equalTo(50)
+            make.height.equalTo(Metrics.fetchButtonHeight)
         }
     }
+}
+
+private struct Metrics {
+    static let searchBarHeight: CGFloat = 44.0
+    static let pickerViewHeight: CGFloat = 216.0
+    static let sectionImageHeight: CGFloat = 85.0
+    static let notFoundImageHeight: CGFloat = 50.0
+    static let fetchButtonHeight: CGFloat = 50.0
+    
+    static let quotesTitleOffsetTop: CGFloat = -18
+    static let jokesTitleOffsetTop: CGFloat = -12
+    static let chuckTitleOffsetTop: CGFloat = -4
+    
+    init () {}
 }
