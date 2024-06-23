@@ -1,5 +1,5 @@
 //
-//  QuoteViewController.swift
+//  PresentViewController.swift
 //  QuatesApp
 //
 //  Created by Apple M1 on 18.06.2024.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class QuoteViewController: UIViewController {
+class PresentViewController: UIViewController {
     
     // MARK: - UI
     private lazy var closeButton: UIButton = {
@@ -104,7 +104,7 @@ class QuoteViewController: UIViewController {
 }
 
 // MARK: - Configure UI
-extension QuoteViewController {
+extension PresentViewController {
     private func configureUI() {
         view.backgroundColor = .snow
         configureSectionLabel()
@@ -123,7 +123,7 @@ extension QuoteViewController {
 }
 
 // MARK: - Fetch Data
-extension QuoteViewController {
+extension PresentViewController {
     private func fetchData() {
         guard let viewModel = viewModel else {
             return
@@ -134,7 +134,7 @@ extension QuoteViewController {
 }
 
 // MARK: - Quote ViewModel Delegate
-extension QuoteViewController: QuoteViewModelDelegate {
+extension PresentViewController: QuoteViewModelDelegate {
     func didFetchQuote(_ quote: Quote) {
         DispatchQueue.main.async { [weak self] in
             self?.quote = quote
@@ -175,7 +175,7 @@ extension QuoteViewController: QuoteViewModelDelegate {
 }
 
 // MARK: - Display Data
-extension QuoteViewController {
+extension PresentViewController {
     private func displayQuote() {
         guard let viewModel else { return }
         
@@ -200,7 +200,7 @@ extension QuoteViewController {
 }
 
 // MARK: - Actions
-extension QuoteViewController {
+extension PresentViewController {
     @objc private func heartButtonPressed(_ sender: UIButton) {
         changeHeartButtonImage()
         isInitialImage.toggle()
@@ -221,7 +221,7 @@ extension QuoteViewController {
 }
 
 // MARK: - Setup Constraints
-extension QuoteViewController {
+extension PresentViewController {
     private func setupConstraints() {
         closeButtonSetupConstraints()
         randomImageViewSetupConstraints()

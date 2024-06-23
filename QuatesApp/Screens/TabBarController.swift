@@ -26,7 +26,7 @@ class TabBarController: UITabBarController {
     
     // MARK: - Setup Tabs
     private func setupTabs() {
-        let homeVC = CategoriesViewController()
+        let homeVC = MainViewController()
         let favoritesVC = FavoritesViewController()
         
         let home = self.createTabBarItem(

@@ -1,5 +1,5 @@
 //
-//  CategoriesViewController.swift
+//  MainViewController.swift
 //  QuatesApp
 //
 //  Created by Apple M1 on 18.06.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoriesViewController: UIViewController {
+class MainViewController: UIViewController {
     // MARK: - UI
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -134,7 +134,7 @@ class CategoriesViewController: UIViewController {
 }
 
 // MARK: - Configure UI
-extension CategoriesViewController {
+extension MainViewController {
     private func configureUI() {
         view.backgroundColor = UIColor(resource: .snow)
         configureNotFoundStackView()
@@ -176,7 +176,7 @@ extension CategoriesViewController {
 }
 
 // MARK: - Setup Delegates
-extension CategoriesViewController {
+extension MainViewController {
     private func setupDelegates() {
         categoryViewModel.delegate = self
         searchBar.delegate = self
@@ -185,7 +185,7 @@ extension CategoriesViewController {
 }
 
 // MARK: - PickerView DataSource & Delegate
-extension CategoriesViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension MainViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -204,7 +204,7 @@ extension CategoriesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 }
 
 // MARK: - SearchBar Delegate
-extension CategoriesViewController: UISearchBarDelegate {
+extension MainViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         categoryViewModel.filterCategories(with: searchText)
         
@@ -219,16 +219,16 @@ extension CategoriesViewController: UISearchBarDelegate {
 }
 
 // MARK: - Category ViewModel Delegate
-extension CategoriesViewController: CategoryViewModelDelegate {
+extension MainViewController: CategoryViewModelDelegate {
     func didUpdateCategories() {
         pickerView.reloadAllComponents()
     }
 }
 
 // MARK: - Actions
-extension CategoriesViewController {
+extension MainViewController {
     @objc private func fetchButtonPressed(_ sender: UIButton) {
-        let quoteVC = QuoteViewController()
+        let quoteVC = PresentViewController()
         let quoteViewModel = QuoteViewModel()
         
         quoteVC.viewModel = quoteViewModel
@@ -288,7 +288,7 @@ extension CategoriesViewController {
 }
 
 // MARK: - Setup Constraints
-extension CategoriesViewController {
+extension MainViewController {
     private func setupConstraints() {
         setupSearchBarConstraints()
         setupSegmentControlConstraints()
