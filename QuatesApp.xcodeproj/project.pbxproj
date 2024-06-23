@@ -151,8 +151,8 @@
 				C6A3DD072C22007000914376 /* Quote.swift */,
 				C68E5E6D2C287C1200967304 /* Joke.swift */,
 				C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */,
-				C6A3DD1B2C22227900914376 /* CategoryList.swift */,
 				C68E5E732C28829A00967304 /* SectionType.swift */,
+				C6A3DD1B2C22227900914376 /* CategoryList.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

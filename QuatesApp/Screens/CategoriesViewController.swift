@@ -21,6 +21,8 @@ class CategoriesViewController: UIViewController {
         segment.insertSegment(withTitle: K.quoteTitle, at: 0, animated: true)
         segment.insertSegment(withTitle: K.jokesTitle, at: 1, animated: true)
         segment.insertSegment(withTitle: K.chuckNorrisTitle, at: 2, animated: true)
+        segment.selectedSegmentTintColor = UIColor(resource: .snow)
+        segment.addTarget(self, action: #selector(segmentValueDidChanged), for: .valueChanged)
         return segment
     }()
     
@@ -33,9 +35,25 @@ class CategoriesViewController: UIViewController {
     )
     
     private let pickerView = UIPickerView()
-    private let fetchButton = UIButton(type: .system)
+    
+    private lazy var fetchButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .black
+        button.layer.cornerRadius = 16
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemCyan.cgColor
+        button.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     private let notFoundStackView = UIStackView(axis: .vertical, spacing: 8)
-    private let notFoundImageView = UIImageView()
+    
+    private lazy var notFoundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(resource: .turtle)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
     private let notFoundLabel = UILabel(
         text: K.notFound,
@@ -63,7 +81,9 @@ class CategoriesViewController: UIViewController {
                 make.height.equalTo(isPickerViewHidden ? 0 : Metrics.pickerViewHeight)
             }
             
-            pickerView.isHidden = (isPickerViewHidden ? true : false)
+            if !categoryViewModel.categories.isEmpty {
+                pickerView.isHidden = (isPickerViewHidden ? true : false)
+            }
             
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
@@ -85,8 +105,6 @@ class CategoriesViewController: UIViewController {
         setupDelegates()
         setupConstraints()
         setupTapGesture()
-        
-        segmentControl.selectedSegmentIndex = 0
     }
     
     private func setupTapGesture() {
@@ -115,21 +133,22 @@ class CategoriesViewController: UIViewController {
     }
 }
 
+// MARK: - Configure UI
 extension CategoriesViewController {
-    // MARK: - Configure UI
-
     private func configureUI() {
         view.backgroundColor = UIColor(resource: .snow)
+        configureNotFoundStackView()
         configureSegmentControl()
         configureSectionImageView()
-        configureNotFoundImageView()
         configureFetchButton()
+    }
+    
+    private func configureNotFoundStackView() {
+        notFoundStackView.isHidden = true
     }
     
     private func configureSegmentControl() {
         segmentControl.selectedSegmentIndex = 0
-        segmentControl.selectedSegmentTintColor = UIColor(resource: .snow)
-        segmentControl.addTarget(self, action: #selector(segmentValueDidChanged), for: .valueChanged)
     }
     
     private func configureSectionImageView(image: UIImage = .quote) {
@@ -141,19 +160,8 @@ extension CategoriesViewController {
         sectionImageView.contentMode = .scaleAspectFit
     }
     
-    private func configureNotFoundImageView() {
-        notFoundImageView.image = UIImage(resource: .turtle)
-        notFoundImageView.contentMode = .scaleAspectFit
-        notFoundStackView.isHidden = true
-    }
-    
     private func configureFetchButton() {
         setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
-        fetchButton.backgroundColor = .black
-        fetchButton.layer.cornerRadius = 16
-        fetchButton.layer.borderWidth = 1
-        fetchButton.layer.borderColor = UIColor.systemCyan.cgColor
-        fetchButton.addTarget(self, action: #selector(fetchButtonPressed), for: .touchUpInside)
     }
     
     private func setFetchButtonTitle(title: String) {
@@ -167,9 +175,8 @@ extension CategoriesViewController {
     }
 }
 
+// MARK: - Setup Delegates
 extension CategoriesViewController {
-    // MARK: - Setup Delegates
-
     private func setupDelegates() {
         categoryViewModel.delegate = self
         searchBar.delegate = self
@@ -177,6 +184,7 @@ extension CategoriesViewController {
     }
 }
 
+// MARK: - PickerView DataSource & Delegate
 extension CategoriesViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -195,6 +203,7 @@ extension CategoriesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
 }
 
+// MARK: - SearchBar Delegate
 extension CategoriesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         categoryViewModel.filterCategories(with: searchText)
@@ -209,15 +218,15 @@ extension CategoriesViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - Category ViewModel Delegate
 extension CategoriesViewController: CategoryViewModelDelegate {
     func didUpdateCategories() {
         pickerView.reloadAllComponents()
     }
 }
 
+// MARK: - Actions
 extension CategoriesViewController {
-    // MARK: - Actions
-    
     @objc private func fetchButtonPressed(_ sender: UIButton) {
         let quoteVC = QuoteViewController()
         let quoteViewModel = QuoteViewModel()
@@ -239,9 +248,11 @@ extension CategoriesViewController {
         switch segmentControl.selectedSegmentIndex {
         case 0:
             sectionType = .quote
+            
             configureSectionImageView(image: .quote)
             sectionLabel.text = K.quoteSectionTitle
             setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
+            
             isSearchBarHidden = false
             isPickerViewHidden = false
             
@@ -250,18 +261,21 @@ extension CategoriesViewController {
             }
         case 1:
             sectionType = .joke
+            
             configureSectionImageView(image: .joke)
             sectionLabel.text = K.jokesSectionTitle
-            
             setFetchButtonTitle(title: K.fetchButtonJokeTitle)
+            
             isPickerViewHidden = true
             isSearchBarHidden = true
             notFoundStackView.isHidden = true
         case 2:
             sectionType = .chucknorris
+            
             configureSectionImageView(image: .chuck)
             sectionLabel.text = K.chuckSectionTitle
             setFetchButtonTitle(title: K.fetchButtonChuckTitle)
+            
             isSearchBarHidden = true
             isPickerViewHidden = true
             notFoundStackView.isHidden = true
@@ -273,9 +287,8 @@ extension CategoriesViewController {
     }
 }
 
+// MARK: - Setup Constraints
 extension CategoriesViewController {
-    // MARK: - Setup Constraints
-    
     private func setupConstraints() {
         setupSearchBarConstraints()
         setupSegmentControlConstraints()
