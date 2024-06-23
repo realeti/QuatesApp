@@ -14,7 +14,7 @@ class QuoteViewController: UIViewController {
     private let closeButton = UIButton(type: .system)
     private let randomImageView = UIImageView()
     
-    private let randomQuoteLabel = UILabel(
+    private let sectionLabel = UILabel(
         text: K.randomQuote,
         font: UIFont(name: K.fontMontserrat400, size: 36)
     )
@@ -44,17 +44,18 @@ class QuoteViewController: UIViewController {
     
     // MARK: - Public Properties
     var viewModel: QuoteViewModel?
-    var category: String?
     
     // MARK: - Private Properties
     private var quote: Quote?
+    private var joke: Joke?
+    private var chuckNorrisJoke: ChuckNorrisJoke?
     private var isInitialImage = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-        fetchQuote()
+        fetchData()
         configureUI()
         setupConstraints()
     }
@@ -63,22 +64,13 @@ class QuoteViewController: UIViewController {
     private func setupUI() {
         view.addSubview(closeButton)
         view.addSubview(randomImageView)
-        view.addSubview(randomQuoteLabel)
+        view.addSubview(sectionLabel)
         view.addSubview(containerView)
         containerView.addSubview(activityIndicator)
         containerView.addSubview(quoteStackView)
         quoteStackView.addArrangedSubview(quoteTextView)
         quoteStackView.addArrangedSubview(authorLabel)
         containerView.addSubview(heartButton)
-    }
-    
-    // MARK: - Fetch Quote
-    private func fetchQuote() {
-        guard let viewModel = viewModel, let selectedCategory = category else {
-            return
-        }
-        
-        viewModel.fetchQuote(for: selectedCategory)
     }
     
     private func displayQuote() {
@@ -89,6 +81,17 @@ class QuoteViewController: UIViewController {
     }
 }
 
+extension QuoteViewController {
+    // MARK: - Fetch Data
+    private func fetchData() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        
+        viewModel.fetchData()
+    }
+}
+
 extension QuoteViewController: QuoteViewModelDelegate {
     func didFetchQuote(_ quote: Quote) {
         DispatchQueue.main.async { [weak self] in
@@ -96,8 +99,20 @@ extension QuoteViewController: QuoteViewModelDelegate {
             self?.displayQuote()
         }
     }
+    
+    func didFetchJoke(_ joke: Joke) {
+        DispatchQueue.main.async { [weak self] in
+            self?.joke = joke
+        }
+    }
+    
+    func didFetchChuckNorrisJoke(_ joke: ChuckNorrisJoke) {
+        DispatchQueue.main.async { [weak self] in
+            self?.chuckNorrisJoke = joke
+        }
+    }
 
-    func didFailFetchingQuote(_ error: Error) {
+    func didFailFetching(_ error: Error) {
         let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: K.alertOk, style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -184,7 +199,7 @@ extension QuoteViewController {
     private func setupConstraints() {
         closeButtonSetupConstraints()
         randomImageViewSetupConstraints()
-        randomQuoteLabelSetupConstraints()
+        sectionLabelSetupConstraints()
         containerViewSetupConstraints()
         activityIndicatorSetupConstraints()
         quoteStackViewSetupConstraints()
@@ -201,13 +216,13 @@ extension QuoteViewController {
     private func randomImageViewSetupConstraints() {
         randomImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(32)
-            make.leading.equalTo(randomQuoteLabel.snp.leading).offset(22)
+            make.leading.equalTo(sectionLabel.snp.leading).offset(22)
             make.width.height.equalTo(Metrics.randomImageViewHeight)
         }
     }
     
-    private func randomQuoteLabelSetupConstraints() {
-        randomQuoteLabel.snp.makeConstraints { make in
+    private func sectionLabelSetupConstraints() {
+        sectionLabel.snp.makeConstraints { make in
             make.top.equalTo(randomImageView.snp.bottom).offset(-18)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(25)
         }
@@ -215,7 +230,7 @@ extension QuoteViewController {
     
     private func containerViewSetupConstraints() {
         containerView.snp.makeConstraints { make in
-            make.top.equalTo(randomQuoteLabel.snp.bottom).offset(20)
+            make.top.equalTo(sectionLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.height.greaterThanOrEqualTo(Metrics.containerViewHeight)
         }

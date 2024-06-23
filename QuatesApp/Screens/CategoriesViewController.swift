@@ -71,6 +71,8 @@ class CategoriesViewController: UIViewController {
         }
     }
     
+    private var sectionType: SectionType = .quote
+    
     // MARK: - View Model
     let categoryViewModel = CategoryViewModel()
     
@@ -219,11 +221,16 @@ extension CategoriesViewController {
     @objc private func fetchButtonPressed(_ sender: UIButton) {
         let quoteVC = QuoteViewController()
         let quoteViewModel = QuoteViewModel()
-        let selectedCategory = categoryViewModel.selectedCategory.rawValue
         
         quoteVC.viewModel = quoteViewModel
         quoteVC.viewModel?.delegate = quoteVC
-        quoteVC.category = selectedCategory
+        quoteVC.viewModel?.sectionType = sectionType
+        
+        if sectionType == .quote {
+            let selectedCategory = categoryViewModel.selectedCategory.rawValue
+            quoteVC.viewModel?.quoteCategory = selectedCategory
+            quoteVC.viewModel?.sectionType = sectionType
+        }
         
         self.present(quoteVC, animated: true)
     }
@@ -231,6 +238,7 @@ extension CategoriesViewController {
     @objc private func segmentValueDidChanged(_ sender: UISegmentedControl) {
         switch segmentControl.selectedSegmentIndex {
         case 0:
+            sectionType = .quote
             configureSectionImageView(image: .quote)
             sectionLabel.text = K.quoteSectionTitle
             setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
@@ -241,6 +249,7 @@ extension CategoriesViewController {
                 notFoundStackView.isHidden = false
             }
         case 1:
+            sectionType = .joke
             configureSectionImageView(image: .joke)
             sectionLabel.text = K.jokesSectionTitle
             
@@ -249,6 +258,7 @@ extension CategoriesViewController {
             isSearchBarHidden = true
             notFoundStackView.isHidden = true
         case 2:
+            sectionType = .chuck
             configureSectionImageView(image: .chuck)
             sectionLabel.text = K.chuckSectionTitle
             setFetchButtonTitle(title: K.fetchButtonChuckTitle)

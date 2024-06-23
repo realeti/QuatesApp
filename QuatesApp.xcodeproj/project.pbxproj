@@ -17,6 +17,11 @@
 		C68BDB652C260D4200D156D7 /* UILabel + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */; };
 		C68BDB672C261D7300D156D7 /* UIStackView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDB662C261D7300D156D7 /* UIStackView + Extensions.swift */; };
 		C68E5E6C2C28486D00967304 /* UIButton + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E6B2C28486D00967304 /* UIButton + Extensions.swift */; };
+		C68E5E6E2C287C1200967304 /* Joke.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E6D2C287C1200967304 /* Joke.swift */; };
+		C68E5E702C287C4200967304 /* JokeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E6F2C287C4200967304 /* JokeDTO.swift */; };
+		C68E5E742C28829A00967304 /* SectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E732C28829A00967304 /* SectionType.swift */; };
+		C68E5E762C2885DA00967304 /* ChuckNorrisJoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */; };
+		C68E5E782C28860E00967304 /* ChuckNorrisJokeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E772C28860E00967304 /* ChuckNorrisJokeDTO.swift */; };
 		C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCED2C21FE2800914376 /* AppDelegate.swift */; };
 		C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */; };
 		C6A3DCF22C21FE2800914376 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCF12C21FE2800914376 /* CategoriesViewController.swift */; };
@@ -44,6 +49,11 @@
 		C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extensions.swift"; sourceTree = "<group>"; };
 		C68BDB662C261D7300D156D7 /* UIStackView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extensions.swift"; sourceTree = "<group>"; };
 		C68E5E6B2C28486D00967304 /* UIButton + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + Extensions.swift"; sourceTree = "<group>"; };
+		C68E5E6D2C287C1200967304 /* Joke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joke.swift; sourceTree = "<group>"; };
+		C68E5E6F2C287C4200967304 /* JokeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JokeDTO.swift; sourceTree = "<group>"; };
+		C68E5E732C28829A00967304 /* SectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionType.swift; sourceTree = "<group>"; };
+		C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChuckNorrisJoke.swift; sourceTree = "<group>"; };
+		C68E5E772C28860E00967304 /* ChuckNorrisJokeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChuckNorrisJokeDTO.swift; sourceTree = "<group>"; };
 		C6A3DCEA2C21FE2800914376 /* QuatesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuatesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A3DCED2C21FE2800914376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +108,8 @@
 			isa = PBXGroup;
 			children = (
 				C68205742C23743F00D503B2 /* QuoteDTO.swift */,
+				C68E5E6F2C287C4200967304 /* JokeDTO.swift */,
+				C68E5E772C28860E00967304 /* ChuckNorrisJokeDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -125,7 +137,7 @@
 				C6A3DD1D2C222AE300914376 /* Helpers */,
 				C6A3DD042C22000F00914376 /* Services */,
 				C6A3DD012C21FFFA00914376 /* Models */,
-				C6A3DD032C22000900914376 /* Views */,
+				C6A3DD032C22000900914376 /* Screens */,
 				C6A3DD052C22002D00914376 /* Resources */,
 				C6A3DCFB2C21FE2900914376 /* Info.plist */,
 			);
@@ -135,8 +147,12 @@
 		C6A3DD012C21FFFA00914376 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C68205732C23743700D503B2 /* DTO */,
 				C6A3DD072C22007000914376 /* Quote.swift */,
+				C68E5E6D2C287C1200967304 /* Joke.swift */,
+				C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */,
 				C6A3DD1B2C22227900914376 /* CategoryList.swift */,
+				C68E5E732C28829A00967304 /* SectionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -150,7 +166,7 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		C6A3DD032C22000900914376 /* Views */ = {
+		C6A3DD032C22000900914376 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				C6A3DD022C22000100914376 /* ViewModels */,
@@ -160,13 +176,12 @@
 				C651BFE02C276D06006BB538 /* FavoritesViewController.swift */,
 				C6A3DD0F2C2200D900914376 /* QuoteViewController.swift */,
 			);
-			path = Views;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		C6A3DD042C22000F00914376 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C68205732C23743700D503B2 /* DTO */,
 				C6A3DD112C22011600914376 /* QuoteStorage.swift */,
 				C6A3DD192C22216C00914376 /* NetworkController.swift */,
 			);
@@ -284,17 +299,22 @@
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
 				C68BDB672C261D7300D156D7 /* UIStackView + Extensions.swift in Sources */,
 				C651BFE12C276D06006BB538 /* FavoritesViewController.swift in Sources */,
+				C68E5E742C28829A00967304 /* SectionType.swift in Sources */,
 				C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */,
 				C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */,
+				C68E5E782C28860E00967304 /* ChuckNorrisJokeDTO.swift in Sources */,
 				C68E5E6C2C28486D00967304 /* UIButton + Extensions.swift in Sources */,
+				C68E5E762C2885DA00967304 /* ChuckNorrisJoke.swift in Sources */,
 				C651BFDF2C276C67006BB538 /* TabBarController.swift in Sources */,
 				C68BDB652C260D4200D156D7 /* UILabel + Extensions.swift in Sources */,
 				C6A3DD082C22007000914376 /* Quote.swift in Sources */,
 				C6A3DD0C2C22009E00914376 /* QuoteViewModel.swift in Sources */,
+				C68E5E702C287C4200967304 /* JokeDTO.swift in Sources */,
 				C6A3DCF22C21FE2800914376 /* CategoriesViewController.swift in Sources */,
 				C6A3DD102C2200D900914376 /* QuoteViewController.swift in Sources */,
 				C6A3DD122C22011600914376 /* QuoteStorage.swift in Sources */,
 				C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */,
+				C68E5E6E2C287C1200967304 /* Joke.swift in Sources */,
 				C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */,
 				C6A3DD1F2C222AEB00914376 /* Constants.swift in Sources */,
 			);
