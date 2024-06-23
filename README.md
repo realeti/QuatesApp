@@ -1,1 +1,1 @@
-![Quote-App-2](https://github.com/realeti/QuatesApp/assets/30148823/f1efff8b-8854-40b4-904e-b32454389610)
+![quateApp](https://github.com/realeti/QuatesApp/assets/30148823/be9d8f8d-a671-443f-a0ec-4b5c5921fea5)
