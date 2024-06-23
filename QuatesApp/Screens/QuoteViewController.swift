@@ -74,10 +74,25 @@ class QuoteViewController: UIViewController {
     }
     
     private func displayQuote() {
-        guard let quote else { return }
-
-        quoteTextView.text = quote.quote
-        authorLabel.text = "- \(quote.author)"
+        guard let viewModel else { return }
+        
+        switch viewModel.sectionType {
+        case .quote:
+            guard let quote else { return }
+            
+            quoteTextView.text = quote.quote
+            authorLabel.text = "- \(quote.author)"
+        case .joke:
+            guard let joke else { return }
+            
+            quoteTextView.text = joke.joke
+            authorLabel.text = "- \(K.authorRandomJoke)"
+        case .chucknorris:
+            guard let chuckNorrisJoke else { return }
+            
+            quoteTextView.text = chuckNorrisJoke.joke
+            authorLabel.text = "- \(K.authorChuckNorrisJoke)"
+        }
     }
 }
 
@@ -103,12 +118,14 @@ extension QuoteViewController: QuoteViewModelDelegate {
     func didFetchJoke(_ joke: Joke) {
         DispatchQueue.main.async { [weak self] in
             self?.joke = joke
+            self?.displayQuote()
         }
     }
     
     func didFetchChuckNorrisJoke(_ joke: ChuckNorrisJoke) {
         DispatchQueue.main.async { [weak self] in
             self?.chuckNorrisJoke = joke
+            self?.displayQuote()
         }
     }
 
@@ -135,10 +152,22 @@ extension QuoteViewController {
 
     private func configureUI() {
         view.backgroundColor = .snow
+        configureSectionLabel()
         configureRandomImageView()
         configureContainerView()
         configureCloseButton()
         configureHeartButton()
+    }
+    
+    private func configureSectionLabel() {
+        guard let viewModel else { return }
+        
+        switch viewModel.sectionType {
+        case .quote:
+            sectionLabel.text = K.randomQuote
+        default:
+            sectionLabel.text = K.randomJoke
+        }
     }
     
     private func configureRandomImageView() {
@@ -246,14 +275,14 @@ extension QuoteViewController {
         quoteStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(heartButton.snp.top).offset(10).priority(.low)
+            make.bottom.equalTo(heartButton.snp.top).offset(-10).priority(.low)
         }
     }
     
     private func heartButtonSetupConstraints() {
         heartButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(15).priority(.low)
+            make.bottom.equalToSuperview().inset(15)
             make.height.width.equalTo(Metrics.heartButtonHeight)
         }
     }

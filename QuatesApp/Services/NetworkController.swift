@@ -26,7 +26,7 @@ final class NetworkController: QuoteLoading {
     private enum APIEndpoint {
         case quote(category: String)
         case joke
-        case chuckNorris
+        case chucknorris
         
         var path: String {
             switch self {
@@ -34,7 +34,7 @@ final class NetworkController: QuoteLoading {
                 return "quotes?category=\(category)"
             case .joke:
                 return "jokes"
-            case .chuckNorris:
+            case .chucknorris:
                 return "chucknorris"
             }
         }
@@ -83,7 +83,6 @@ final class NetworkController: QuoteLoading {
                 completion(.failure(NetErrors.invalidData))
                 return
             }
-            
             completion(.success(data))
         }
         
@@ -136,18 +135,12 @@ final class NetworkController: QuoteLoading {
     }
     
     func loadChuckNorrisJoke(completion: @escaping (Result<ChuckNorrisJoke, Error>) -> Void) {
-        let endpoint = APIEndpoint.chuckNorris
+        let endpoint = APIEndpoint.chucknorris
         loadData(endpoint: endpoint) { response in
             do {
                 let data = try response.get()
-                let responseData = try self.decoder.decode([ChuckNorrisJokeDTO].self, from: data)
-                
-                guard let jokeDTO = responseData.first else {
-                    completion(.failure(NetErrors.wrongDecode))
-                    return
-                }
-                
-                let resultJoke = ChuckNorrisJoke(joke: jokeDTO.joke)
+                let responseData = try self.decoder.decode(ChuckNorrisJokeDTO.self, from: data)
+                let resultJoke = ChuckNorrisJoke(joke: responseData.joke)
                 completion(.success(resultJoke))
             } catch {
                 completion(.failure(error))

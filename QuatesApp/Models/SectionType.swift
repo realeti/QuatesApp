@@ -10,5 +10,5 @@ import Foundation
 enum SectionType {
     case quote
     case joke
-    case chuck
+    case chucknorris
 }

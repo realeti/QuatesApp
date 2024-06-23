@@ -35,7 +35,7 @@ final class QuoteViewModel: QuoteModeling {
             fetchQuote(for: selectedCategory)
         case .joke:
             fetchJoke()
-        case .chuck:
+        case .chucknorris:
             fetchChuckNorrisJoke()
         }
     }
@@ -73,12 +73,12 @@ final class QuoteViewModel: QuoteModeling {
     private func fetchChuckNorrisJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
-        fetchingController.loadJoke() { [weak self] result in
+        fetchingController.loadChuckNorrisJoke() { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
             
             do {
                 let jokeData = try result.get()
-                self?.delegate?.didFetchJoke(jokeData)
+                self?.delegate?.didFetchChuckNorrisJoke(jokeData)
             } catch {
                 self?.delegate?.didFailFetching(error)
             }

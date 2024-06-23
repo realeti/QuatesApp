@@ -24,7 +24,10 @@ struct K {
     static let fetchButtonJokeTitle = "Get joke!"
     static let fetchButtonChuckTitle = "Get joke!"
     static let randomQuote = "Random quote"
+    static let randomJoke = "Random joke"
     static let notFound = "Nothing found :("
+    static let authorRandomJoke = "Random joke"
+    static let authorChuckNorrisJoke = "Chuck Norris joke"
     
     // MARK: - Buttons
     static let systemCloseButton = "xmark.circle.fill"

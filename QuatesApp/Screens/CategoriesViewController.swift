@@ -258,7 +258,7 @@ extension CategoriesViewController {
             isSearchBarHidden = true
             notFoundStackView.isHidden = true
         case 2:
-            sectionType = .chuck
+            sectionType = .chucknorris
             configureSectionImageView(image: .chuck)
             sectionLabel.text = K.chuckSectionTitle
             setFetchButtonTitle(title: K.fetchButtonChuckTitle)
