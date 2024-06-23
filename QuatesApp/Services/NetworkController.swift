@@ -9,6 +9,8 @@ import Foundation
 
 protocol QuoteLoading {
     func loadQuote(category: String, completion: @escaping (Result<Quote, Error>) -> Void)
+    func loadJoke(completion: @escaping (Result<Joke, Error>) -> Void)
+    func loadChuckNorrisJoke(completion: @escaping (Result<ChuckNorrisJoke, Error>) -> Void)
 }
 
 enum NetErrors: Error {
@@ -21,24 +23,37 @@ enum NetErrors: Error {
 }
 
 final class NetworkController: QuoteLoading {
+    private enum APIEndpoint {
+        case quote(category: String)
+        case joke
+        case chucknorris
+        
+        var path: String {
+            switch self {
+            case .quote(let category):
+                return "quotes?category=\(category)"
+            case .joke:
+                return "jokes"
+            case .chucknorris:
+                return "chucknorris"
+            }
+        }
+    }
     
     let session = URLSession.shared
     lazy var decoder = JSONDecoder()
     
-    let headers = [
+    private let headers = [
         "accept": "application/json",
         "X-Api-Key": "PDRpJeNaA9Gcq11+FRunkA==NMd6tiN48hUMCcYD"
     ]
     
-    let baseUrlString = "https://api.api-ninjas.com/v1/quotes"
+    private let baseUrlString = "https://api.api-ninjas.com/v1/"
     
-    private func loadData(path: String, completion: @escaping (Result<Data, Error>) -> Void) {
-        let urlString = baseUrlString.appending(path)
-        self.loadData(fullPath: urlString, completion: completion)
-    }
-    
-    private func loadData(fullPath: String, completion: @escaping (Result<Data, Error>) -> Void) {
-        guard let url = URL(string: fullPath) else {
+    private func loadData(endpoint: APIEndpoint, completion: @escaping (Result<Data, Error>) -> Void) {
+        let urlString = baseUrlString.appending(endpoint.path)
+        
+        guard let url = URL(string: urlString) else {
             completion(.failure(NetErrors.invalidURL))
             return
         }
@@ -68,7 +83,6 @@ final class NetworkController: QuoteLoading {
                 completion(.failure(NetErrors.invalidData))
                 return
             }
-            
             completion(.success(data))
         }
         
@@ -76,8 +90,8 @@ final class NetworkController: QuoteLoading {
     }
     
     func loadQuote(category: String, completion: @escaping (Result<Quote, Error>) -> Void) {
-        let path = "?category=\(category)"
-        loadData(path: path) { response in
+        let endpoint = APIEndpoint.quote(category: category)
+        loadData(endpoint: endpoint) { response in
             do {
                 let data = try response.get()
                 let responseData = try self.decoder.decode([QuoteDTO].self, from: data)
@@ -94,6 +108,40 @@ final class NetworkController: QuoteLoading {
                 )
                 
                 completion(.success(resultQuote))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func loadJoke(completion: @escaping (Result<Joke, Error>) -> Void) {
+        let endpoint = APIEndpoint.joke
+        loadData(endpoint: endpoint) { response in
+            do {
+                let data = try response.get()
+                let responseData = try self.decoder.decode([JokeDTO].self, from: data)
+                
+                guard let jokeDTO = responseData.first else {
+                    completion(.failure(NetErrors.wrongDecode))
+                    return
+                }
+                
+                let resultJoke = Joke(joke: jokeDTO.joke)
+                completion(.success(resultJoke))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func loadChuckNorrisJoke(completion: @escaping (Result<ChuckNorrisJoke, Error>) -> Void) {
+        let endpoint = APIEndpoint.chucknorris
+        loadData(endpoint: endpoint) { response in
+            do {
+                let data = try response.get()
+                let responseData = try self.decoder.decode(ChuckNorrisJokeDTO.self, from: data)
+                let resultJoke = ChuckNorrisJoke(joke: responseData.joke)
+                completion(.success(resultJoke))
             } catch {
                 completion(.failure(error))
             }

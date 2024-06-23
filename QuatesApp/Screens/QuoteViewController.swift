@@ -11,15 +11,38 @@ import SnapKit
 class QuoteViewController: UIViewController {
     
     // MARK: - UI
-    private let closeButton = UIButton(type: .system)
-    private let randomImageView = UIImageView()
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(systemName: K.systemCloseButton)?
+            .withRenderingMode(.alwaysOriginal)
+            .withTintColor(.black)
+        button.setBackgroundImage(image, for: .normal)
+        button.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        return button
+    }()
     
-    private let randomQuoteLabel = UILabel(
+    private lazy var randomImageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(resource: .redo)
+            .withTintColor(.heavyGray.withAlphaComponent(0.12))
+        imageView.image = image
+        return imageView
+    }()
+    
+    private let sectionLabel = UILabel(
         text: K.randomQuote,
         font: UIFont(name: K.fontMontserrat400, size: 36)
     )
     
-    private let containerView = UIView()
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .snow
+        view.layer.cornerRadius = 25
+        view.makeShadow(color: .heavyGray)
+        view.clipsToBounds = false
+        return view
+    }()
+    
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private let quoteStackView = UIStackView(axis: .vertical, spacing: 20)
     
@@ -40,22 +63,29 @@ class QuoteViewController: UIViewController {
         font: UIFont(name: K.fontPTSerifItalic, size: 19)
     )
     
-    private let heartButton = UIButton(type: .system)
+    private lazy var heartButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(resource: .heartOutline)
+        button.setBackgroundImage(image, for: .normal)
+        button.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
+        return button
+    }()
     
     // MARK: - Public Properties
     var viewModel: QuoteViewModel?
-    var category: String?
     
     // MARK: - Private Properties
     private var quote: Quote?
+    private var joke: Joke?
+    private var chuckNorrisJoke: ChuckNorrisJoke?
     private var isInitialImage = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-        fetchQuote()
         configureUI()
+        fetchData()
         setupConstraints()
     }
     
@@ -63,7 +93,7 @@ class QuoteViewController: UIViewController {
     private func setupUI() {
         view.addSubview(closeButton)
         view.addSubview(randomImageView)
-        view.addSubview(randomQuoteLabel)
+        view.addSubview(sectionLabel)
         view.addSubview(containerView)
         containerView.addSubview(activityIndicator)
         containerView.addSubview(quoteStackView)
@@ -71,24 +101,39 @@ class QuoteViewController: UIViewController {
         quoteStackView.addArrangedSubview(authorLabel)
         containerView.addSubview(heartButton)
     }
-    
-    // MARK: - Fetch Quote
-    private func fetchQuote() {
-        guard let viewModel = viewModel, let selectedCategory = category else {
-            return
-        }
-        
-        viewModel.fetchQuote(for: selectedCategory)
+}
+
+// MARK: - Configure UI
+extension QuoteViewController {
+    private func configureUI() {
+        view.backgroundColor = .snow
+        configureSectionLabel()
     }
     
-    private func displayQuote() {
-        guard let quote else { return }
-
-        quoteTextView.text = quote.quote
-        authorLabel.text = "- \(quote.author)"
+    private func configureSectionLabel() {
+        guard let viewModel else { return }
+        
+        switch viewModel.sectionType {
+        case .quote:
+            sectionLabel.text = K.randomQuote
+        default:
+            sectionLabel.text = K.randomJoke
+        }
     }
 }
 
+// MARK: - Fetch Data
+extension QuoteViewController {
+    private func fetchData() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        
+        viewModel.fetchData()
+    }
+}
+
+// MARK: - Quote ViewModel Delegate
 extension QuoteViewController: QuoteViewModelDelegate {
     func didFetchQuote(_ quote: Quote) {
         DispatchQueue.main.async { [weak self] in
@@ -96,8 +141,22 @@ extension QuoteViewController: QuoteViewModelDelegate {
             self?.displayQuote()
         }
     }
+    
+    func didFetchJoke(_ joke: Joke) {
+        DispatchQueue.main.async { [weak self] in
+            self?.joke = joke
+            self?.displayQuote()
+        }
+    }
+    
+    func didFetchChuckNorrisJoke(_ joke: ChuckNorrisJoke) {
+        DispatchQueue.main.async { [weak self] in
+            self?.chuckNorrisJoke = joke
+            self?.displayQuote()
+        }
+    }
 
-    func didFailFetchingQuote(_ error: Error) {
+    func didFailFetching(_ error: Error) {
         let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: K.alertOk, style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -115,50 +174,33 @@ extension QuoteViewController: QuoteViewModelDelegate {
     }
 }
 
+// MARK: - Display Data
 extension QuoteViewController {
-    // MARK: - Configure UI
-
-    private func configureUI() {
-        view.backgroundColor = .snow
-        configureRandomImageView()
-        configureContainerView()
-        configureCloseButton()
-        configureHeartButton()
-    }
-    
-    private func configureRandomImageView() {
-        let image = UIImage(resource: .redo)
-            .withTintColor(.heavyGray.withAlphaComponent(0.1))
-        randomImageView.image = image
-    }
-    
-    private func configureContainerView() {
-        containerView.backgroundColor = .snow
-        containerView.layer.cornerRadius = 25
-        containerView.makeShadow(color: .heavyGray)
-        containerView.clipsToBounds = false
-    }
-    
-    private func configureCloseButton() {
-        let image = UIImage(systemName: K.systemCloseButton)?
-            .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.black)
+    private func displayQuote() {
+        guard let viewModel else { return }
         
-        closeButton.setBackgroundImage(image, for: .normal)
-        closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
-    }
-    
-    private func configureHeartButton() {
-        let image = UIImage(resource: .heartOutline)
-        heartButton.setBackgroundImage(image, for: .normal)
-        
-        heartButton.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
+        switch viewModel.sectionType {
+        case .quote:
+            guard let quote else { return }
+            
+            quoteTextView.text = quote.quote
+            authorLabel.text = "- \(quote.author)"
+        case .joke:
+            guard let joke else { return }
+            
+            quoteTextView.text = joke.joke
+            authorLabel.text = "- \(K.authorRandomJoke)"
+        case .chucknorris:
+            guard let chuckNorrisJoke else { return }
+            
+            quoteTextView.text = chuckNorrisJoke.joke
+            authorLabel.text = "- \(K.authorChuckNorrisJoke)"
+        }
     }
 }
 
+// MARK: - Actions
 extension QuoteViewController {
-    // MARK: - Actions
-    
     @objc private func heartButtonPressed(_ sender: UIButton) {
         changeHeartButtonImage()
         isInitialImage.toggle()
@@ -178,13 +220,12 @@ extension QuoteViewController {
     }
 }
 
+// MARK: - Setup Constraints
 extension QuoteViewController {
-    // MARK: - Setup Constraints
-    
     private func setupConstraints() {
         closeButtonSetupConstraints()
         randomImageViewSetupConstraints()
-        randomQuoteLabelSetupConstraints()
+        sectionLabelSetupConstraints()
         containerViewSetupConstraints()
         activityIndicatorSetupConstraints()
         quoteStackViewSetupConstraints()
@@ -194,20 +235,20 @@ extension QuoteViewController {
     private func closeButtonSetupConstraints() {
         closeButton.snp.makeConstraints { make in
             make.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.width.height.equalTo(22)
+            make.width.height.equalTo(Metrics.closeButtonHeight)
         }
     }
     
     private func randomImageViewSetupConstraints() {
         randomImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(32)
-            make.leading.equalTo(randomQuoteLabel.snp.leading).offset(22)
-            make.width.height.equalTo(85)
+            make.leading.equalTo(sectionLabel.snp.leading).offset(22)
+            make.width.height.equalTo(Metrics.randomImageViewHeight)
         }
     }
     
-    private func randomQuoteLabelSetupConstraints() {
-        randomQuoteLabel.snp.makeConstraints { make in
+    private func sectionLabelSetupConstraints() {
+        sectionLabel.snp.makeConstraints { make in
             make.top.equalTo(randomImageView.snp.bottom).offset(-18)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(25)
         }
@@ -215,9 +256,9 @@ extension QuoteViewController {
     
     private func containerViewSetupConstraints() {
         containerView.snp.makeConstraints { make in
-            make.top.equalTo(randomQuoteLabel.snp.bottom).offset(20)
+            make.top.equalTo(sectionLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.height.greaterThanOrEqualTo(400)
+            make.height.greaterThanOrEqualTo(Metrics.containerViewHeight)
         }
     }
     
@@ -231,15 +272,24 @@ extension QuoteViewController {
         quoteStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(heartButton.snp.top).offset(10).priority(.low)
+            make.bottom.equalTo(heartButton.snp.top).offset(-10).priority(.low)
         }
     }
     
     private func heartButtonSetupConstraints() {
         heartButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(15).priority(.low)
-            make.height.width.equalTo(32)
+            make.bottom.equalToSuperview().inset(15)
+            make.height.width.equalTo(Metrics.heartButtonHeight)
         }
     }
+}
+
+private struct Metrics {
+    static let closeButtonHeight: CGFloat = 22.0
+    static let randomImageViewHeight: CGFloat = 85.0
+    static let containerViewHeight: CGFloat = 400.0
+    static let heartButtonHeight: CGFloat = 32.0
+    
+    init () {}
 }
