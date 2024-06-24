@@ -75,9 +75,6 @@ class PresentViewController: UIViewController {
     var viewModel: QuoteViewModel?
     
     // MARK: - Private Properties
-    private var quote: Quote?
-    private var joke: Joke?
-    private var chuckNorrisJoke: ChuckNorrisJoke?
     private var isInitialImage = true
 
     override func viewDidLoad() {
@@ -135,24 +132,9 @@ extension PresentViewController {
 
 // MARK: - Quote ViewModel Delegate
 extension PresentViewController: QuoteViewModelDelegate {
-    func didFetchQuote(_ quote: Quote) {
+    func didFetchData(_ section: SectionType) {
         DispatchQueue.main.async { [weak self] in
-            self?.quote = quote
-            self?.displayData()
-        }
-    }
-    
-    func didFetchJoke(_ joke: Joke) {
-        DispatchQueue.main.async { [weak self] in
-            self?.joke = joke
-            self?.displayData()
-        }
-    }
-    
-    func didFetchChuckNorrisJoke(_ joke: ChuckNorrisJoke) {
-        DispatchQueue.main.async { [weak self] in
-            self?.chuckNorrisJoke = joke
-            self?.displayData()
+            self?.configureUI(for: section)
         }
     }
 
@@ -174,32 +156,26 @@ extension PresentViewController: QuoteViewModelDelegate {
     }
 }
 
-// MARK: - Display Data
-extension PresentViewController {
-    private func displayData() {
-        guard let viewModel else { return }
-        configureUI(for: viewModel.sectionType)
-    }
-}
-
 // MARK: - Configure UI For Section
 extension PresentViewController {
     private func configureUI(for section: SectionType) {
+        guard let viewModel else { return }
+        
         switch section {
         case .quote:
-            guard let quote else { return }
+            guard let quote = viewModel.quote else { return }
             configureSection(
                 text: quote.quote,
                 author: "- \(quote.author)"
             )
         case .joke:
-            guard let joke else { return }
+            guard let joke = viewModel.joke else { return }
             configureSection(
                 text: joke.joke,
                 author: "- \(K.authorRandomJoke)"
             )
         case .chucknorris:
-            guard let chuckNorrisJoke else { return }
+            guard let chuckNorrisJoke = viewModel.chuckNorrisJoke else { return }
             configureSection(
                 text: chuckNorrisJoke.joke,
                 author: "- \(K.authorChuckNorrisJoke)"
@@ -299,11 +275,11 @@ extension PresentViewController {
     }
 }
 
-private struct Metrics {
+fileprivate struct Metrics {
     static let closeButtonHeight: CGFloat = 22.0
     static let randomImageViewHeight: CGFloat = 85.0
     static let containerViewHeight: CGFloat = 400.0
     static let heartButtonHeight: CGFloat = 32.0
     
-    init () {}
+    private init () {}
 }

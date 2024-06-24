@@ -17,20 +17,23 @@ protocol CategoryViewModelDelegate: AnyObject {
 }
 
 final class CategoryViewModel: CategoryModeling {
+    // MARK: - Private Properties
     private let allCategories: [CategoryList] = CategoryList.allCases
     private(set) var categories: [CategoryList] = CategoryList.allCases
+    
+    // MARK: - Public properties
     weak var delegate: CategoryViewModelDelegate?
     
     var sectionType: SectionType = .quote
     var selectedCategory: CategoryList = .age
     
+    // MARK: - Category Filter
     func filterCategories(with searchText: String) {
         if searchText.isEmpty {
             categories = allCategories
         } else {
             categories = allCategories.filter { $0.rawValue.lowercased().contains(searchText.lowercased()) }
         }
-        
         delegate?.didUpdateCategories()
     }
 }

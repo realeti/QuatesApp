@@ -96,7 +96,7 @@ class MainViewController: UIViewController {
     }
     
     // MARK: - View Model
-    let viewModel = CategoryViewModel()
+    private let viewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -379,7 +379,7 @@ extension MainViewController {
     }
 }
 
-private struct Metrics {
+fileprivate struct Metrics {
     static let searchBarHeight: CGFloat = 44.0
     static let pickerViewHeight: CGFloat = 216.0
     static let sectionImageHeight: CGFloat = 85.0
@@ -390,5 +390,5 @@ private struct Metrics {
     static let jokesTitleOffsetTop: CGFloat = -12
     static let chuckTitleOffsetTop: CGFloat = -4
     
-    init () {}
+    private init () {}
 }

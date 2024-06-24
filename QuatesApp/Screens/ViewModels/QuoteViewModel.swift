@@ -12,25 +12,32 @@ protocol QuoteModeling {
 }
 
 protocol QuoteViewModelDelegate: AnyObject {
-    func didFetchQuote(_ quote: Quote)
-    func didFetchJoke(_ joke: Joke)
-    func didFetchChuckNorrisJoke(_ joke: ChuckNorrisJoke)
+    func didFetchData(_ section: SectionType)
     func didFailFetching(_ error: Error)
     func didChangeLoadingState(isLoading: Bool)
 }
 
 final class QuoteViewModel: QuoteModeling {
-    lazy var fetchingController = NetworkController()
+    // MARK: - Private Properties
+    private lazy var networkController = NetworkController()
+    
+    private(set) var quote: Quote?
+    private(set) var joke: Joke?
+    private(set) var chuckNorrisJoke: ChuckNorrisJoke?
+    
+    private(set) var sectionType: SectionType
+    private(set) var quoteCategory: String?
+    
+    // MARK: - Public Properties
     weak var delegate: QuoteViewModelDelegate?
     
-    var sectionType: SectionType
-    var quoteCategory: String?
-    
+    // MARK: - Init
     init(sectionType: SectionType, quoteCategory: String? = nil) {
         self.sectionType = sectionType
         self.quoteCategory = quoteCategory
     }
     
+    // MARK: - Fetch Data
     func fetchData() {
         switch sectionType {
         case .quote:
@@ -45,45 +52,51 @@ final class QuoteViewModel: QuoteModeling {
         }
     }
     
+    // MARK: - Fetch Quote
     private func fetchQuote(for category: String) {
         delegate?.didChangeLoadingState(isLoading: true)
         
-        fetchingController.loadQuote(category: category) { [weak self] result in
+        networkController.loadQuote(category: category) { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
             
             do {
                 let quoteData = try result.get()
-                self?.delegate?.didFetchQuote(quoteData)
+                self?.quote = quoteData
+                self?.delegate?.didFetchData(.quote)
             } catch {
                 self?.delegate?.didFailFetching(error)
             }
         }
     }
     
+    // MARK: - Fetch Joke
     private func fetchJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
-        fetchingController.loadJoke() { [weak self] result in
+        networkController.loadJoke() { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
             
             do {
                 let jokeData = try result.get()
-                self?.delegate?.didFetchJoke(jokeData)
+                self?.joke = jokeData
+                self?.delegate?.didFetchData(.joke)
             } catch {
                 self?.delegate?.didFailFetching(error)
             }
         }
     }
     
+    // MARK: - Fetch Chuck Norris Joke
     private func fetchChuckNorrisJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
-        fetchingController.loadChuckNorrisJoke() { [weak self] result in
+        networkController.loadChuckNorrisJoke() { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
             
             do {
                 let jokeData = try result.get()
-                self?.delegate?.didFetchChuckNorrisJoke(jokeData)
+                self?.chuckNorrisJoke = jokeData
+                self?.delegate?.didFetchData(.chucknorris)
             } catch {
                 self?.delegate?.didFailFetching(error)
             }
