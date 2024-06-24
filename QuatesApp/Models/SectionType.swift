@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SectionType {
+enum SectionType: Int {
     case quote
     case joke
     case chucknorris

@@ -45,7 +45,7 @@ class TabBarController: UITabBarController {
             vc: favoritesVC
         )
         
-        self.setViewControllers([home, favorites], animated: true)
+        self.viewControllers = [home, favorites]
     }
     
     // MARK: - Create TabBar Item

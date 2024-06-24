@@ -46,7 +46,11 @@ class MainViewController: UIViewController {
         return button
     }()
     
-    private let notFoundStackView = UIStackView(axis: .vertical, spacing: 8)
+    private let emptyContentStackView = UIStackView(
+        axis: .vertical,
+        spacing: 8,
+        isHidden: true
+    )
     
     private lazy var notFoundImageView: UIImageView = {
         let imageView = UIImageView()
@@ -81,7 +85,7 @@ class MainViewController: UIViewController {
                 make.height.equalTo(isPickerViewHidden ? 0 : Metrics.pickerViewHeight)
             }
             
-            if !categoryViewModel.categories.isEmpty {
+            if !viewModel.categories.isEmpty {
                 pickerView.isHidden = (isPickerViewHidden ? true : false)
             }
             
@@ -91,10 +95,8 @@ class MainViewController: UIViewController {
         }
     }
     
-    private var sectionType: SectionType = .quote
-    
     // MARK: - View Model
-    let categoryViewModel = CategoryViewModel()
+    let viewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -113,12 +115,6 @@ class MainViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
     
-    @objc private func hideKeyboard() {
-        if searchBar.isFirstResponder {
-            view.endEditing(true)
-        }
-    }
-    
     // MARK: - Set Views
     private func setupUI() {
         view.addSubview(searchBar)
@@ -127,9 +123,9 @@ class MainViewController: UIViewController {
         view.addSubview(sectionLabel)
         view.addSubview(pickerView)
         view.addSubview(fetchButton)
-        view.addSubview(notFoundStackView)
-        notFoundStackView.addArrangedSubview(notFoundImageView)
-        notFoundStackView.addArrangedSubview(notFoundLabel)
+        view.addSubview(emptyContentStackView)
+        emptyContentStackView.addArrangedSubview(notFoundImageView)
+        emptyContentStackView.addArrangedSubview(notFoundLabel)
     }
 }
 
@@ -137,21 +133,13 @@ class MainViewController: UIViewController {
 extension MainViewController {
     private func configureUI() {
         view.backgroundColor = UIColor(resource: .snow)
-        configureNotFoundStackView()
-        configureSegmentControl()
-        configureSectionImageView()
-        configureFetchButton()
-    }
-    
-    private func configureNotFoundStackView() {
-        notFoundStackView.isHidden = true
-    }
-    
-    private func configureSegmentControl() {
         segmentControl.selectedSegmentIndex = 0
+        
+        configureSectionImageView(image: .quote)
+        setCustomButtonTitle(title: K.fetchButtonQuoteTitle)
     }
     
-    private func configureSectionImageView(image: UIImage = .quote) {
+    private func configureSectionImageView(image: UIImage) {
         let image = image
             .withRenderingMode(.alwaysOriginal)
             .withTintColor(.heavyGray.withAlphaComponent(0.12))
@@ -160,11 +148,7 @@ extension MainViewController {
         sectionImageView.contentMode = .scaleAspectFit
     }
     
-    private func configureFetchButton() {
-        setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
-    }
-    
-    private func setFetchButtonTitle(title: String) {
+    private func setCustomButtonTitle(title: String) {
         fetchButton.customizeTitle(
             title: title,
             font: UIFont(name: K.fontMontserrat400, size: 18),
@@ -175,10 +159,60 @@ extension MainViewController {
     }
 }
 
+// MARK: - Configure UI For Section
+extension MainViewController {
+    private func configureUI(for section: SectionType) {
+        let configuration: SectionConfiguration
+        
+        switch section {
+        case .quote:
+            let isEmptyContentHidden = !viewModel.categories.isEmpty
+            configuration = SectionConfiguration(
+                image: .quote,
+                title: K.quoteSectionTitle,
+                buttonTitle: K.fetchButtonQuoteTitle,
+                isSearchBarHidden: false,
+                isPickerViewHidden: false,
+                isEmptyContentViewHidden: isEmptyContentHidden
+            )
+        case .joke:
+            configuration = SectionConfiguration(
+                image: .joke,
+                title: K.jokesSectionTitle,
+                buttonTitle: K.fetchButtonJokeTitle,
+                isSearchBarHidden: true,
+                isPickerViewHidden: true,
+                isEmptyContentViewHidden: true
+            )
+        case .chucknorris:
+            configuration = SectionConfiguration(
+                image: .chuck,
+                title: K.chuckSectionTitle,
+                buttonTitle: K.fetchButtonChuckTitle,
+                isSearchBarHidden: true,
+                isPickerViewHidden: true,
+                isEmptyContentViewHidden: true
+            )
+        }
+        
+        applyConfiguration(configuration)
+        updateSectionLabelConstraints()
+    }
+    
+    private func applyConfiguration(_ config: SectionConfiguration) {
+        configureSectionImageView(image: config.image)
+        sectionLabel.text = config.title
+        setCustomButtonTitle(title: config.buttonTitle)
+        isSearchBarHidden = config.isSearchBarHidden
+        isPickerViewHidden = config.isPickerViewHidden
+        emptyContentStackView.isHidden = config.isEmptyContentViewHidden
+    }
+}
+
 // MARK: - Setup Delegates
 extension MainViewController {
     private func setupDelegates() {
-        categoryViewModel.delegate = self
+        viewModel.delegate = self
         searchBar.delegate = self
         pickerView.delegate = self
     }
@@ -191,29 +225,29 @@ extension MainViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categoryViewModel.categories.count
+        return viewModel.categories.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categoryViewModel.categories[row].name
+        return viewModel.categories[row].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        categoryViewModel.selectedCategory = categoryViewModel.categories[row]
+        viewModel.selectedCategory = viewModel.categories[row]
     }
 }
 
 // MARK: - SearchBar Delegate
 extension MainViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        categoryViewModel.filterCategories(with: searchText)
+        viewModel.filterCategories(with: searchText)
         
-        if categoryViewModel.categories.isEmpty {
+        if viewModel.categories.isEmpty {
             pickerView.isHidden = true
-            notFoundStackView.isHidden = false
+            emptyContentStackView.isHidden = false
         } else {
             pickerView.isHidden = false
-            notFoundStackView.isHidden = true
+            emptyContentStackView.isHidden = true
         }
     }
 }
@@ -227,63 +261,34 @@ extension MainViewController: CategoryViewModelDelegate {
 
 // MARK: - Actions
 extension MainViewController {
+    @objc private func hideKeyboard() {
+        if searchBar.isFirstResponder {
+            view.endEditing(true)
+        }
+    }
+    
     @objc private func fetchButtonPressed(_ sender: UIButton) {
+        let selectedCategory = viewModel.selectedCategory.rawValue
         let quoteVC = PresentViewController()
-        let quoteViewModel = QuoteViewModel()
+        let sectionType = viewModel.sectionType
+        let quoteViewModel = QuoteViewModel(
+            sectionType: sectionType,
+            quoteCategory: sectionType == .quote ? selectedCategory : nil
+        )
         
         quoteVC.viewModel = quoteViewModel
         quoteVC.viewModel?.delegate = quoteVC
-        quoteVC.viewModel?.sectionType = sectionType
-        
-        if sectionType == .quote {
-            let selectedCategory = categoryViewModel.selectedCategory.rawValue
-            quoteVC.viewModel?.quoteCategory = selectedCategory
-            quoteVC.viewModel?.sectionType = sectionType
-        }
         
         self.present(quoteVC, animated: true)
     }
     
     @objc private func segmentValueDidChanged(_ sender: UISegmentedControl) {
-        switch segmentControl.selectedSegmentIndex {
-        case 0:
-            sectionType = .quote
-            
-            configureSectionImageView(image: .quote)
-            sectionLabel.text = K.quoteSectionTitle
-            setFetchButtonTitle(title: K.fetchButtonQuoteTitle)
-            
-            isSearchBarHidden = false
-            isPickerViewHidden = false
-            
-            if categoryViewModel.categories.isEmpty {
-                notFoundStackView.isHidden = false
-            }
-        case 1:
-            sectionType = .joke
-            
-            configureSectionImageView(image: .joke)
-            sectionLabel.text = K.jokesSectionTitle
-            setFetchButtonTitle(title: K.fetchButtonJokeTitle)
-            
-            isPickerViewHidden = true
-            isSearchBarHidden = true
-            notFoundStackView.isHidden = true
-        case 2:
-            sectionType = .chucknorris
-            
-            configureSectionImageView(image: .chuck)
-            sectionLabel.text = K.chuckSectionTitle
-            setFetchButtonTitle(title: K.fetchButtonChuckTitle)
-            
-            isSearchBarHidden = true
-            isPickerViewHidden = true
-            notFoundStackView.isHidden = true
-        default:
-            break
+        guard let section = SectionType(rawValue: sender.selectedSegmentIndex) else {
+            return
         }
         
-        updateSectionLabelConstraints()
+        viewModel.sectionType = section
+        configureUI(for: section)
     }
 }
 
@@ -295,7 +300,7 @@ extension MainViewController {
         setupSectionImageViewConstraints()
         setupSectionLabelConstraints()
         setupPickerViewConstraints()
-        setupNotFoundStackViewConstraints()
+        setupEmptyContentViewConstraints()
         setupNotFoundImageViewConstraints()
         setupFetchButtonConstraints()
     }
@@ -353,8 +358,8 @@ extension MainViewController {
         }
     }
     
-    private func setupNotFoundStackViewConstraints() {
-        notFoundStackView.snp.makeConstraints { make in
+    private func setupEmptyContentViewConstraints() {
+        emptyContentStackView.snp.makeConstraints { make in
             make.center.equalTo(pickerView)
         }
     }

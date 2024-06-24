@@ -11,6 +11,7 @@
 		C651BFE12C276D06006BB538 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C651BFE02C276D06006BB538 /* FavoritesViewController.swift */; };
 		C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */; };
 		C68205752C23743F00D503B2 /* QuoteDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68205742C23743F00D503B2 /* QuoteDTO.swift */; };
+		C68A33412C294B8E00769C28 /* SectionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A33402C294B8E00769C28 /* SectionConfiguration.swift */; };
 		C68BDB5F2C25E65900D156D7 /* PTSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB5E2C25E65900D156D7 /* PTSerif-Regular.ttf */; };
 		C68BDB612C25E82900D156D7 /* PTSerif-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */; };
 		C68BDB632C260BCE00D156D7 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */; };
@@ -43,6 +44,7 @@
 		C651BFE02C276D06006BB538 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
 		C68205742C23743F00D503B2 /* QuoteDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteDTO.swift; sourceTree = "<group>"; };
+		C68A33402C294B8E00769C28 /* SectionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionConfiguration.swift; sourceTree = "<group>"; };
 		C68BDB5E2C25E65900D156D7 /* PTSerif-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSerif-Regular.ttf"; sourceTree = "<group>"; };
 		C68BDB602C25E82900D156D7 /* PTSerif-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSerif-Italic.ttf"; sourceTree = "<group>"; };
 		C68BDB622C260BCE00D156D7 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */,
 				C68E5E732C28829A00967304 /* SectionType.swift */,
 				C6A3DD1B2C22227900914376 /* CategoryList.swift */,
+				C68A33402C294B8E00769C28 /* SectionConfiguration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				C68E5E702C287C4200967304 /* JokeDTO.swift in Sources */,
 				C6A3DCF22C21FE2800914376 /* MainViewController.swift in Sources */,
 				C6A3DD102C2200D900914376 /* PresentViewController.swift in Sources */,
+				C68A33412C294B8E00769C28 /* SectionConfiguration.swift in Sources */,
 				C6A3DD122C22011600914376 /* QuoteStorage.swift in Sources */,
 				C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */,
 				C68E5E6E2C287C1200967304 /* Joke.swift in Sources */,

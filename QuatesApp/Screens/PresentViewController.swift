@@ -138,21 +138,21 @@ extension PresentViewController: QuoteViewModelDelegate {
     func didFetchQuote(_ quote: Quote) {
         DispatchQueue.main.async { [weak self] in
             self?.quote = quote
-            self?.displayQuote()
+            self?.displayData()
         }
     }
     
     func didFetchJoke(_ joke: Joke) {
         DispatchQueue.main.async { [weak self] in
             self?.joke = joke
-            self?.displayQuote()
+            self?.displayData()
         }
     }
     
     func didFetchChuckNorrisJoke(_ joke: ChuckNorrisJoke) {
         DispatchQueue.main.async { [weak self] in
             self?.chuckNorrisJoke = joke
-            self?.displayQuote()
+            self?.displayData()
         }
     }
 
@@ -176,38 +176,52 @@ extension PresentViewController: QuoteViewModelDelegate {
 
 // MARK: - Display Data
 extension PresentViewController {
-    private func displayQuote() {
+    private func displayData() {
         guard let viewModel else { return }
-        
-        switch viewModel.sectionType {
+        configureUI(for: viewModel.sectionType)
+    }
+}
+
+// MARK: - Configure UI For Section
+extension PresentViewController {
+    private func configureUI(for section: SectionType) {
+        switch section {
         case .quote:
             guard let quote else { return }
-            
-            quoteTextView.text = quote.quote
-            authorLabel.text = "- \(quote.author)"
+            configureSection(
+                text: quote.quote,
+                author: "- \(quote.author)"
+            )
         case .joke:
             guard let joke else { return }
-            
-            quoteTextView.text = joke.joke
-            authorLabel.text = "- \(K.authorRandomJoke)"
+            configureSection(
+                text: joke.joke,
+                author: "- \(K.authorRandomJoke)"
+            )
         case .chucknorris:
             guard let chuckNorrisJoke else { return }
-            
-            quoteTextView.text = chuckNorrisJoke.joke
-            authorLabel.text = "- \(K.authorChuckNorrisJoke)"
+            configureSection(
+                text: chuckNorrisJoke.joke,
+                author: "- \(K.authorChuckNorrisJoke)"
+            )
         }
+    }
+    
+    private func configureSection(text: String, author: String) {
+        quoteTextView.text = text
+        authorLabel.text = author
     }
 }
 
 // MARK: - Actions
 extension PresentViewController {
+    @objc private func closeButtonPressed(_ sender: UIButton) {
+        self.dismiss(animated: true)
+    }
+    
     @objc private func heartButtonPressed(_ sender: UIButton) {
         changeHeartButtonImage()
         isInitialImage.toggle()
-    }
-    
-    @objc private func closeButtonPressed(_ sender: UIButton) {
-        self.dismiss(animated: true)
     }
     
     private func changeHeartButtonImage() {

@@ -23,8 +23,13 @@ final class QuoteViewModel: QuoteModeling {
     lazy var fetchingController = NetworkController()
     weak var delegate: QuoteViewModelDelegate?
     
+    var sectionType: SectionType
     var quoteCategory: String?
-    var sectionType: SectionType = .quote
+    
+    init(sectionType: SectionType, quoteCategory: String? = nil) {
+        self.sectionType = sectionType
+        self.quoteCategory = quoteCategory
+    }
     
     func fetchData() {
         switch sectionType {

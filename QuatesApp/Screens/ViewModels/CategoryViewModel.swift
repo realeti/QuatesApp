@@ -19,9 +19,10 @@ protocol CategoryViewModelDelegate: AnyObject {
 final class CategoryViewModel: CategoryModeling {
     private let allCategories: [CategoryList] = CategoryList.allCases
     private(set) var categories: [CategoryList] = CategoryList.allCases
-    var selectedCategory: CategoryList = .age
-    
     weak var delegate: CategoryViewModelDelegate?
+    
+    var sectionType: SectionType = .quote
+    var selectedCategory: CategoryList = .age
     
     func filterCategories(with searchText: String) {
         if searchText.isEmpty {
