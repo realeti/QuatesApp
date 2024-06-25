@@ -31,6 +31,7 @@ class PresentViewController: UIViewController {
     
     private let sectionLabel = UILabel(
         text: K.randomQuote,
+        textColor: .dark,
         font: UIFont(name: K.fontMontserrat400, size: 36)
     )
     
@@ -50,7 +51,7 @@ class PresentViewController: UIViewController {
         let view = UITextView()
         view.isEditable = false
         view.isScrollEnabled = false
-        view.textColor = .black
+        view.textColor = .dark
         view.textAlignment = .center
         view.font = UIFont(name: K.fontPTSerifItalic, size: 22)
         view.backgroundColor = .clear

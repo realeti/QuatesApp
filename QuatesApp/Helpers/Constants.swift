@@ -18,7 +18,7 @@ struct K {
     static let jokesTitle = "Jokes"
     static let chuckNorrisTitle = "Chuck Norris"
     
-    // MARK: - Lables
+    // MARK: - Labels
     static let searchPlaceholder = "Search for category"
     static let fetchButtonQuoteTitle = "Get quote!"
     static let fetchButtonJokeTitle = "Get joke!"
@@ -36,6 +36,12 @@ struct K {
     static let quoteSectionTitle = "Categories of\nquotes"
     static let jokesSectionTitle = "Get a random\nwonderful joke"
     static let chuckSectionTitle = "Get a joke from\nChuck Norris"
+    
+    // MARK: - Table View
+    static let quoteReuseIdentifier = "quoteCell"
+    static let favoriteQuotes = "Favorite quotes"
+    static let favoriteJokes = "Favorite jokes"
+    static let favoriteChuckNorris = "Favorite C.N. jokes"
     
     // MARK: - Alert
     static let alertError = "Error"
