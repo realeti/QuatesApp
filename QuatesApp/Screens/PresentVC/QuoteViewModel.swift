@@ -26,7 +26,7 @@ final class QuoteViewModel: QuoteModeling {
     private(set) var chuckNorrisJoke: ChuckNorrisJoke?
     
     private(set) var sectionType: SectionType
-    private(set) var quoteCategory: String?
+    private var quoteCategory: String?
     
     // MARK: - Public Properties
     weak var delegate: QuoteViewModelDelegate?

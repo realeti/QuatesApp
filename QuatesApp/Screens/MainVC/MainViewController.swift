@@ -27,9 +27,9 @@ class MainViewController: UIViewController {
     }()
     
     private let sectionImageView = UIImageView()
-    
     private let sectionLabel = UILabel(
         text: K.quoteSectionTitle,
+        textColor: .dark,
         font: UIFont(name: K.fontMontserrat400, size: 32),
         lines: 2
     )
@@ -196,7 +196,7 @@ extension MainViewController {
         }
         
         applyConfiguration(configuration)
-        updateSectionLabelConstraints()
+        updateSectionLabelConstraints(for: section)
     }
     
     private func applyConfiguration(_ config: SectionConfiguration) {
@@ -335,17 +335,15 @@ extension MainViewController {
         }
     }
     
-    private func updateSectionLabelConstraints() {
+    private func updateSectionLabelConstraints(for section: SectionType) {
         sectionLabel.snp.updateConstraints { make in
-            switch segmentControl.selectedSegmentIndex {
-            case 0:
+            switch section {
+            case .quote:
                 make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.quotesTitleOffsetTop)
-            case 1:
+            case .joke:
                 make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.jokesTitleOffsetTop)
-            case 2:
+            case .chucknorris:
                 make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.chuckTitleOffsetTop)
-            default:
-                break
             }
         }
     }
