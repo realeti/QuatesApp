@@ -32,6 +32,7 @@ class FavoritesViewController: UIViewController {
     
     // MARK: - View Model
     private let viewModel = FavoritesViewModel()
+    private let storage = QuoteManager.shared
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -45,7 +46,7 @@ class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //
+        fetchData()
     }
     
     // MARK: - Set Views
@@ -63,10 +64,86 @@ extension FavoritesViewController {
     }
 }
 
+// MARK: - Fetch Data
+extension FavoritesViewController {
+    private func fetchData() {
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        fetchQuotes {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        fetchJokes {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        fetchChuckJokes {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    // MARK: - Fetch Quotes
+    private func fetchQuotes(completion: @escaping () -> Void) {
+        storage.fetchQuotes { [weak self] result in
+            defer { completion() }
+            
+            do {
+                let quotes = try result.get()
+                self?.viewModel.quotes = quotes
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - Fetch Jokes
+    private func fetchJokes(completion: @escaping () -> Void) {
+        defer { completion() }
+        
+        storage.fetchJokes { [weak self] result in
+            do {
+                let jokes = try result.get()
+                self?.viewModel.jokes = jokes
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - Fetch C.N. Jokes
+    private func fetchChuckJokes(completion: @escaping () -> Void) {
+        defer { completion() }
+        
+        storage.fetchChuckJokes { [weak self] result in
+            do {
+                let chuckJokes = try result.get()
+                print(chuckJokes.count)
+                self?.viewModel.chuckJokes = chuckJokes
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
 // MARK: - TableView Data Source
 extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 15
+        switch viewModel.sectionType {
+        case .quote:
+            return viewModel.quotes.count
+        case .joke:
+            return viewModel.jokes.count
+        case .chucknorris:
+            return viewModel.chuckJokes.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -77,17 +154,30 @@ extension FavoritesViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.configure(text: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.", author: "Lorem Ipsum")
+        let text = cellData(for: indexPath.row).text
+        let author = cellData(for: indexPath.row).author
+        
+        cell.configure(text: text, author: author)
         return cell
+    }
+    
+    private func cellData(for row: Int) -> (text: String, author: String) {
+        switch viewModel.sectionType {
+        case .quote:
+            let quotes = viewModel.quotes
+            return (quotes[row].quote, quotes[row].author)
+        case .joke:
+            let jokes = viewModel.jokes
+            return (jokes[row].joke, K.authorRandomJoke)
+        case .chucknorris:
+            let chuckJokes = viewModel.chuckJokes
+            return (chuckJokes[row].joke, K.authorChuckNorrisJoke)
+        }
     }
 }
 
 // MARK: - TableView Delegate
 extension FavoritesViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
     /// Custom Header View
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = QuoteHeaderView()

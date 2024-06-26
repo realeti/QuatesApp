@@ -52,5 +52,8 @@ struct K {
     static let fontPTSerif400 = "PTSerif-Regular"
     static let fontPTSerifItalic = "PTSerif-Italic"
     
+    // MARK: - Core Data
+    static let coreDataModelName = "QuoteData"
+    
     private init() {}
 }
