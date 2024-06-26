@@ -76,12 +76,8 @@ class QuoteCell: UITableViewCell {
 // MARK: - Configure UI
 extension QuoteCell {
     private func configureUI() {
-        contentView.backgroundColor = .snow
-        
-        containerView.clipsToBounds = false
-        quoteStackView.clipsToBounds = false
-        authorLabel.clipsToBounds = false
-        
+        backgroundColor = .snow
+        selectionStyle = .none
     }
 }
 

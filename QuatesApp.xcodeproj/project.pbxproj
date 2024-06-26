@@ -31,7 +31,7 @@
 		C6A3DD0C2C22009E00914376 /* QuoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0B2C22009E00914376 /* QuoteViewModel.swift */; };
 		C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0D2C2200AD00914376 /* CategoryViewModel.swift */; };
 		C6A3DD102C2200D900914376 /* PresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD0F2C2200D900914376 /* PresentViewController.swift */; };
-		C6A3DD122C22011600914376 /* QuoteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD112C22011600914376 /* QuoteStorage.swift */; };
+		C6A3DD122C22011600914376 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD112C22011600914376 /* CoreDataStack.swift */; };
 		C6A3DD152C22050700914376 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6A3DD142C22050700914376 /* SnapKit */; };
 		C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD192C22216C00914376 /* NetworkController.swift */; };
 		C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DD1B2C22227900914376 /* CategoryList.swift */; };
@@ -40,6 +40,8 @@
 		C6C324C02C2B2962007FCC3F /* QuoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C324BF2C2B2962007FCC3F /* QuoteCell.swift */; };
 		C6C324C22C2B3B5C007FCC3F /* QuoteHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C324C12C2B3B5C007FCC3F /* QuoteHeaderView.swift */; };
 		C6C324C42C2B4AC2007FCC3F /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C324C32C2B4AC2007FCC3F /* FavoritesViewModel.swift */; };
+		C6F993F52C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6F993F32C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld */; };
+		C6F993F72C2C87D70086E4B2 /* QuoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F993F62C2C87D70086E4B2 /* QuoteManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,7 +71,7 @@
 		C6A3DD0B2C22009E00914376 /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
 		C6A3DD0D2C2200AD00914376 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		C6A3DD0F2C2200D900914376 /* PresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentViewController.swift; sourceTree = "<group>"; };
-		C6A3DD112C22011600914376 /* QuoteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStorage.swift; sourceTree = "<group>"; };
+		C6A3DD112C22011600914376 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		C6A3DD192C22216C00914376 /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		C6A3DD1B2C22227900914376 /* CategoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryList.swift; sourceTree = "<group>"; };
 		C6A3DD1E2C222AEB00914376 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -77,6 +79,8 @@
 		C6C324BF2C2B2962007FCC3F /* QuoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCell.swift; sourceTree = "<group>"; };
 		C6C324C12C2B3B5C007FCC3F /* QuoteHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteHeaderView.swift; sourceTree = "<group>"; };
 		C6C324C32C2B4AC2007FCC3F /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
+		C6F993F42C2C7EAD0086E4B2 /* QuoteData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QuoteData.xcdatamodel; sourceTree = "<group>"; };
+		C6F993F62C2C87D70086E4B2 /* QuoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,8 +185,9 @@
 		C6A3DD042C22000F00914376 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C6A3DD112C22011600914376 /* QuoteStorage.swift */,
+				C6A3DD112C22011600914376 /* CoreDataStack.swift */,
 				C6A3DD192C22216C00914376 /* NetworkController.swift */,
+				C6F993F62C2C87D70086E4B2 /* QuoteManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				C67B87472C249D53001BD1BF /* Fonts */,
+				C6F993F32C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld */,
 				C6A3DCF62C21FE2900914376 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -339,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */,
+				C6F993F72C2C87D70086E4B2 /* QuoteManager.swift in Sources */,
 				C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */,
 				C6C324C22C2B3B5C007FCC3F /* QuoteHeaderView.swift in Sources */,
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
@@ -356,11 +363,12 @@
 				C6A3DD0C2C22009E00914376 /* QuoteViewModel.swift in Sources */,
 				C68E5E702C287C4200967304 /* JokeDTO.swift in Sources */,
 				C6A3DCF22C21FE2800914376 /* MainViewController.swift in Sources */,
+				C6F993F52C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld in Sources */,
 				C6C324C02C2B2962007FCC3F /* QuoteCell.swift in Sources */,
 				C6A3DD102C2200D900914376 /* PresentViewController.swift in Sources */,
 				C68A33412C294B8E00769C28 /* SectionConfiguration.swift in Sources */,
 				C6C324C42C2B4AC2007FCC3F /* FavoritesViewModel.swift in Sources */,
-				C6A3DD122C22011600914376 /* QuoteStorage.swift in Sources */,
+				C6A3DD122C22011600914376 /* CoreDataStack.swift in Sources */,
 				C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */,
 				C68E5E6E2C287C1200967304 /* Joke.swift in Sources */,
 				C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */,
@@ -593,6 +601,19 @@
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		C6F993F32C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C6F993F42C2C7EAD0086E4B2 /* QuoteData.xcdatamodel */,
+			);
+			currentVersion = C6F993F42C2C7EAD0086E4B2 /* QuoteData.xcdatamodel */;
+			path = QuoteData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C6A3DCE22C21FE2700914376 /* Project object */;
 }
