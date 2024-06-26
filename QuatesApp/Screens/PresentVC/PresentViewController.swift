@@ -76,6 +76,7 @@ class PresentViewController: UIViewController {
     var viewModel: QuoteViewModel?
     
     // MARK: - Private Properties
+    private let storage = QuoteManager.shared
     private var isInitialImage = true
 
     override func viewDidLoad() {
@@ -197,8 +198,29 @@ extension PresentViewController {
     }
     
     @objc private func heartButtonPressed(_ sender: UIButton) {
+        saveData()
         changeHeartButtonImage()
         isInitialImage.toggle()
+    }
+    
+    private func saveData() {
+        guard let viewModel else { return }
+        
+        switch viewModel.sectionType {
+        case .quote:
+            guard let quote = viewModel.quote else { return }
+            storage.saveQuote(
+                text: quote.quote,
+                author: quote.author,
+                category: quote.category
+            )
+        case .joke:
+            guard let joke = viewModel.joke else { return }
+            storage.saveJoke(text: joke.joke)
+        case .chucknorris:
+            guard let chuckJoke = viewModel.chuckNorrisJoke else { return }
+            storage.saveChuckJoke(text: chuckJoke.joke)
+        }
     }
     
     private func changeHeartButtonImage() {

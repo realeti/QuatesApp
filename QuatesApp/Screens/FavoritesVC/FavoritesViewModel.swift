@@ -8,9 +8,15 @@
 import Foundation
 
 protocol FavoritesModeling {
-    //
+    var sectionType: SectionType { get }
+    var quotes: [Quote] { get }
+    var jokes: [Joke] { get }
+    var chuckJokes: [ChuckNorrisJoke] { get }
 }
 
-final class FavoritesViewModel {
+final class FavoritesViewModel: FavoritesModeling {
     var sectionType: SectionType = .quote
+    var quotes: [Quote] = []
+    var jokes: [Joke] = []
+    var chuckJokes: [ChuckNorrisJoke] = []
 }
