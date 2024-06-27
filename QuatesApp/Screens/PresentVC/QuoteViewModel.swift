@@ -46,16 +46,18 @@ final class QuoteViewModel: QuoteModeling {
     
     // MARK: - Fetch Data
     func fetchData() {
-        switch sectionType {
-        case .quote:
-            guard let selectedCategory = quoteCategory else {
-                return
+        DispatchQueue.global(qos: .background).async {
+            switch self.sectionType {
+            case .quote:
+                guard let selectedCategory = self.quoteCategory else {
+                    return
+                }
+                self.fetchQuote(for: selectedCategory)
+            case .joke:
+                self.fetchJoke()
+            case .chucknorris:
+                self.fetchChuckNorrisJoke()
             }
-            fetchQuote(for: selectedCategory)
-        case .joke:
-            fetchJoke()
-        case .chucknorris:
-            fetchChuckNorrisJoke()
         }
     }
 }

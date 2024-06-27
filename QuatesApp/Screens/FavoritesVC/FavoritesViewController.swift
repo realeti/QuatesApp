@@ -67,7 +67,9 @@ extension FavoritesViewController {
 extension FavoritesViewController {
     private func fetchData() {
         viewModel.fetchData { [weak self] in
-            self?.tableView.reloadData()
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         }
     }
 }
@@ -146,7 +148,17 @@ extension FavoritesViewController: UITableViewDelegate {
 // MARK: - Setup Delegates
 extension FavoritesViewController {
     private func setupDeligates() {
+        viewModel.delegate = self
         tableView.delegate = self
+    }
+}
+
+// MARK: - Favorites ViewModel Delegate
+extension FavoritesViewController: FavoritesViewModelDelegate {
+    func didFailFetching(_ error: any Error) {
+        let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: K.alertOk, style: .default))
+        present(alert, animated: true)
     }
 }
 

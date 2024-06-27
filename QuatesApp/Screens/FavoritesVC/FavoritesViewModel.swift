@@ -16,6 +16,10 @@ protocol FavoritesModeling {
     func fetchData(completion: @escaping () -> Void)
 }
 
+protocol FavoritesViewModelDelegate: AnyObject {
+    func didFailFetching(_ error: Error)
+}
+
 final class FavoritesViewModel: FavoritesModeling {
     var sectionType: SectionType = .quote
     var quotes: [Quote] = []
@@ -24,6 +28,9 @@ final class FavoritesViewModel: FavoritesModeling {
     
     // MARK: - Private Properties
     private let storage = QuoteManager.shared
+    
+    // MARK: - Public Properties
+    weak var delegate: FavoritesViewModelDelegate?
     
     // MARK: - Fetch Data
     func fetchData(completion: @escaping () -> Void) {
@@ -53,14 +60,16 @@ final class FavoritesViewModel: FavoritesModeling {
 // MARK: - Fetch Quotes
 extension FavoritesViewModel {
     private func fetchQuotes(completion: @escaping () -> Void) {
-        storage.fetchQuotes { [weak self] result in
-            defer { completion() }
-            
-            do {
-                let quotes = try result.get()
-                self?.quotes = quotes
-            } catch {
-                print(error.localizedDescription)
+        DispatchQueue.global(qos: .background).async {
+            self.storage.fetchQuotes { [weak self] result in
+                defer { completion() }
+                
+                do {
+                    let quotes = try result.get()
+                    self?.quotes = quotes
+                } catch {
+                    self?.delegate?.didFailFetching(error)
+                }
             }
         }
     }
@@ -69,14 +78,16 @@ extension FavoritesViewModel {
 // MARK: - Fetch Jokes
 extension FavoritesViewModel {
     private func fetchJokes(completion: @escaping () -> Void) {
-        defer { completion() }
-        
-        storage.fetchJokes { [weak self] result in
-            do {
-                let jokes = try result.get()
-                self?.jokes = jokes
-            } catch {
-                print(error.localizedDescription)
+        DispatchQueue.global(qos: .background).async {
+            self.storage.fetchJokes { [weak self] result in
+                defer { completion() }
+                
+                do {
+                    let jokes = try result.get()
+                    self?.jokes = jokes
+                } catch {
+                    self?.delegate?.didFailFetching(error)
+                }
             }
         }
     }
@@ -85,14 +96,16 @@ extension FavoritesViewModel {
 // MARK: - Fetch C.N. Jokes
 extension FavoritesViewModel {
     private func fetchChuckJokes(completion: @escaping () -> Void) {
-        defer { completion() }
-        
-        storage.fetchChuckJokes { [weak self] result in
-            do {
-                let chuckJokes = try result.get()
-                self?.chuckJokes = chuckJokes
-            } catch {
-                print(error.localizedDescription)
+        DispatchQueue.global(qos: .background).async {
+            self.storage.fetchChuckJokes { [weak self] result in
+                defer { completion() }
+                
+                do {
+                    let chuckJokes = try result.get()
+                    self?.chuckJokes = chuckJokes
+                } catch {
+                    self?.delegate?.didFailFetching(error)
+                }
             }
         }
     }

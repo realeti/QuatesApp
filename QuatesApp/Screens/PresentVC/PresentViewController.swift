@@ -141,8 +141,8 @@ extension PresentViewController: QuoteViewModelDelegate {
 
     func didFailFetching(_ error: Error) {
         let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: K.alertOk, style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: K.alertOk, style: .default))
+        present(alert, animated: true)
     }
     
     func didChangeLoadingState(isLoading: Bool) {

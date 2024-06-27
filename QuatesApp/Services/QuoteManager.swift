@@ -14,35 +14,36 @@ final class QuoteManager {
     // MARK: - Private Properties
     private let storage = CoreDataStack.shared
     
-    // MARK: - Save Quote
-    func saveQuote(text: String, author: String, category: String) {
+    // MARK: - Save Generic Entity
+    private func saveEntity<T: NSManagedObject>(entityType: T.Type, configure: @escaping (T) -> Void) {
         let context = storage.viewContext
         context.perform {
-            let quote = QuoteCD(context: context)
+            let entity = T(context: context)
+            configure(entity)
+            self.storage.saveContext(context)
+        }
+    }
+    
+    // MARK: - Save Quote
+    func saveQuote(text: String, author: String, category: String) {
+        saveEntity(entityType: QuoteCD.self) { quote in
             quote.text = text
             quote.author = author
             quote.category = category
-            self.storage.saveContext(context)
         }
     }
     
     // MARK: - Save Joke
     func saveJoke(text: String) {
-        let context = storage.viewContext
-        context.perform {
-            let joke = JokeCD(context: context)
+        saveEntity(entityType: JokeCD.self) { joke in
             joke.text = text
-            self.storage.saveContext(context)
         }
     }
     
     // MARK: - Save Chuck Norris Joke
     func saveChuckJoke(text: String) {
-        let context = storage.viewContext
-        context.perform {
-            let chuckJoke = ChuckJokeCD(context: context)
+        saveEntity(entityType: ChuckJokeCD.self) { chuckJoke in
             chuckJoke.text = text
-            self.storage.saveContext(context)
         }
     }
     
