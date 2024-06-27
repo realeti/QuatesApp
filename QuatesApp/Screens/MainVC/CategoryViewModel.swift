@@ -9,6 +9,9 @@ import Foundation
 
 protocol CategoryModeling {
     var categories: [CategoryList] { get }
+    var sectionType: SectionType { get }
+    var selectedCategory: CategoryList { get }
+    
     func filterCategories(with searchText: String)
 }
 

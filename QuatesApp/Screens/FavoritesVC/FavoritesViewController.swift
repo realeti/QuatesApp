@@ -32,7 +32,6 @@ class FavoritesViewController: UIViewController {
     
     // MARK: - View Model
     private let viewModel = FavoritesViewModel()
-    private let storage = QuoteManager.shared
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -67,68 +66,8 @@ extension FavoritesViewController {
 // MARK: - Fetch Data
 extension FavoritesViewController {
     private func fetchData() {
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        fetchQuotes {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        fetchJokes {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        fetchChuckJokes {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) { [weak self] in
+        viewModel.fetchData { [weak self] in
             self?.tableView.reloadData()
-        }
-    }
-    
-    // MARK: - Fetch Quotes
-    private func fetchQuotes(completion: @escaping () -> Void) {
-        storage.fetchQuotes { [weak self] result in
-            defer { completion() }
-            
-            do {
-                let quotes = try result.get()
-                self?.viewModel.quotes = quotes
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    // MARK: - Fetch Jokes
-    private func fetchJokes(completion: @escaping () -> Void) {
-        defer { completion() }
-        
-        storage.fetchJokes { [weak self] result in
-            do {
-                let jokes = try result.get()
-                self?.viewModel.jokes = jokes
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    // MARK: - Fetch C.N. Jokes
-    private func fetchChuckJokes(completion: @escaping () -> Void) {
-        defer { completion() }
-        
-        storage.fetchChuckJokes { [weak self] result in
-            do {
-                let chuckJokes = try result.get()
-                print(chuckJokes.count)
-                self?.viewModel.chuckJokes = chuckJokes
-            } catch {
-                print(error.localizedDescription)
-            }
         }
     }
 }

@@ -8,7 +8,13 @@
 import Foundation
 
 protocol QuoteModeling {
+    var quote: Quote? { get }
+    var joke: Joke? { get }
+    var chuckNorrisJoke: ChuckNorrisJoke? { get }
+    var sectionType: SectionType { get }
+    
     func fetchData()
+    func saveData()
 }
 
 protocol QuoteViewModelDelegate: AnyObject {
@@ -19,7 +25,8 @@ protocol QuoteViewModelDelegate: AnyObject {
 
 final class QuoteViewModel: QuoteModeling {
     // MARK: - Private Properties
-    private lazy var networkController = NetworkController()
+    private let networkController = NetworkController()
+    private lazy var storage = QuoteManager.shared
     
     private(set) var quote: Quote?
     private(set) var joke: Joke?
@@ -51,8 +58,10 @@ final class QuoteViewModel: QuoteModeling {
             fetchChuckNorrisJoke()
         }
     }
-    
-    // MARK: - Fetch Quote
+}
+
+// MARK: - Fetch Quote
+extension QuoteViewModel {
     private func fetchQuote(for category: String) {
         delegate?.didChangeLoadingState(isLoading: true)
         
@@ -68,8 +77,10 @@ final class QuoteViewModel: QuoteModeling {
             }
         }
     }
-    
-    // MARK: - Fetch Joke
+}
+
+// MARK: - Fetch Joke
+extension QuoteViewModel {
     private func fetchJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
@@ -85,8 +96,10 @@ final class QuoteViewModel: QuoteModeling {
             }
         }
     }
-    
-    // MARK: - Fetch Chuck Norris Joke
+}
+
+// MARK: - Fetch Chuck Norris Joke
+extension QuoteViewModel {
     private func fetchChuckNorrisJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
@@ -100,6 +113,27 @@ final class QuoteViewModel: QuoteModeling {
             } catch {
                 self?.delegate?.didFailFetching(error)
             }
+        }
+    }
+}
+
+// MARK: - Save Data
+extension QuoteViewModel {
+    func saveData() {
+        switch sectionType {
+        case .quote:
+            guard let quote else { return }
+            storage.saveQuote(
+                text: quote.quote,
+                author: quote.author,
+                category: quote.category
+            )
+        case .joke:
+            guard let joke else { return }
+            storage.saveJoke(text: joke.joke)
+        case .chucknorris:
+            guard let chuckNorrisJoke else { return }
+            storage.saveChuckJoke(text: chuckNorrisJoke.joke)
         }
     }
 }
