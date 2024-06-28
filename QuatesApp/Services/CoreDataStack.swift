@@ -17,6 +17,8 @@ final class CoreDataStack {
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
+            } else {
+                print("DB url - ", storeDescription.url?.absoluteString ?? "")
             }
         }
         return container
@@ -28,7 +30,7 @@ final class CoreDataStack {
     }
     
     // MARK: - New Background Context
-    func newBackgroundContext() -> NSManagedObjectContext {
+    var backgroundContext: NSManagedObjectContext {
         return persistentContainer.newBackgroundContext()
     }
     

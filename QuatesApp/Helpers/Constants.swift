@@ -42,10 +42,15 @@ struct K {
     static let favoriteQuotes = "Favorite quotes"
     static let favoriteJokes = "Favorite jokes"
     static let favoriteChuckNorris = "Favorite C.N. jokes"
+    static let favoriteDelete = "Delete"
+    static let favoriteDeleteMessage = "Are you sure?"
     
     // MARK: - Alert
     static let alertError = "Error"
     static let alertOk = "OK"
+    static let alertYes = "Yes"
+    static let alertNo = "No"
+    static let alertCancel = "Cancel"
     
     // MARK: - Fonts
     static let fontMontserrat400 = "Montserrat-Medium"

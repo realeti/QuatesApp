@@ -8,18 +8,26 @@
 import Foundation
 
 protocol QuoteModeling {
+    var quote: Quote? { get }
+    var joke: Joke? { get }
+    var chuckNorrisJoke: ChuckNorrisJoke? { get }
+    var sectionType: SectionType { get }
+    
     func fetchData()
+    func saveData()
 }
 
 protocol QuoteViewModelDelegate: AnyObject {
     func didFetchData(_ section: SectionType)
     func didFailFetching(_ error: Error)
     func didChangeLoadingState(isLoading: Bool)
+    func didSavedData()
 }
 
 final class QuoteViewModel: QuoteModeling {
     // MARK: - Private Properties
-    private lazy var networkController = NetworkController()
+    private let networkController = NetworkController()
+    private lazy var storage = QuoteManager.shared
     
     private(set) var quote: Quote?
     private(set) var joke: Joke?
@@ -39,20 +47,24 @@ final class QuoteViewModel: QuoteModeling {
     
     // MARK: - Fetch Data
     func fetchData() {
-        switch sectionType {
-        case .quote:
-            guard let selectedCategory = quoteCategory else {
-                return
+        DispatchQueue.global(qos: .background).async {
+            switch self.sectionType {
+            case .quote:
+                guard let selectedCategory = self.quoteCategory else {
+                    return
+                }
+                self.fetchQuote(for: selectedCategory)
+            case .joke:
+                self.fetchJoke()
+            case .chucknorris:
+                self.fetchChuckNorrisJoke()
             }
-            fetchQuote(for: selectedCategory)
-        case .joke:
-            fetchJoke()
-        case .chucknorris:
-            fetchChuckNorrisJoke()
         }
     }
-    
-    // MARK: - Fetch Quote
+}
+
+// MARK: - Fetch Quote
+extension QuoteViewModel {
     private func fetchQuote(for category: String) {
         delegate?.didChangeLoadingState(isLoading: true)
         
@@ -68,8 +80,10 @@ final class QuoteViewModel: QuoteModeling {
             }
         }
     }
-    
-    // MARK: - Fetch Joke
+}
+
+// MARK: - Fetch Joke
+extension QuoteViewModel {
     private func fetchJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
@@ -85,8 +99,10 @@ final class QuoteViewModel: QuoteModeling {
             }
         }
     }
-    
-    // MARK: - Fetch Chuck Norris Joke
+}
+
+// MARK: - Fetch Chuck Norris Joke
+extension QuoteViewModel {
     private func fetchChuckNorrisJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
         
@@ -100,6 +116,33 @@ final class QuoteViewModel: QuoteModeling {
             } catch {
                 self?.delegate?.didFailFetching(error)
             }
+        }
+    }
+}
+
+// MARK: - Save Data
+extension QuoteViewModel {
+    func saveData() {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self else { return }
+            
+            switch self.sectionType {
+            case .quote:
+                guard let quote else { return }
+                self.storage.saveQuote(
+                    text: quote.quote,
+                    author: quote.author,
+                    category: quote.category
+                )
+            case .joke:
+                guard let joke else { return }
+                self.storage.saveJoke(text: joke.joke)
+            case .chucknorris:
+                guard let chuckNorrisJoke else { return }
+                self.storage.saveChuckJoke(text: chuckNorrisJoke.joke)
+            }
+            
+            self.delegate?.didSavedData()
         }
     }
 }

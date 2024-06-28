@@ -67,6 +67,7 @@ class PresentViewController: UIViewController {
     private lazy var heartButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(resource: .heartOutline)
+        button.isUserInteractionEnabled = false
         button.setBackgroundImage(image, for: .normal)
         button.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
         return button
@@ -76,7 +77,6 @@ class PresentViewController: UIViewController {
     var viewModel: QuoteViewModel?
     
     // MARK: - Private Properties
-    private let storage = QuoteManager.shared
     private var isInitialImage = true
 
     override func viewDidLoad() {
@@ -137,13 +137,14 @@ extension PresentViewController: QuoteViewModelDelegate {
     func didFetchData(_ section: SectionType) {
         DispatchQueue.main.async { [weak self] in
             self?.configureUI(for: section)
+            self?.heartButton.isUserInteractionEnabled = true
         }
     }
 
     func didFailFetching(_ error: Error) {
         let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: K.alertOk, style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: K.alertOk, style: .default))
+        present(alert, animated: true)
     }
     
     func didChangeLoadingState(isLoading: Bool) {
@@ -154,6 +155,14 @@ extension PresentViewController: QuoteViewModelDelegate {
                 self?.activityIndicator.stopAnimating()
                 self?.activityIndicator.removeFromSuperview()
             }
+        }
+    }
+    
+    func didSavedData() {
+        DispatchQueue.main.async {
+            self.changeHeartButtonImage()
+            self.isInitialImage.toggle()
+            self.heartButton.isUserInteractionEnabled = true
         }
     }
 }
@@ -198,29 +207,10 @@ extension PresentViewController {
     }
     
     @objc private func heartButtonPressed(_ sender: UIButton) {
-        saveData()
-        changeHeartButtonImage()
-        isInitialImage.toggle()
-    }
-    
-    private func saveData() {
         guard let viewModel else { return }
         
-        switch viewModel.sectionType {
-        case .quote:
-            guard let quote = viewModel.quote else { return }
-            storage.saveQuote(
-                text: quote.quote,
-                author: quote.author,
-                category: quote.category
-            )
-        case .joke:
-            guard let joke = viewModel.joke else { return }
-            storage.saveJoke(text: joke.joke)
-        case .chucknorris:
-            guard let chuckJoke = viewModel.chuckNorrisJoke else { return }
-            storage.saveChuckJoke(text: chuckJoke.joke)
-        }
+        viewModel.saveData()
+        heartButton.isUserInteractionEnabled = false
     }
     
     private func changeHeartButtonImage() {

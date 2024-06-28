@@ -32,13 +32,13 @@ class FavoritesViewController: UIViewController {
     
     // MARK: - View Model
     private let viewModel = FavoritesViewModel()
-    private let storage = QuoteManager.shared
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
+        setupTapGesture()
         configureUI()
         setupDeligates()
         setupConstraints()
@@ -54,6 +54,12 @@ class FavoritesViewController: UIViewController {
         view.addSubview(segmentControl)
         view.addSubview(tableView)
     }
+    
+    // MARK: - Setup Tap Gesture
+    private func setupTapGesture() {
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        tableView.addGestureRecognizer(longPress)
+    }
 }
 
 // MARK: - Configure UI
@@ -67,67 +73,9 @@ extension FavoritesViewController {
 // MARK: - Fetch Data
 extension FavoritesViewController {
     private func fetchData() {
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        fetchQuotes {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        fetchJokes {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        fetchChuckJokes {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.tableView.reloadData()
-        }
-    }
-    
-    // MARK: - Fetch Quotes
-    private func fetchQuotes(completion: @escaping () -> Void) {
-        storage.fetchQuotes { [weak self] result in
-            defer { completion() }
-            
-            do {
-                let quotes = try result.get()
-                self?.viewModel.quotes = quotes
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    // MARK: - Fetch Jokes
-    private func fetchJokes(completion: @escaping () -> Void) {
-        defer { completion() }
-        
-        storage.fetchJokes { [weak self] result in
-            do {
-                let jokes = try result.get()
-                self?.viewModel.jokes = jokes
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    // MARK: - Fetch C.N. Jokes
-    private func fetchChuckJokes(completion: @escaping () -> Void) {
-        defer { completion() }
-        
-        storage.fetchChuckJokes { [weak self] result in
-            do {
-                let chuckJokes = try result.get()
-                print(chuckJokes.count)
-                self?.viewModel.chuckJokes = chuckJokes
-            } catch {
-                print(error.localizedDescription)
+        viewModel.fetchData { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
             }
         }
     }
@@ -207,7 +155,17 @@ extension FavoritesViewController: UITableViewDelegate {
 // MARK: - Setup Delegates
 extension FavoritesViewController {
     private func setupDeligates() {
+        viewModel.delegate = self
         tableView.delegate = self
+    }
+}
+
+// MARK: - Favorites ViewModel Delegate
+extension FavoritesViewController: FavoritesViewModelDelegate {
+    func didFailFetching(_ error: any Error) {
+        let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: K.alertOk, style: .default))
+        present(alert, animated: true)
     }
 }
 
@@ -220,6 +178,64 @@ extension FavoritesViewController {
         
         viewModel.sectionType = section
         tableView.reloadData()
+    }
+    
+    @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else { return }
+        let touchPoint = sender.location(in: tableView)
+        
+        guard let indexPath = tableView.indexPathForRow(at: touchPoint) else { return }
+        
+        let sectionType = viewModel.sectionType
+        let currentElementId = getElementId(for: indexPath.row, section: sectionType)
+        
+        presentDeleteAlert(for: currentElementId, at: indexPath)
+    }
+    
+    private func getElementId(for row: Int, section: SectionType) -> String {
+        switch section {
+        case .quote:
+            return viewModel.quotes[row].quote.hashed()
+        case .joke:
+            return viewModel.jokes[row].joke.hashed()
+        case .chucknorris:
+            return viewModel.chuckJokes[row].joke.hashed()
+        }
+    }
+    
+    private func presentDeleteAlert(for id: String, at indexPath: IndexPath) {
+        let alert = UIAlertController(title: K.favoriteDeleteMessage, message: K.favoriteDelete, preferredStyle: .alert)
+        let actionDone = UIAlertAction(title: K.alertYes, style: .default) { [weak self] _ in
+            self?.viewModel.deleteData(withId: id) {
+                self?.removeElement(from: indexPath)
+            }
+        }
+        let actionCancel = UIAlertAction(title: K.alertCancel, style: .cancel)
+        
+        alert.addAction(actionDone)
+        alert.addAction(actionCancel)
+        
+        present(alert, animated: true)
+    }
+    
+    private func removeElement(from indexPath: IndexPath) {
+        let sectionType = viewModel.sectionType
+        switch sectionType {
+        case .quote:
+            guard !viewModel.quotes.isEmpty else { return }
+            viewModel.quotes.remove(at: indexPath.row)
+        case .joke:
+            guard !viewModel.jokes.isEmpty else { return }
+            viewModel.jokes.remove(at: indexPath.row)
+        case .chucknorris:
+            guard !viewModel.chuckJokes.isEmpty else { return }
+            viewModel.chuckJokes.remove(at: indexPath.row)
+        }
+        deleteTableRows(at: indexPath)
+    }
+    
+    private func deleteTableRows(at indexPath: IndexPath) {
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 }
 
