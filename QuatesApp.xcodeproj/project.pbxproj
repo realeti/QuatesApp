@@ -23,6 +23,7 @@
 		C68E5E742C28829A00967304 /* SectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E732C28829A00967304 /* SectionType.swift */; };
 		C68E5E762C2885DA00967304 /* ChuckNorrisJoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */; };
 		C68E5E782C28860E00967304 /* ChuckNorrisJokeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E5E772C28860E00967304 /* ChuckNorrisJokeDTO.swift */; };
+		C69B6AC22C2DFCC400B7350C /* String + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69B6AC12C2DFCC400B7350C /* String + Extensions.swift */; };
 		C6A3DCEE2C21FE2800914376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCED2C21FE2800914376 /* AppDelegate.swift */; };
 		C6A3DCF02C21FE2800914376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */; };
 		C6A3DCF22C21FE2800914376 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3DCF12C21FE2800914376 /* MainViewController.swift */; };
@@ -61,6 +62,7 @@
 		C68E5E732C28829A00967304 /* SectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionType.swift; sourceTree = "<group>"; };
 		C68E5E752C2885DA00967304 /* ChuckNorrisJoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChuckNorrisJoke.swift; sourceTree = "<group>"; };
 		C68E5E772C28860E00967304 /* ChuckNorrisJokeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChuckNorrisJokeDTO.swift; sourceTree = "<group>"; };
+		C69B6AC12C2DFCC400B7350C /* String + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extensions.swift"; sourceTree = "<group>"; };
 		C6A3DCEA2C21FE2800914376 /* QuatesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuatesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A3DCED2C21FE2800914376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6A3DCEF2C21FE2800914376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				C68BDB642C260D4200D156D7 /* UILabel + Extensions.swift */,
 				C68BDB662C261D7300D156D7 /* UIStackView + Extensions.swift */,
 				C68E5E6B2C28486D00967304 /* UIButton + Extensions.swift */,
+				C69B6AC12C2DFCC400B7350C /* String + Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				C6F993F72C2C87D70086E4B2 /* QuoteManager.swift in Sources */,
 				C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */,
 				C6C324C22C2B3B5C007FCC3F /* QuoteHeaderView.swift in Sources */,
+				C69B6AC22C2DFCC400B7350C /* String + Extensions.swift in Sources */,
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
 				C68BDB672C261D7300D156D7 /* UIStackView + Extensions.swift in Sources */,
 				C651BFE12C276D06006BB538 /* FavoritesViewController.swift in Sources */,

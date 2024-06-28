@@ -67,6 +67,7 @@ class PresentViewController: UIViewController {
     private lazy var heartButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(resource: .heartOutline)
+        button.isUserInteractionEnabled = false
         button.setBackgroundImage(image, for: .normal)
         button.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
         return button
@@ -136,6 +137,7 @@ extension PresentViewController: QuoteViewModelDelegate {
     func didFetchData(_ section: SectionType) {
         DispatchQueue.main.async { [weak self] in
             self?.configureUI(for: section)
+            self?.heartButton.isUserInteractionEnabled = true
         }
     }
 
@@ -153,6 +155,14 @@ extension PresentViewController: QuoteViewModelDelegate {
                 self?.activityIndicator.stopAnimating()
                 self?.activityIndicator.removeFromSuperview()
             }
+        }
+    }
+    
+    func didSavedData() {
+        DispatchQueue.main.async {
+            self.changeHeartButtonImage()
+            self.isInitialImage.toggle()
+            self.heartButton.isUserInteractionEnabled = true
         }
     }
 }
@@ -200,8 +210,7 @@ extension PresentViewController {
         guard let viewModel else { return }
         
         viewModel.saveData()
-        changeHeartButtonImage()
-        isInitialImage.toggle()
+        heartButton.isUserInteractionEnabled = false
     }
     
     private func changeHeartButtonImage() {

@@ -21,6 +21,7 @@ protocol QuoteViewModelDelegate: AnyObject {
     func didFetchData(_ section: SectionType)
     func didFailFetching(_ error: Error)
     func didChangeLoadingState(isLoading: Bool)
+    func didSavedData()
 }
 
 final class QuoteViewModel: QuoteModeling {
@@ -122,20 +123,26 @@ extension QuoteViewModel {
 // MARK: - Save Data
 extension QuoteViewModel {
     func saveData() {
-        switch sectionType {
-        case .quote:
-            guard let quote else { return }
-            storage.saveQuote(
-                text: quote.quote,
-                author: quote.author,
-                category: quote.category
-            )
-        case .joke:
-            guard let joke else { return }
-            storage.saveJoke(text: joke.joke)
-        case .chucknorris:
-            guard let chuckNorrisJoke else { return }
-            storage.saveChuckJoke(text: chuckNorrisJoke.joke)
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self else { return }
+            
+            switch self.sectionType {
+            case .quote:
+                guard let quote else { return }
+                self.storage.saveQuote(
+                    text: quote.quote,
+                    author: quote.author,
+                    category: quote.category
+                )
+            case .joke:
+                guard let joke else { return }
+                self.storage.saveJoke(text: joke.joke)
+            case .chucknorris:
+                guard let chuckNorrisJoke else { return }
+                self.storage.saveChuckJoke(text: chuckNorrisJoke.joke)
+            }
+            
+            self.delegate?.didSavedData()
         }
     }
 }

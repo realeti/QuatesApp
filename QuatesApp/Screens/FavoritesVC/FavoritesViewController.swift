@@ -38,6 +38,7 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        setupTapGesture()
         configureUI()
         setupDeligates()
         setupConstraints()
@@ -52,6 +53,12 @@ class FavoritesViewController: UIViewController {
     private func setupUI() {
         view.addSubview(segmentControl)
         view.addSubview(tableView)
+    }
+    
+    // MARK: - Setup Tap Gesture
+    private func setupTapGesture() {
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        tableView.addGestureRecognizer(longPress)
     }
 }
 
@@ -171,6 +178,64 @@ extension FavoritesViewController {
         
         viewModel.sectionType = section
         tableView.reloadData()
+    }
+    
+    @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else { return }
+        let touchPoint = sender.location(in: tableView)
+        
+        guard let indexPath = tableView.indexPathForRow(at: touchPoint) else { return }
+        
+        let sectionType = viewModel.sectionType
+        let currentElementId = getElementId(for: indexPath.row, section: sectionType)
+        
+        presentDeleteAlert(for: currentElementId, at: indexPath)
+    }
+    
+    private func getElementId(for row: Int, section: SectionType) -> String {
+        switch section {
+        case .quote:
+            return viewModel.quotes[row].quote.hashed()
+        case .joke:
+            return viewModel.jokes[row].joke.hashed()
+        case .chucknorris:
+            return viewModel.chuckJokes[row].joke.hashed()
+        }
+    }
+    
+    private func presentDeleteAlert(for id: String, at indexPath: IndexPath) {
+        let alert = UIAlertController(title: K.favoriteDeleteMessage, message: K.favoriteDelete, preferredStyle: .alert)
+        let actionDone = UIAlertAction(title: K.alertYes, style: .default) { [weak self] _ in
+            self?.viewModel.deleteData(withId: id) {
+                self?.removeElement(from: indexPath)
+            }
+        }
+        let actionCancel = UIAlertAction(title: K.alertCancel, style: .cancel)
+        
+        alert.addAction(actionDone)
+        alert.addAction(actionCancel)
+        
+        present(alert, animated: true)
+    }
+    
+    private func removeElement(from indexPath: IndexPath) {
+        let sectionType = viewModel.sectionType
+        switch sectionType {
+        case .quote:
+            guard !viewModel.quotes.isEmpty else { return }
+            viewModel.quotes.remove(at: indexPath.row)
+        case .joke:
+            guard !viewModel.jokes.isEmpty else { return }
+            viewModel.jokes.remove(at: indexPath.row)
+        case .chucknorris:
+            guard !viewModel.chuckJokes.isEmpty else { return }
+            viewModel.chuckJokes.remove(at: indexPath.row)
+        }
+        deleteTableRows(at: indexPath)
+    }
+    
+    private func deleteTableRows(at indexPath: IndexPath) {
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 }
 
