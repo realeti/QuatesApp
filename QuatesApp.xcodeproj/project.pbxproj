@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C63CB5772C30534900925E54 /* PresentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63CB5762C30534900925E54 /* PresentView.swift */; };
 		C64CF3672C3097B800B2CB95 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64CF3662C3097B800B2CB95 /* FavoritesView.swift */; };
+		C64CF36A2C309B7A00B2CB95 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64CF3692C309B7A00B2CB95 /* MainView.swift */; };
 		C651BFDF2C276C67006BB538 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C651BFDE2C276C67006BB538 /* TabBarController.swift */; };
 		C651BFE12C276D06006BB538 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C651BFE02C276D06006BB538 /* FavoritesViewController.swift */; };
 		C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		C63CB5762C30534900925E54 /* PresentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentView.swift; sourceTree = "<group>"; };
 		C64CF3662C3097B800B2CB95 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		C64CF3692C309B7A00B2CB95 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C651BFDE2C276C67006BB538 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		C651BFE02C276D06006BB538 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
@@ -105,6 +107,14 @@
 			isa = PBXGroup;
 			children = (
 				C63CB5762C30534900925E54 /* PresentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C64CF3682C309B6E00B2CB95 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C64CF3692C309B7A00B2CB95 /* MainView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -238,6 +248,7 @@
 		C6C324BA2C2B281B007FCC3F /* MainVC */ = {
 			isa = PBXGroup;
 			children = (
+				C64CF3682C309B6E00B2CB95 /* Views */,
 				C6A3DD0D2C2200AD00914376 /* CategoryViewModel.swift */,
 				C6A3DCF12C21FE2800914376 /* MainViewController.swift */,
 			);
@@ -368,6 +379,7 @@
 				C69B6AC22C2DFCC400B7350C /* String + Extensions.swift in Sources */,
 				C6A3DD1A2C22216C00914376 /* NetworkController.swift in Sources */,
 				C68BDB672C261D7300D156D7 /* UIStackView + Extensions.swift in Sources */,
+				C64CF36A2C309B7A00B2CB95 /* MainView.swift in Sources */,
 				C651BFE12C276D06006BB538 /* FavoritesViewController.swift in Sources */,
 				C68E5E742C28829A00967304 /* SectionType.swift in Sources */,
 				C6A3DD0E2C2200AD00914376 /* CategoryViewModel.swift in Sources */,

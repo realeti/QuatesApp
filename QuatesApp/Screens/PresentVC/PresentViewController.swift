@@ -35,7 +35,6 @@ final class PresentViewController: UIViewController {
 // MARK: - Configure UI
 extension PresentViewController {
     private func configureUI() {
-        view.backgroundColor = .snow
         configureSectionLabel()
         
         presentView.closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
