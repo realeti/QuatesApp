@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class QuoteHeaderView: UIView {
+final class QuoteHeaderView: UIView {
     // MARK: - UI
     private let sectionImageView = UIImageView()
     private let sectionLabel = UILabel(

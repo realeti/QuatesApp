@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
+final class FavoritesViewController: UIViewController {
     // MARK: - UI
     private lazy var segmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
@@ -163,6 +163,14 @@ extension FavoritesViewController {
 // MARK: - Favorites ViewModel Delegate
 extension FavoritesViewController: FavoritesViewModelDelegate {
     func didFailFetching(_ error: any Error) {
+        presentAlertContoller(error)
+    }
+    
+    func didFailDeleting(_ error: any Error) {
+        presentAlertContoller(error)
+    }
+    
+    private func presentAlertContoller(_ error: Error) {
         let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: K.alertOk, style: .default))
         present(alert, animated: true)
@@ -207,14 +215,15 @@ extension FavoritesViewController {
         let alert = UIAlertController(title: K.favoriteDeleteMessage, message: K.favoriteDelete, preferredStyle: .alert)
         let actionDone = UIAlertAction(title: K.alertYes, style: .default) { [weak self] _ in
             self?.viewModel.deleteData(withId: id) {
-                self?.removeElement(from: indexPath)
+                DispatchQueue.main.async { [weak self] in
+                    self?.removeElement(from: indexPath)
+                }
             }
         }
-        let actionCancel = UIAlertAction(title: K.alertCancel, style: .cancel)
         
+        let actionCancel = UIAlertAction(title: K.alertCancel, style: .cancel)
         alert.addAction(actionDone)
         alert.addAction(actionCancel)
-        
         present(alert, animated: true)
     }
     

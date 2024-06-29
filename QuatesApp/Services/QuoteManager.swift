@@ -213,33 +213,39 @@ extension QuoteManager {
 
 // MARK: - Delete Quote
 extension QuoteManager {
-    func deleteQuote(withId id: String) {
+    func deleteQuote(withId id: String, completion: @escaping (Error?) -> Void) {
         deleteEntity(entityType: QuoteCD.self, id) { error in
             if let error {
-                print("Failed to delete quote with ID \(id): \(error)")
+                completion(error)
+                return
             }
+            completion(nil)
         }
     }
 }
 
 // MARK: - Delete Joke
 extension QuoteManager {
-    func deleteJoke(withId id: String) {
+    func deleteJoke(withId id: String, completion: @escaping (Error?) -> Void) {
         deleteEntity(entityType: JokeCD.self, id) { error in
             if let error {
-                print("Failed to delete joke with ID \(id): \(error)")
+                completion(error)
+                return
             }
+            completion(nil)
         }
     }
 }
 
 // MARK: - Delete C.N. Joke
 extension QuoteManager {
-    func deleteChuckJoke(withId id: String) {
+    func deleteChuckJoke(withId id: String, completion: @escaping (Error?) -> Void) {
         deleteEntity(entityType: ChuckJokeCD.self, id) { error in
             if let error {
-                print("Failed to delete C.N. joke with ID \(id): \(error)")
+                completion(error)
+                return
             }
+            completion(nil)
         }
     }
 }

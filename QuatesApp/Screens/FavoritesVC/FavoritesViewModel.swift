@@ -19,6 +19,7 @@ protocol FavoritesModeling {
 
 protocol FavoritesViewModelDelegate: AnyObject {
     func didFailFetching(_ error: Error)
+    func didFailDeleting(_ error: Error)
 }
 
 final class FavoritesViewModel: FavoritesModeling {
@@ -116,16 +117,31 @@ extension FavoritesViewModel {
             
             switch sectionType {
             case .quote:
-                self.storage.deleteQuote(withId: id)
+                storage.deleteQuote(withId: id) { [weak self] error in
+                    if let error {
+                        self?.delegate?.didFailDeleting(error)
+                        return
+                    }
+                    completion()
+                }
             case .joke:
-                self.storage.deleteJoke(withId: id)
+                storage.deleteJoke(withId: id) { [weak self] error in
+                    if let error {
+                        self?.delegate?.didFailDeleting(error)
+                        return
+                    }
+                    completion()
+                }
             case .chucknorris:
-                self.storage.deleteChuckJoke(withId: id)
+                storage.deleteChuckJoke(withId: id) { [weak self] error in
+                    if let error {
+                        self?.delegate?.didFailDeleting(error)
+                        return
+                    }
+                    completion()
+                }
             }
         }
         
-        DispatchQueue.main.async {
-            completion()
-        }
     }
 }

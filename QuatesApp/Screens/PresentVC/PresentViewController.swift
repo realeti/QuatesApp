@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class PresentViewController: UIViewController {
+final class PresentViewController: UIViewController {
     
     // MARK: - UI
     private lazy var closeButton: UIButton = {
