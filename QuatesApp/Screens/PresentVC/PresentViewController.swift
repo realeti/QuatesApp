@@ -159,11 +159,11 @@ extension PresentViewController: QuoteViewModelDelegate {
     }
     
     func didSavedData() {
-        DispatchQueue.main.async {
-            self.changeHeartButtonImage()
-            self.isInitialImage.toggle()
-            self.heartButton.isUserInteractionEnabled = true
-        }
+        print("Data saved")
+    }
+    
+    func didFailSavedData(_ error: any Error) {
+        print("Data not saved: \(error)")
     }
 }
 
@@ -210,7 +210,8 @@ extension PresentViewController {
         guard let viewModel else { return }
         
         viewModel.saveData()
-        heartButton.isUserInteractionEnabled = false
+        self.changeHeartButtonImage()
+        self.isInitialImage.toggle()
     }
     
     private func changeHeartButtonImage() {

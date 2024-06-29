@@ -14,6 +14,11 @@ final class QuoteManager {
     // MARK: - Private Properties
     private let storage = CoreDataStack.shared
     
+    // MARK: - Private enums
+    private enum StorageErrors: Error {
+        case alreadyExists
+    }
+    
     // MARK: - Save Generic Entity
     private func saveEntity<T: NSManagedObject>(entityType: T.Type, configure: @escaping (T) -> Void) {
         let context = storage.viewContext
@@ -26,11 +31,11 @@ final class QuoteManager {
     }
     
     // MARK: - Save Quote
-    func saveQuote(text: String, author: String, category: String) {
+    func saveQuote(text: String, author: String, category: String, completion: @escaping (Error?) -> Void) {
         let id = text.hashed()
         
         if entityExists(entityType: QuoteCD.self, id) {
-            print("Quote already exists")
+            completion(StorageErrors.alreadyExists)
             return
         }
         
@@ -40,14 +45,15 @@ final class QuoteManager {
             quote.category = category
             quote.id = text.hashed()
         }
+        completion(nil)
     }
     
     // MARK: - Save Joke
-    func saveJoke(text: String) {
+    func saveJoke(text: String, completion: @escaping (Error?) -> Void) {
         let id = text.hashed()
         
         if entityExists(entityType: JokeCD.self, id) {
-            print("Joke already exists")
+            completion(StorageErrors.alreadyExists)
             return
         }
         
@@ -55,14 +61,15 @@ final class QuoteManager {
             joke.text = text
             joke.id = text.hashed()
         }
+        completion(nil)
     }
     
     // MARK: - Save Chuck Norris Joke
-    func saveChuckJoke(text: String) {
+    func saveChuckJoke(text: String, completion: @escaping (Error?) -> Void) {
         let id = text.hashed()
         
         if entityExists(entityType: ChuckJokeCD.self, id) {
-            print("C.N. Joke already exists")
+            completion(StorageErrors.alreadyExists)
             return
         }
         
@@ -70,6 +77,7 @@ final class QuoteManager {
             chuckJoke.text = text
             chuckJoke.id = text.hashed()
         }
+        completion(nil)
     }
     
     private init() {}

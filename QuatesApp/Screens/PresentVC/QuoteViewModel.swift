@@ -22,6 +22,7 @@ protocol QuoteViewModelDelegate: AnyObject {
     func didFailFetching(_ error: Error)
     func didChangeLoadingState(isLoading: Bool)
     func didSavedData()
+    func didFailSavedData(_ error: Error)
 }
 
 final class QuoteViewModel: QuoteModeling {
@@ -123,26 +124,59 @@ extension QuoteViewModel {
 // MARK: - Save Data
 extension QuoteViewModel {
     func saveData() {
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self else { return }
-            
-            switch self.sectionType {
-            case .quote:
-                guard let quote else { return }
-                self.storage.saveQuote(
-                    text: quote.quote,
-                    author: quote.author,
-                    category: quote.category
-                )
-            case .joke:
-                guard let joke else { return }
-                self.storage.saveJoke(text: joke.joke)
-            case .chucknorris:
-                guard let chuckNorrisJoke else { return }
-                self.storage.saveChuckJoke(text: chuckNorrisJoke.joke)
+        switch sectionType {
+        case .quote:
+            guard let quote else { return }
+            saveQuote(quote: quote)
+        case .joke:
+            guard let joke else { return }
+            saveJoke(joke: joke)
+        case .chucknorris:
+            guard let chuckNorrisJoke else { return }
+            saveChuckJoke(joke: chuckNorrisJoke)
+        }
+    }
+}
+
+// MARK: - Save Quote
+extension QuoteViewModel {
+    private func saveQuote(quote: Quote) {
+        storage.saveQuote(
+            text: quote.quote,
+            author: quote.author,
+            category: quote.category
+        ) { [weak self] error in
+            if let error {
+                self?.delegate?.didFailSavedData(error)
+                return
             }
-            
-            self.delegate?.didSavedData()
+            self?.delegate?.didSavedData()
+        }
+    }
+}
+
+// MARK: - Save Joke
+extension QuoteViewModel {
+    private func saveJoke(joke: Joke) {
+        storage.saveJoke(text: joke.joke) { [weak self] error in
+            if let error {
+                self?.delegate?.didFailSavedData(error)
+                return
+            }
+            self?.delegate?.didSavedData()
+        }
+    }
+}
+
+// MARK: - Save C.N. Joke
+extension QuoteViewModel {
+    private func saveChuckJoke(joke: ChuckNorrisJoke) {
+        storage.saveChuckJoke(text: joke.joke) { [weak self] error in
+            if let error {
+                self?.delegate?.didFailSavedData(error)
+                return
+            }
+            self?.delegate?.didSavedData()
         }
     }
 }
