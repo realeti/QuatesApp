@@ -8,65 +8,47 @@
 import UIKit
 
 final class FavoritesViewController: UIViewController {
-    // MARK: - UI
-    private lazy var segmentControl: UISegmentedControl = {
-        let segment = UISegmentedControl()
-        segment.insertSegment(withTitle: K.quoteTitle, at: 0, animated: true)
-        segment.insertSegment(withTitle: K.jokesTitle, at: 1, animated: true)
-        segment.insertSegment(withTitle: K.chuckNorrisTitle, at: 2, animated: true)
-        segment.selectedSegmentTintColor = UIColor(resource: .snow)
-        segment.addTarget(self, action: #selector(segmentValueDidChanged), for: .valueChanged)
-        return segment
-    }()
-    
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 176
-        tableView.separatorStyle = .none
-        tableView.register(QuoteCell.self, forCellReuseIdentifier: K.quoteReuseIdentifier)
-        tableView.backgroundColor = UIColor(resource: .snow)
-        return tableView
-    }()
+    // MARK: - Private Properties
+    private var favoritesView: FavoritesView!
     
     // MARK: - View Model
     private let viewModel = FavoritesViewModel()
     
     // MARK: - Life Cycle
+    override func loadView() {
+        super.loadView()
+        
+        favoritesView = FavoritesView()
+        view = favoritesView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
-        setupTapGesture()
         configureUI()
         setupDeligates()
-        setupConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchData()
     }
-    
-    // MARK: - Set Views
-    private func setupUI() {
-        view.addSubview(segmentControl)
-        view.addSubview(tableView)
-    }
-    
-    // MARK: - Setup Tap Gesture
-    private func setupTapGesture() {
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        tableView.addGestureRecognizer(longPress)
-    }
 }
 
 // MARK: - Configure UI
 extension FavoritesViewController {
     private func configureUI() {
-        view.backgroundColor = UIColor(resource: .snow)
-        segmentControl.selectedSegmentIndex = 0
+        setupTapGesture()
+        
+        favoritesView.segmentControl.addTarget(self, action: #selector(segmentValueDidChanged), for: .valueChanged)
+    }
+}
+
+// MARK: - Setup Tap Gesture
+extension FavoritesViewController {
+    private func setupTapGesture() {
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        favoritesView.tableView.addGestureRecognizer(longPress)
     }
 }
 
@@ -75,7 +57,7 @@ extension FavoritesViewController {
     private func fetchData() {
         viewModel.fetchData { [weak self] in
             DispatchQueue.main.async {
-                self?.tableView.reloadData()
+                self?.favoritesView.tableView.reloadData()
             }
         }
     }
@@ -156,7 +138,8 @@ extension FavoritesViewController: UITableViewDelegate {
 extension FavoritesViewController {
     private func setupDeligates() {
         viewModel.delegate = self
-        tableView.delegate = self
+        favoritesView.tableView.delegate = self
+        favoritesView.tableView.dataSource = self
     }
 }
 
@@ -169,7 +152,10 @@ extension FavoritesViewController: FavoritesViewModelDelegate {
     func didFailDeleting(_ error: any Error) {
         presentAlertContoller(error)
     }
-    
+}
+
+// MARK: - Present Error
+extension FavoritesViewController {
     private func presentAlertContoller(_ error: Error) {
         let alert = UIAlertController(title: K.alertError, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: K.alertOk, style: .default))
@@ -185,14 +171,14 @@ extension FavoritesViewController {
         }
         
         viewModel.sectionType = section
-        tableView.reloadData()
+        favoritesView.tableView.reloadData()
     }
     
     @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
         guard sender.state == .began else { return }
-        let touchPoint = sender.location(in: tableView)
+        let touchPoint = sender.location(in: favoritesView.tableView)
         
-        guard let indexPath = tableView.indexPathForRow(at: touchPoint) else { return }
+        guard let indexPath = favoritesView.tableView.indexPathForRow(at: touchPoint) else { return }
         
         let sectionType = viewModel.sectionType
         let currentElementId = getElementId(for: indexPath.row, section: sectionType)
@@ -244,39 +230,6 @@ extension FavoritesViewController {
     }
     
     private func deleteTableRows(at indexPath: IndexPath) {
-        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        favoritesView.tableView.deleteRows(at: [indexPath], with: .automatic)
     }
-}
-
-// MARK: - Setup Constraints
-extension FavoritesViewController {
-    private func setupConstraints() {
-        setupSegmentControlConstraints()
-        setupTableViewConstraints()
-    }
-    
-    private func setupSegmentControlConstraints() {
-        segmentControl.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupTableViewConstraints() {
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(segmentControl.snp.bottom).offset(10)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-}
-
-fileprivate struct Metrics {
-    static let sectionImageHeight: CGFloat = 85.0
-    
-    static let quotesTitleOffsetTop: CGFloat = -18
-    static let jokesTitleOffsetTop: CGFloat = -12
-    static let chuckTitleOffsetTop: CGFloat = -4
-    
-    private init () {}
 }
