@@ -29,7 +29,7 @@ final class FavoritesViewModel: FavoritesModeling {
     var chuckJokes: [ChuckNorrisJoke] = []
     
     // MARK: - Private Properties
-    private let storage = QuoteManager.shared
+    private let storage = StorageManager.shared
     
     // MARK: - Public Properties
     weak var delegate: FavoritesViewModelDelegate?

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C63CB5772C30534900925E54 /* PresentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63CB5762C30534900925E54 /* PresentView.swift */; };
 		C651BFDF2C276C67006BB538 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C651BFDE2C276C67006BB538 /* TabBarController.swift */; };
 		C651BFE12C276D06006BB538 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C651BFE02C276D06006BB538 /* FavoritesViewController.swift */; };
 		C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */; };
@@ -42,10 +43,11 @@
 		C6C324C22C2B3B5C007FCC3F /* QuoteHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C324C12C2B3B5C007FCC3F /* QuoteHeaderView.swift */; };
 		C6C324C42C2B4AC2007FCC3F /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C324C32C2B4AC2007FCC3F /* FavoritesViewModel.swift */; };
 		C6F993F52C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6F993F32C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld */; };
-		C6F993F72C2C87D70086E4B2 /* QuoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F993F62C2C87D70086E4B2 /* QuoteManager.swift */; };
+		C6F993F72C2C87D70086E4B2 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F993F62C2C87D70086E4B2 /* StorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C63CB5762C30534900925E54 /* PresentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentView.swift; sourceTree = "<group>"; };
 		C651BFDE2C276C67006BB538 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		C651BFE02C276D06006BB538 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		C67DB9CB2C258C3800A06D1A /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
@@ -82,7 +84,7 @@
 		C6C324C12C2B3B5C007FCC3F /* QuoteHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteHeaderView.swift; sourceTree = "<group>"; };
 		C6C324C32C2B4AC2007FCC3F /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		C6F993F42C2C7EAD0086E4B2 /* QuoteData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QuoteData.xcdatamodel; sourceTree = "<group>"; };
-		C6F993F62C2C87D70086E4B2 /* QuoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteManager.swift; sourceTree = "<group>"; };
+		C6F993F62C2C87D70086E4B2 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C63CB5752C30533700925E54 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C63CB5762C30534900925E54 /* PresentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C67B87472C249D53001BD1BF /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,7 +200,7 @@
 			children = (
 				C6A3DD112C22011600914376 /* CoreDataStack.swift */,
 				C6A3DD192C22216C00914376 /* NetworkController.swift */,
-				C6F993F62C2C87D70086E4B2 /* QuoteManager.swift */,
+				C6F993F62C2C87D70086E4B2 /* StorageManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -235,6 +245,7 @@
 		C6C324BB2C2B2870007FCC3F /* PresentVC */ = {
 			isa = PBXGroup;
 			children = (
+				C63CB5752C30533700925E54 /* Views */,
 				C6A3DD0B2C22009E00914376 /* QuoteViewModel.swift */,
 				C6A3DD0F2C2200D900914376 /* PresentViewController.swift */,
 			);
@@ -348,7 +359,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C67DB9CC2C258C3800A06D1A /* UIView + Extensions.swift in Sources */,
-				C6F993F72C2C87D70086E4B2 /* QuoteManager.swift in Sources */,
+				C6F993F72C2C87D70086E4B2 /* StorageManager.swift in Sources */,
 				C6A3DD1C2C22227900914376 /* CategoryList.swift in Sources */,
 				C6C324C22C2B3B5C007FCC3F /* QuoteHeaderView.swift in Sources */,
 				C69B6AC22C2DFCC400B7350C /* String + Extensions.swift in Sources */,
@@ -368,6 +379,7 @@
 				C68E5E702C287C4200967304 /* JokeDTO.swift in Sources */,
 				C6A3DCF22C21FE2800914376 /* MainViewController.swift in Sources */,
 				C6F993F52C2C7EAD0086E4B2 /* QuoteData.xcdatamodeld in Sources */,
+				C63CB5772C30534900925E54 /* PresentView.swift in Sources */,
 				C6C324C02C2B2962007FCC3F /* QuoteCell.swift in Sources */,
 				C6A3DD102C2200D900914376 /* PresentViewController.swift in Sources */,
 				C68A33412C294B8E00769C28 /* SectionConfiguration.swift in Sources */,

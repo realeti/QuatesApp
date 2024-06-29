@@ -28,7 +28,7 @@ protocol QuoteViewModelDelegate: AnyObject {
 final class QuoteViewModel: QuoteModeling {
     // MARK: - Private Properties
     private let networkController = NetworkController()
-    private lazy var storage = QuoteManager.shared
+    private lazy var storage = StorageManager.shared
     
     private(set) var quote: Quote?
     private(set) var joke: Joke?

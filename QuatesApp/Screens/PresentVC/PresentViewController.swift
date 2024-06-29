@@ -9,96 +9,26 @@ import UIKit
 import SnapKit
 
 final class PresentViewController: UIViewController {
-    
-    // MARK: - UI
-    private lazy var closeButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(systemName: K.systemCloseButton)?
-            .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.black)
-        button.setBackgroundImage(image, for: .normal)
-        button.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var randomImageView: UIImageView = {
-        let imageView = UIImageView()
-        let image = UIImage(resource: .redo)
-            .withTintColor(.heavyGray.withAlphaComponent(0.12))
-        imageView.image = image
-        return imageView
-    }()
-    
-    private let sectionLabel = UILabel(
-        text: K.randomQuote,
-        textColor: .dark,
-        font: UIFont(name: K.fontMontserrat400, size: 36)
-    )
-    
-    private let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .snow
-        view.layer.cornerRadius = 25
-        view.makeShadow(color: .heavyGray)
-        view.clipsToBounds = false
-        return view
-    }()
-    
-    private let activityIndicator = UIActivityIndicatorView(style: .medium)
-    private let quoteStackView = UIStackView(axis: .vertical, spacing: 20)
-    
-    private lazy var quoteTextView: UITextView = {
-        let view = UITextView()
-        view.isEditable = false
-        view.isScrollEnabled = false
-        view.textColor = .dark
-        view.textAlignment = .center
-        view.font = UIFont(name: K.fontPTSerifItalic, size: 22)
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-    private let authorLabel = UILabel(
-        textColor: .heavyGray,
-        alignment: .center,
-        font: UIFont(name: K.fontPTSerifItalic, size: 19)
-    )
-    
-    private lazy var heartButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(resource: .heartOutline)
-        button.isUserInteractionEnabled = false
-        button.setBackgroundImage(image, for: .normal)
-        button.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
-        return button
-    }()
-    
     // MARK: - Public Properties
     var viewModel: QuoteViewModel?
     
     // MARK: - Private Properties
+    private var presentView: PresentView!
     private var isInitialImage = true
-
+    
+    // MARK: - Life Cycle
+    override func loadView() {
+        super.loadView()
+        
+        presentView = PresentView()
+        view = presentView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
         configureUI()
         fetchData()
-        setupConstraints()
-    }
-    
-    // MARK: - Set Views
-    private func setupUI() {
-        view.addSubview(closeButton)
-        view.addSubview(randomImageView)
-        view.addSubview(sectionLabel)
-        view.addSubview(containerView)
-        containerView.addSubview(activityIndicator)
-        containerView.addSubview(quoteStackView)
-        quoteStackView.addArrangedSubview(quoteTextView)
-        quoteStackView.addArrangedSubview(authorLabel)
-        containerView.addSubview(heartButton)
     }
 }
 
@@ -107,6 +37,9 @@ extension PresentViewController {
     private func configureUI() {
         view.backgroundColor = .snow
         configureSectionLabel()
+        
+        presentView.closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        presentView.heartButton.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
     }
     
     private func configureSectionLabel() {
@@ -114,9 +47,9 @@ extension PresentViewController {
         
         switch viewModel.sectionType {
         case .quote:
-            sectionLabel.text = K.randomQuote
+            presentView.sectionLabel.text = K.randomQuote
         default:
-            sectionLabel.text = K.randomJoke
+            presentView.sectionLabel.text = K.randomJoke
         }
     }
 }
@@ -137,7 +70,7 @@ extension PresentViewController: QuoteViewModelDelegate {
     func didFetchData(_ section: SectionType) {
         DispatchQueue.main.async { [weak self] in
             self?.configureUI(for: section)
-            self?.heartButton.isUserInteractionEnabled = true
+            self?.presentView.heartButton.isUserInteractionEnabled = true
         }
     }
 
@@ -150,10 +83,10 @@ extension PresentViewController: QuoteViewModelDelegate {
     func didChangeLoadingState(isLoading: Bool) {
         DispatchQueue.main.async { [weak self] in
             if isLoading {
-                self?.activityIndicator.startAnimating()
+                self?.presentView.activityIndicator.startAnimating()
             } else {
-                self?.activityIndicator.stopAnimating()
-                self?.activityIndicator.removeFromSuperview()
+                self?.presentView.activityIndicator.stopAnimating()
+                self?.presentView.activityIndicator.removeFromSuperview()
             }
         }
     }
@@ -195,8 +128,8 @@ extension PresentViewController {
     }
     
     private func configureSection(text: String, author: String) {
-        quoteTextView.text = text
-        authorLabel.text = author
+        presentView.quoteTextView.text = text
+        presentView.authorLabel.text = author
     }
 }
 
@@ -218,82 +151,8 @@ extension PresentViewController {
         let image: ImageResource = isInitialImage ? .heartFilled : .heartOutline
         let newImage = UIImage(resource: image)
         
-        UIView.transition(with: heartButton, duration: 0.3, options: .transitionFlipFromLeft, animations: {
-            self.heartButton.setBackgroundImage(newImage, for: .normal)
+        UIView.transition(with: presentView.heartButton, duration: 0.3, options: .transitionFlipFromLeft, animations: {
+            self.presentView.heartButton.setBackgroundImage(newImage, for: .normal)
         }, completion: nil)
     }
-}
-
-// MARK: - Setup Constraints
-extension PresentViewController {
-    private func setupConstraints() {
-        closeButtonSetupConstraints()
-        randomImageViewSetupConstraints()
-        sectionLabelSetupConstraints()
-        containerViewSetupConstraints()
-        activityIndicatorSetupConstraints()
-        quoteStackViewSetupConstraints()
-        heartButtonSetupConstraints()
-    }
-    
-    private func closeButtonSetupConstraints() {
-        closeButton.snp.makeConstraints { make in
-            make.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.width.height.equalTo(Metrics.closeButtonHeight)
-        }
-    }
-    
-    private func randomImageViewSetupConstraints() {
-        randomImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(32)
-            make.leading.equalTo(sectionLabel.snp.leading).offset(22)
-            make.width.height.equalTo(Metrics.randomImageViewHeight)
-        }
-    }
-    
-    private func sectionLabelSetupConstraints() {
-        sectionLabel.snp.makeConstraints { make in
-            make.top.equalTo(randomImageView.snp.bottom).offset(-18)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(25)
-        }
-    }
-    
-    private func containerViewSetupConstraints() {
-        containerView.snp.makeConstraints { make in
-            make.top.equalTo(sectionLabel.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.height.greaterThanOrEqualTo(Metrics.containerViewHeight)
-        }
-    }
-    
-    private func activityIndicatorSetupConstraints() {
-        activityIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-    }
-    
-    private func quoteStackViewSetupConstraints() {
-        quoteStackView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(heartButton.snp.top).offset(-10).priority(.low)
-        }
-    }
-    
-    private func heartButtonSetupConstraints() {
-        heartButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(15)
-            make.height.width.equalTo(Metrics.heartButtonHeight)
-        }
-    }
-}
-
-fileprivate struct Metrics {
-    static let closeButtonHeight: CGFloat = 22.0
-    static let randomImageViewHeight: CGFloat = 85.0
-    static let containerViewHeight: CGFloat = 400.0
-    static let heartButtonHeight: CGFloat = 32.0
-    
-    private init () {}
 }

@@ -1,5 +1,5 @@
 //
-//  QuoteManager.swift
+//  StorageManager.swift
 //  QuatesApp
 //
 //  Created by Apple M1 on 26.06.2024.
@@ -7,9 +7,9 @@
 
 import CoreData
 
-final class QuoteManager {
+final class StorageManager {
     // MARK: - Singleton Instance
-    static let shared = QuoteManager()
+    static let shared = StorageManager()
     
     // MARK: - Private Properties
     private let storage = CoreDataStack.shared
@@ -84,7 +84,7 @@ final class QuoteManager {
 }
 
 // MARK: - Entity Exists
-extension QuoteManager {
+extension StorageManager {
     private func entityExists<T: NSManagedObject>(entityType: T.Type, _ id: String) -> Bool {
         let context = storage.viewContext
         let request = NSFetchRequest<T>(entityName: String(describing: entityType))
@@ -100,7 +100,7 @@ extension QuoteManager {
 }
 
 // MARK: - Fetch Quotes
-extension QuoteManager {
+extension StorageManager {
     func fetchQuotes(completion: @escaping (Result<[Quote], Error>) -> Void) {
         let context = storage.backgroundContext
         
@@ -132,7 +132,7 @@ extension QuoteManager {
 }
 
 // MARK: - Fetch Jokes
-extension QuoteManager {
+extension StorageManager {
     func fetchJokes(completion: @escaping (Result<[Joke], Error>) -> Void) {
         let context = storage.backgroundContext
         
@@ -160,7 +160,7 @@ extension QuoteManager {
 }
 
 // MARK: - Fetch Chuck Norris Jokes
-extension QuoteManager {
+extension StorageManager {
     func fetchChuckJokes(completion: @escaping (Result<[ChuckNorrisJoke], Error>) -> Void) {
         let context = storage.backgroundContext
         
@@ -188,7 +188,7 @@ extension QuoteManager {
 }
 
 // MARK: - Delete Generic Entity
-extension QuoteManager {
+extension StorageManager {
     private func deleteEntity<T: NSManagedObject>(entityType: T.Type, _ id: String, completion: @escaping (Error?) -> Void) {
         let context = storage.backgroundContext
         let request = NSFetchRequest<T>(entityName: String(describing: entityType))
@@ -212,7 +212,7 @@ extension QuoteManager {
 }
 
 // MARK: - Delete Quote
-extension QuoteManager {
+extension StorageManager {
     func deleteQuote(withId id: String, completion: @escaping (Error?) -> Void) {
         deleteEntity(entityType: QuoteCD.self, id) { error in
             if let error {
@@ -225,7 +225,7 @@ extension QuoteManager {
 }
 
 // MARK: - Delete Joke
-extension QuoteManager {
+extension StorageManager {
     func deleteJoke(withId id: String, completion: @escaping (Error?) -> Void) {
         deleteEntity(entityType: JokeCD.self, id) { error in
             if let error {
@@ -238,7 +238,7 @@ extension QuoteManager {
 }
 
 // MARK: - Delete C.N. Joke
-extension QuoteManager {
+extension StorageManager {
     func deleteChuckJoke(withId id: String, completion: @escaping (Error?) -> Void) {
         deleteEntity(entityType: ChuckJokeCD.self, id) { error in
             if let error {
