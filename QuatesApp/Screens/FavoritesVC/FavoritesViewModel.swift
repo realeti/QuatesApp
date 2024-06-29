@@ -36,27 +36,25 @@ final class FavoritesViewModel: FavoritesModeling {
     
     // MARK: - Fetch Data
     func fetchData(completion: @escaping () -> Void) {
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            let dispatchGroup = DispatchGroup()
-            
-            dispatchGroup.enter()
-            self?.fetchQuotes {
-                dispatchGroup.leave()
-            }
-            
-            dispatchGroup.enter()
-            self?.fetchJokes {
-                dispatchGroup.leave()
-            }
-            
-            dispatchGroup.enter()
-            self?.fetchChuckJokes {
-                dispatchGroup.leave()
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                completion()
-            }
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        fetchQuotes {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        fetchJokes {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        fetchChuckJokes {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion()
         }
     }
 }
@@ -112,36 +110,21 @@ extension FavoritesViewModel {
 // MARK: - Delete Data
 extension FavoritesViewModel {
     func deleteData(withId id: String, completion: @escaping () -> Void) {
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self else { return }
-            
-            switch sectionType {
-            case .quote:
-                storage.deleteQuote(withId: id) { [weak self] error in
-                    if let error {
-                        self?.delegate?.didFailDeleting(error)
-                        return
-                    }
-                    completion()
-                }
-            case .joke:
-                storage.deleteJoke(withId: id) { [weak self] error in
-                    if let error {
-                        self?.delegate?.didFailDeleting(error)
-                        return
-                    }
-                    completion()
-                }
-            case .chucknorris:
-                storage.deleteChuckJoke(withId: id) { [weak self] error in
-                    if let error {
-                        self?.delegate?.didFailDeleting(error)
-                        return
-                    }
-                    completion()
-                }
+        let deleteCompletion: (Error?) -> Void = { [weak self] error in
+            if let error {
+                self?.delegate?.didFailDeleting(error)
+            } else {
+                completion()
             }
         }
         
+        switch sectionType {
+        case .quote:
+            storage.deleteEntity(entityType: QuoteCD.self, id, completion: deleteCompletion)
+        case .joke:
+            storage.deleteEntity(entityType: JokeCD.self, id, completion: deleteCompletion)
+        case .chucknorris:
+            storage.deleteEntity(entityType: ChuckJokeCD.self, id, completion: deleteCompletion)
+        }
     }
 }

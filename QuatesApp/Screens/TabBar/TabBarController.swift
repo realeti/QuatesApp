@@ -18,8 +18,6 @@ class TabBarController: UITabBarController {
     
     // MARK: - Configure TabBar
     private func configureTabBar() {
-        //tabBar.backgroundColor = UIColor(red: 231/255, green: 231/255, blue: 231/255, alpha: 1.0)
-        //tabBar.backgroundColor = .foggySnow
         tabBar.tintColor = .black
         tabBar.unselectedItemTintColor = UIColor(resource: .heavyGray)
     }

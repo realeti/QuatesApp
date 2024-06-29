@@ -146,11 +146,15 @@ extension FavoritesViewController {
 // MARK: - Favorites ViewModel Delegate
 extension FavoritesViewController: FavoritesViewModelDelegate {
     func didFailFetching(_ error: any Error) {
-        presentAlertContoller(error)
+        DispatchQueue.main.async { [weak self] in
+            self?.presentAlertContoller(error)
+        }
     }
     
     func didFailDeleting(_ error: any Error) {
-        presentAlertContoller(error)
+        DispatchQueue.main.async { [weak self] in
+            self?.presentAlertContoller(error)
+        }
     }
 }
 

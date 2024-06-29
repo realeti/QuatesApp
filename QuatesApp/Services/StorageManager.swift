@@ -21,7 +21,7 @@ final class StorageManager {
     
     // MARK: - Save Generic Entity
     private func saveEntity<T: NSManagedObject>(entityType: T.Type, configure: @escaping (T) -> Void) {
-        let context = storage.viewContext
+        let context = storage.backgroundContext
         
         context.perform {
             let entity = T(context: context)
@@ -86,7 +86,7 @@ final class StorageManager {
 // MARK: - Entity Exists
 extension StorageManager {
     private func entityExists<T: NSManagedObject>(entityType: T.Type, _ id: String) -> Bool {
-        let context = storage.viewContext
+        let context = storage.backgroundContext
         let request = NSFetchRequest<T>(entityName: String(describing: entityType))
         request.predicate = NSPredicate(format: "id == %@", id)
         
@@ -99,97 +99,70 @@ extension StorageManager {
     }
 }
 
-// MARK: - Fetch Quotes
+// MARK: - Fetch Entities
 extension StorageManager {
-    func fetchQuotes(completion: @escaping (Result<[Quote], Error>) -> Void) {
-        let context = storage.backgroundContext
+    private func fetchEntities<T: NSManagedObject, U>(
+        entityType: T.Type,
+        configure: @escaping (T) -> U,
+        completion: @escaping (Result<[U], Error>) -> Void
+    ) {
+        let context = storage.viewContext
         
         context.perform {
-            let request: NSFetchRequest<QuoteCD> = QuoteCD.fetchRequest()
+            let request = NSFetchRequest<T>(entityName: String(describing: entityType))
             
             do {
-                let quoteObjects = try context.fetch(request)
+                let objects = try context.fetch(request)
                 
-                guard !quoteObjects.isEmpty else {
+                guard !objects.isEmpty else {
                     completion(.success([]))
                     return
                 }
                 
-                let quotes = quoteObjects.map {
-                    Quote(
-                        quote: $0.text ?? "",
-                        author: $0.author ?? "",
-                        category: $0.category ?? ""
-                    )
-                }
+                let entities = objects.map { configure($0) }
                 
-                completion(.success(quotes))
+                completion(.success(entities))
             } catch {
                 completion(.failure(error))
             }
         }
+    }
+}
+
+// MARK: - Fetch Quotes
+extension StorageManager {
+    func fetchQuotes(completion: @escaping (Result<[Quote], Error>) -> Void) {
+        fetchEntities(entityType: QuoteCD.self, configure: { quoteCD in
+            Quote(
+                quote: quoteCD.text ?? "",
+                author: quoteCD.author ?? "",
+                category: quoteCD.category ?? ""
+            )
+        }, completion: completion)
     }
 }
 
 // MARK: - Fetch Jokes
 extension StorageManager {
     func fetchJokes(completion: @escaping (Result<[Joke], Error>) -> Void) {
-        let context = storage.backgroundContext
-        
-        context.perform {
-            let request: NSFetchRequest<JokeCD> = JokeCD.fetchRequest()
-            
-            do {
-                let jokeObjects = try context.fetch(request)
-                
-                guard !jokeObjects.isEmpty else {
-                    completion(.success([]))
-                    return
-                }
-                
-                let jokes = jokeObjects.map {
-                    Joke(joke: $0.text ?? "")
-                }
-                
-                completion(.success(jokes))
-            } catch {
-                completion(.failure(error))
-            }
-        }
+        fetchEntities(entityType: JokeCD.self, configure: { jokeCD in
+            Joke(joke: jokeCD.text ?? "")
+        }, completion: completion)
     }
 }
 
-// MARK: - Fetch Chuck Norris Jokes
+// MARK: - Fetch C.N. jokes
 extension StorageManager {
     func fetchChuckJokes(completion: @escaping (Result<[ChuckNorrisJoke], Error>) -> Void) {
-        let context = storage.backgroundContext
-        
-        context.perform {
-            let request: NSFetchRequest<ChuckJokeCD> = ChuckJokeCD.fetchRequest()
-            
-            do {
-                let chuckJokeObjects = try context.fetch(request)
-                
-                guard !chuckJokeObjects.isEmpty else {
-                    completion(.success([]))
-                    return
-                }
-                
-                let chuckJokes = chuckJokeObjects.map {
-                    ChuckNorrisJoke(joke: $0.text ?? "")
-                }
-                
-                completion(.success(chuckJokes))
-            } catch {
-                completion(.failure(error))
-            }
-        }
+        fetchEntities(entityType: ChuckJokeCD.self, configure: { chuckJokeCD in
+            ChuckNorrisJoke(joke: chuckJokeCD.text ?? "")
+        }, completion: completion)
     }
 }
 
 // MARK: - Delete Generic Entity
 extension StorageManager {
-    private func deleteEntity<T: NSManagedObject>(entityType: T.Type, _ id: String, completion: @escaping (Error?) -> Void) {
+    func deleteEntity<T: NSManagedObject>(entityType: T.Type, _ id: String, completion: @escaping (Error?) -> Void) {
         let context = storage.backgroundContext
         let request = NSFetchRequest<T>(entityName: String(describing: entityType))
         request.predicate = NSPredicate(format: "id == %@", id)
@@ -207,45 +180,6 @@ extension StorageManager {
             } catch {
                 completion(error)
             }
-        }
-    }
-}
-
-// MARK: - Delete Quote
-extension StorageManager {
-    func deleteQuote(withId id: String, completion: @escaping (Error?) -> Void) {
-        deleteEntity(entityType: QuoteCD.self, id) { error in
-            if let error {
-                completion(error)
-                return
-            }
-            completion(nil)
-        }
-    }
-}
-
-// MARK: - Delete Joke
-extension StorageManager {
-    func deleteJoke(withId id: String, completion: @escaping (Error?) -> Void) {
-        deleteEntity(entityType: JokeCD.self, id) { error in
-            if let error {
-                completion(error)
-                return
-            }
-            completion(nil)
-        }
-    }
-}
-
-// MARK: - Delete C.N. Joke
-extension StorageManager {
-    func deleteChuckJoke(withId id: String, completion: @escaping (Error?) -> Void) {
-        deleteEntity(entityType: ChuckJokeCD.self, id) { error in
-            if let error {
-                completion(error)
-                return
-            }
-            completion(nil)
         }
     }
 }
