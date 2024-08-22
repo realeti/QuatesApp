@@ -14,7 +14,7 @@ protocol QuoteModeling {
     var sectionType: SectionType { get }
     
     func fetchData()
-    func saveData()
+    func saveData() // test
 }
 
 protocol QuoteViewModelDelegate: AnyObject {
