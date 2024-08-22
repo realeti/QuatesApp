@@ -164,10 +164,11 @@ extension StorageManager {
 extension StorageManager {
     func deleteEntity<T: NSManagedObject>(entityType: T.Type, _ id: String, completion: @escaping (Error?) -> Void) {
         let context = storage.backgroundContext
-        let request = NSFetchRequest<T>(entityName: String(describing: entityType))
-        request.predicate = NSPredicate(format: "id == %@", id)
         
         context.perform {
+            let request = NSFetchRequest<T>(entityName: String(describing: entityType))
+            request.predicate = NSPredicate(format: "id == %@", id)
+            
             do {
                 let results = try context.fetch(request)
                 
