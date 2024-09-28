@@ -6,7 +6,7 @@ _**English** | [Ukrainian](README.ua.md) | [Russian](README.ru.md)_
 <img src="https://img.shields.io/badge/Swift-5.10-mediumslateblue" alt="Swift Version 5.10" /></a>
 <a href="https://developer.apple.com/ios/">
 <img src="https://img.shields.io/badge/iOS-15.0%2B-indianred" alt="iOS Version 15.0"/></a>
-<img src="https://img.shields.io/badge/MVP+Router-goldenrod" alt="MVVM" />
+<img src="https://img.shields.io/badge/MVVM-goldenrod" alt="MVVM" />
 <img src="https://img.shields.io/badge/CoreData-mediumslateblue" alt="CoreData" /></a>
 </p>
 
