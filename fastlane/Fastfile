@@ -44,7 +44,7 @@ lane :build_simulator do
   )
 
   run_tests(
-    scheme: "YourAppScheme",
+    scheme: "QuatesApp",
     device: "iPhone 14"
   )
 end
