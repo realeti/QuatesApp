@@ -39,9 +39,9 @@ lane :build_simulator do
     scheme: "QuatesApp",
     sdk: "iphonesimulator",
     clean: true,
+    configuration: "Debug",
     export_method: "development",  # симулятор не требует подписи
-    skip_codesigning: true,          # отключаем подпись
-    include_simulator_logs: false
+    skip_codesigning: true          # отключаем подпись
   )
 
 end
