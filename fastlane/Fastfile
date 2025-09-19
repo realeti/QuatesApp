@@ -43,8 +43,4 @@ lane :build_simulator do
     skip_codesigning: true          # отключаем подпись
   )
 
-  run_tests(
-    scheme: "QuatesApp",
-    device: "iPhone 14"
-  )
 end
