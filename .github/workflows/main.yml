@@ -1,0 +1,47 @@
+name: CI/CD for iOS
+
+on:
+  push:
+    branches:
+      - some-tests
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Xcode
+      uses: actions/setup-xcode@v2
+      with:
+        xcode-version: '12.x' # Choose the appropriate version
+
+    - name: Install dependencies
+      run: |
+        bundle install
+        bundle exec fastlane install_plugins
+
+    - name: Build and test
+      run: bundle exec fastlane build_and_test
+
+  deploy:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Xcode
+      uses: actions/setup-xcode@v2
+      with:
+        xcode-version: '12.x' # Choose the appropriate version
+
+    - name: Install dependencies
+      run: |
+        bundle install
+        bundle exec fastlane install_plugins
+
+    - name: Deploy to App Store
+      run: bundle exec fastlane deploy_to_app_store

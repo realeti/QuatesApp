@@ -300,7 +300,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C6A3DCFE2C21FE2900914376 /* Build configuration list for PBXNativeTarget "QuatesApp" */;
 			buildPhases = (
-				C6CFA8AC2C77BDE6008B78E9 /* ShellScript */,
 				C6A3DCE62C21FE2800914376 /* Sources */,
 				C6A3DCE72C21FE2800914376 /* Frameworks */,
 				C6A3DCE82C21FE2800914376 /* Resources */,
@@ -367,26 +366,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C6CFA8AC2C77BDE6008B78E9 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"Script is running\"\n\n# Получаем количество коммитов для использования в качестве номера сборки\nbuildNumber=$(git rev-list --count HEAD)\n\n# Указываем путь к Info.plist\ninfoPlist=\"${PROJECT_DIR}/Path/To/Your/Info.plist\"\n\n# Обновляем номер сборки (CFBundleVersion) в Info.plist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$infoPlist\"\n\necho \"Build Number set to ${buildNumber} in ${infoPlist}\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C6A3DCE62C21FE2800914376 /* Sources */ = {
@@ -557,8 +536,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = 69M929ZQ47;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = QuatesApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -588,8 +568,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = 69M929ZQ47;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = QuatesApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
