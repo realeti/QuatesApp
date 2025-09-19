@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
-        - name: Show available Xcode versions
+      - name: Show available Xcode versions
         run: |
           ls /Applications/ | grep Xcode
           xcodebuild -version
