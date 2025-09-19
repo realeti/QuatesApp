@@ -7,41 +7,41 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-      xcode-version: '15.4'
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.4'
 
-    - name: Install dependencies
-      run: |
-        bundle install
-        bundle exec fastlane install_plugins
+      - name: Install dependencies
+        run: |
+          bundle install
+          bundle exec fastlane install_plugins
 
-    - name: Build and test
-      run: bundle exec fastlane build_and_test
+      - name: Build and test
+        run: bundle exec fastlane build_and_test
 
   deploy:
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-      xcode-version: '15.4'
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.4'
 
-    - name: Install dependencies
-      run: |
-        bundle install
-        bundle exec fastlane install_plugins
+      - name: Install dependencies
+        run: |
+          bundle install
+          bundle exec fastlane install_plugins
 
-    - name: Deploy to App Store
-      run: bundle exec fastlane deploy_to_app_store
+      - name: Deploy to App Store
+        run: bundle exec fastlane deploy_to_app_store
