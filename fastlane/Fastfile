@@ -40,7 +40,8 @@ lane :build_simulator do
     sdk: "iphonesimulator",
     clean: true,
     export_method: "development",  # симулятор не требует подписи
-    skip_codesigning: true          # отключаем подпись
+    skip_codesigning: true,          # отключаем подпись
+    include_simulator_logs: false
   )
 
 end
