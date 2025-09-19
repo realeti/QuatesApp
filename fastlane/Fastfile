@@ -20,16 +20,15 @@ platform :ios do
     # Increment the build number
     increment_build_number
   end
-end
 
-lane :build_simulator do
+  lane :build_simulator do
   build_app(
     scheme: "QuatesApp",
     sdk: "iphonesimulator",
     clean: true,
     configuration: "Debug",
-    export_method: "development",  # симулятор не требует подписи
+    export_method: "debugging",  # симулятор не требует подписи
     skip_codesigning: true          # отключаем подпись
   )
-
+  end
 end
