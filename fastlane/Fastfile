@@ -27,7 +27,7 @@ platform :ios do
     sdk: "iphonesimulator",
     clean: true,
     configuration: "Debug",
-    export_method: "debugging",  # симулятор не требует подписи
+    export_method: "development",  # симулятор не требует подписи
     skip_codesigning: true          # отключаем подпись
   )
   end
