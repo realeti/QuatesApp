@@ -61,7 +61,7 @@ extension PresentViewController {
 
 extension PresentViewController {
     private func fetchData() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
