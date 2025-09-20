@@ -53,12 +53,10 @@ final class NetworkController: QuoteLoading {
     private func loadData(endpoint: APIEndpoint, completion: @escaping (Result<Data, Error>) -> Void) {
         let urlString = baseUrlString.appending(endpoint.path)
 
-        /*guard let url = URL(string: urlString) else {
+        guard let url=URL(string: urlString) else {
             completion(.failure(NetErrors.invalidURL))
             return
-        }*/
-        
-        let url = URL(string: urlString)!
+        }
 
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
