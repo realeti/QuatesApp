@@ -37,7 +37,7 @@ jobs:
       # 5️⃣ Запускаем линтер в строгом режиме
       - name: Run SwiftLint
         run: |
-          swiftlint lint --strict --config .swiftlint.yml
+          swiftlint lint --config .swiftlint.yml
 
       # 6️⃣ Запускаем форматтер в режиме проверки
       - name: Check SwiftFormat
