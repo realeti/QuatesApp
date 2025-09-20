@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct AppConfig {
+enum AppConfig {
     static let apiKey = "PDRpJeNaA9Gcq11+FRunkA==NMd6tiN48hUMCcYD"
 }
