@@ -58,4 +58,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: QuatesApp-Build
-          path: build/Build/Products/Debug-iphoneos/QuatesApp.app
+          path: build/Build/Products/Debug-iphonesimulator/QuatesApp.app
