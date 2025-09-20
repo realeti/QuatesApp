@@ -1,4 +1,4 @@
-name: CI for iOS (Simulator Build)
+name: CI for iOS
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     steps:
       # 1️⃣ Получаем код
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       # 2️⃣ Показываем доступные Xcode
       - name: Show available Xcode versions
@@ -28,13 +28,36 @@ jobs:
         with:
           xcode-version: '26.0.0'
 
-      # 4️⃣ Устанавливаем зависимости через Bundler
-      - name: Install dependencies
+      # 4️⃣ Устанавливаем линтер и форматтер
+      - name: Install SwiftLint & SwiftFormat
         run: |
-          bundle install --jobs 4 --retry 3
-          bundle exec fastlane install_plugins --verbose || true
+          brew install swiftlint
+          brew install swiftformat
 
-      # 5️⃣ Сборка и тесты для симулятора
-      - name: Build and test on Simulator
+      # 5️⃣ Запускаем линтер в строгом режиме
+      - name: Run SwiftLint
         run: |
-          bundle exec fastlane build_simulator
+          swiftlint lint --strict --config .swiftlint.yml
+
+      # 6️⃣ Запускаем форматтер в режиме проверки
+      - name: Check SwiftFormat
+        run: |
+          swiftformat . --lint --config .swiftformat
+
+      # 7️⃣ Сборка проекта
+      - name: Build project
+        run: |
+          xcodebuild \
+            -scheme QuatesApp \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            clean build
+
+      # 8️⃣ Запуск тестов
+      - name: Run tests
+        run: |
+          xcodebuild \
+            -scheme QuatesApp \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            clean test
