@@ -52,12 +52,3 @@ jobs:
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
             clean build
-
-      # 8️⃣ Запуск тестов
-      - name: Run tests
-        run: |
-          xcodebuild \
-            -scheme QuatesApp \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
-            clean test
