@@ -51,12 +51,4 @@ jobs:
             -scheme QuatesApp \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
-            -derivedDataPath build \
             clean build
-            
-      # 8️⃣ Сохранить билд как артефакт в GitHub Actins
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: QuatesApp-Build
-          path: build/Build/Products/Debug-iphonesimulator/QuatesApp.app

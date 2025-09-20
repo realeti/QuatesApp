@@ -1,0 +1,68 @@
+# ==========================
+# Xcode
+# ==========================
+# User settings
+xcuserdata/
+*.xcuserstate
+
+# Build products
+build/
+DerivedData/
+*.app
+*.app.dSYM
+*.ipa
+*.xcarchive
+
+# Project workspace settings
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# ==========================
+# Swift Package Manager
+# ==========================
+.build/
+Packages/
+.swiftpm/
+
+# ==========================
+# CocoaPods
+# ==========================
+Pods/
+Podfile.lock
+
+# ==========================
+# Carthage
+# ==========================
+Carthage/Build/
+
+# ==========================
+# Fastlane
+# ==========================
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# ==========================
+# App Config / Secrets
+# ==========================
+QuatesApp/QuatesApp/Support/AppConfig.swift
+
+# ==========================
+# macOS
+# ==========================
+.DS_Store
+
+# ==========================
+# Logs / Temp
+# ==========================
+*.log
+*.tmp
+
+# ==========================
+# Optional: ignore editor files
+# ==========================
+*.swp
+*.idea/
+.vscode/

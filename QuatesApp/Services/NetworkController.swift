@@ -45,7 +45,7 @@ final class NetworkController: QuoteLoading {
 
     private let headers = [
         "accept": "application/json",
-        "X-Api-Key": "PDRpJeNaA9Gcq11+FRunkA==NMd6tiN48hUMCcYD"
+        "X-Api-Key": AppConfig.apiKey
     ]
 
     private let baseUrlString = "https://api.api-ninjas.com/v1/"
