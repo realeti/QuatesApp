@@ -51,6 +51,7 @@ jobs:
             -scheme QuatesApp \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -derivedDataPath build \
             clean build
             
       # 8️⃣ Сохранить билд как артефакт в GitHub Actins
