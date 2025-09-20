@@ -77,6 +77,6 @@ enum CategoryList: String, CaseIterable {
     case success
 
     var name: String {
-        return self.rawValue.capitalized
+        return rawValue.capitalized
     }
 }

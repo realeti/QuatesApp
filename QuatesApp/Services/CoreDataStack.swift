@@ -9,12 +9,14 @@ import CoreData
 
 final class CoreDataStack {
     // MARK: - Singleton Instance
+
     static let shared = CoreDataStack()
-    
+
     // MARK: - Persistent Container
+
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: K.coreDataModelName)
-        container.loadPersistentStores { (storeDescription, error) in
+        let container = NSPersistentContainer(name: Constants.coreDataModelName)
+        container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             } else {
@@ -23,18 +25,21 @@ final class CoreDataStack {
         }
         return container
     }()
-    
+
     // MARK: - View Context
+
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
-    
+
     // MARK: - New Background Context
+
     var backgroundContext: NSManagedObjectContext {
         return persistentContainer.newBackgroundContext()
     }
-    
+
     // MARK: - Save Context
+
     func saveContext(_ context: NSManagedObjectContext) {
         if context.hasChanges {
             do {
@@ -45,6 +50,6 @@ final class CoreDataStack {
             }
         }
     }
-    
+
     private init() {}
 }

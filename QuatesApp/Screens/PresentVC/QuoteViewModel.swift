@@ -12,7 +12,7 @@ protocol QuoteModeling {
     var joke: Joke? { get }
     var chuckNorrisJoke: ChuckNorrisJoke? { get }
     var sectionType: SectionType { get }
-    
+
     func fetchData()
     func saveData() // test
 }
@@ -27,26 +27,30 @@ protocol QuoteViewModelDelegate: AnyObject {
 
 final class QuoteViewModel: QuoteModeling {
     // MARK: - Private Properties
+
     private let networkController = NetworkController()
     private lazy var storage = StorageManager.shared
-    
+
     private(set) var quote: Quote?
     private(set) var joke: Joke?
     private(set) var chuckNorrisJoke: ChuckNorrisJoke?
-    
+
     private(set) var sectionType: SectionType
     private var quoteCategory: String?
-    
+
     // MARK: - Public Properties
+
     weak var delegate: QuoteViewModelDelegate?
-    
+
     // MARK: - Init
+
     init(sectionType: SectionType, quoteCategory: String? = nil) {
         self.sectionType = sectionType
         self.quoteCategory = quoteCategory
     }
-    
+
     // MARK: - Fetch Data
+
     func fetchData() {
         DispatchQueue.global(qos: .background).async {
             switch self.sectionType {
@@ -65,13 +69,14 @@ final class QuoteViewModel: QuoteModeling {
 }
 
 // MARK: - Fetch Quote
+
 extension QuoteViewModel {
     private func fetchQuote(for category: String) {
         delegate?.didChangeLoadingState(isLoading: true)
-        
+
         networkController.loadQuote(category: category) { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
-            
+
             do {
                 let quoteData = try result.get()
                 self?.quote = quoteData
@@ -84,13 +89,14 @@ extension QuoteViewModel {
 }
 
 // MARK: - Fetch Joke
+
 extension QuoteViewModel {
     private func fetchJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
-        
-        networkController.loadJoke() { [weak self] result in
+
+        networkController.loadJoke { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
-            
+
             do {
                 let jokeData = try result.get()
                 self?.joke = jokeData
@@ -103,13 +109,14 @@ extension QuoteViewModel {
 }
 
 // MARK: - Fetch Chuck Norris Joke
+
 extension QuoteViewModel {
     private func fetchChuckNorrisJoke() {
         delegate?.didChangeLoadingState(isLoading: true)
-        
-        networkController.loadChuckNorrisJoke() { [weak self] result in
+
+        networkController.loadChuckNorrisJoke { [weak self] result in
             self?.delegate?.didChangeLoadingState(isLoading: false)
-            
+
             do {
                 let jokeData = try result.get()
                 self?.chuckNorrisJoke = jokeData
@@ -122,6 +129,7 @@ extension QuoteViewModel {
 }
 
 // MARK: - Save Data
+
 extension QuoteViewModel {
     func saveData() {
         switch sectionType {
@@ -139,6 +147,7 @@ extension QuoteViewModel {
 }
 
 // MARK: - Save Quote
+
 extension QuoteViewModel {
     private func saveQuote(quote: Quote) {
         storage.saveQuote(
@@ -156,6 +165,7 @@ extension QuoteViewModel {
 }
 
 // MARK: - Save Joke
+
 extension QuoteViewModel {
     private func saveJoke(joke: Joke) {
         storage.saveJoke(text: joke.joke) { [weak self] error in
@@ -169,6 +179,7 @@ extension QuoteViewModel {
 }
 
 // MARK: - Save C.N. Joke
+
 extension QuoteViewModel {
     private func saveChuckJoke(joke: ChuckNorrisJoke) {
         storage.saveChuckJoke(text: joke.joke) { [weak self] error in

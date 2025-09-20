@@ -10,13 +10,13 @@ import UIKit
 extension UILabel {
     convenience init(text: String = "", textColor: UIColor = .label, alignment: NSTextAlignment = .left, font: UIFont?, lines: Int = 1) {
         self.init()
-        
+
         self.text = text
         self.textColor = textColor
-        self.backgroundColor = .clear
-        self.textAlignment = alignment
-        self.numberOfLines = lines
+        backgroundColor = .clear
+        textAlignment = alignment
+        numberOfLines = lines
         self.font = font
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
     }
 }

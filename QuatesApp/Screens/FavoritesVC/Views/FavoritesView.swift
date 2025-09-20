@@ -9,39 +9,43 @@ import UIKit
 
 final class FavoritesView: UIView {
     // MARK: - UI
+
     lazy var segmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
-        segment.insertSegment(withTitle: K.quoteTitle, at: 0, animated: true)
-        segment.insertSegment(withTitle: K.jokesTitle, at: 1, animated: true)
-        segment.insertSegment(withTitle: K.chuckNorrisTitle, at: 2, animated: true)
+        segment.insertSegment(withTitle: Constants.quoteTitle, at: 0, animated: true)
+        segment.insertSegment(withTitle: Constants.jokesTitle, at: 1, animated: true)
+        segment.insertSegment(withTitle: Constants.chuckNorrisTitle, at: 2, animated: true)
         segment.selectedSegmentTintColor = UIColor(resource: .snow)
         return segment
     }()
-    
+
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 176
         tableView.separatorStyle = .none
-        tableView.register(QuoteCell.self, forCellReuseIdentifier: K.quoteReuseIdentifier)
+        tableView.register(QuoteCell.self, forCellReuseIdentifier: Constants.quoteReuseIdentifier)
         tableView.backgroundColor = UIColor(resource: .snow)
         return tableView
     }()
-    
+
     // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupUI()
         configureUI()
         setupConstraints()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Set Views
+
     private func setupUI() {
         addSubview(segmentControl)
         addSubview(tableView)
@@ -49,6 +53,7 @@ final class FavoritesView: UIView {
 }
 
 // MARK: - Configure UI
+
 extension FavoritesView {
     private func configureUI() {
         backgroundColor = UIColor(resource: .snow)
@@ -57,19 +62,20 @@ extension FavoritesView {
 }
 
 // MARK: - Setup Constraints
+
 extension FavoritesView {
     private func setupConstraints() {
         setupSegmentControlConstraints()
         setupTableViewConstraints()
     }
-    
+
     private func setupSegmentControlConstraints() {
         segmentControl.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(10)
             make.centerX.equalToSuperview()
         }
     }
-    
+
     private func setupTableViewConstraints() {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(segmentControl.snp.bottom).offset(10)
@@ -79,12 +85,12 @@ extension FavoritesView {
     }
 }
 
-fileprivate struct Metrics {
+private struct Metrics {
     static let sectionImageHeight: CGFloat = 85.0
-    
+
     static let quotesTitleOffsetTop: CGFloat = -18
     static let jokesTitleOffsetTop: CGFloat = -12
     static let chuckTitleOffsetTop: CGFloat = -4
-    
-    private init () {}
+
+    private init() {}
 }

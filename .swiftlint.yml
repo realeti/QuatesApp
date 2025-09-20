@@ -1,0 +1,48 @@
+# Отключаем некоторые базовые правила, которые чаще мешают, чем помогают
+disabled_rules:
+  - trailing_whitespace   # пробелы в конце строки
+  - todo                  # TODO: и FIXME: не будут подсвечиваться как ошибки
+  - line_length           # ограничение длины строки (проверяется ревью)
+  - unused_optional_binding # не нужно предупреждать при if let _ = error и т.д.
+
+# Включаем полезные правила, которые по умолчанию выключены
+opt_in_rules:
+  - empty_count           # запрещает .count == 0 (лучше isEmpty)
+  - force_unwrapping      # подскажет где ! опасен
+  - force_cast            # подсветит as!
+  - closure_spacing       # проверка отступов в замыканиях
+  - operator_usage_whitespace
+
+# Исключаем внешние зависимости
+excluded:
+  - Pods
+  - Carthage
+  - Generated
+  - DerivedData
+
+# Кастомные параметры для правил
+identifier_name:
+  min_length: 2
+  excluded:                # допустимые короткие имена
+    - id
+    - x
+    - y
+    - i
+    - j
+
+type_name:
+  max_length: 40
+  excluded:
+    - URL
+    - JSON
+
+file_length:
+  warning: 400
+  error: 800
+
+type_body_length:
+  warning: 300
+  error: 500
+
+# Отчёт в Xcode-формате
+reporter: "xcode"

@@ -9,32 +9,33 @@ import UIKit
 
 final class MainView: UIView {
     // MARK: - UI
+
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = K.searchPlaceholder
+        searchBar.placeholder = Constants.searchPlaceholder
         return searchBar
     }()
-    
+
     lazy var segmentControl: UISegmentedControl = {
         let segment = UISegmentedControl()
-        segment.insertSegment(withTitle: K.quoteTitle, at: 0, animated: true)
-        segment.insertSegment(withTitle: K.jokesTitle, at: 1, animated: true)
-        segment.insertSegment(withTitle: K.chuckNorrisTitle, at: 2, animated: true)
+        segment.insertSegment(withTitle: Constants.quoteTitle, at: 0, animated: true)
+        segment.insertSegment(withTitle: Constants.jokesTitle, at: 1, animated: true)
+        segment.insertSegment(withTitle: Constants.chuckNorrisTitle, at: 2, animated: true)
         segment.selectedSegmentTintColor = UIColor(resource: .snow)
         return segment
     }()
-    
+
     let sectionImageView = UIImageView()
     let sectionLabel = UILabel(
-        text: K.quoteSectionTitle,
+        text: Constants.quoteSectionTitle,
         textColor: .dark,
-        font: UIFont(name: K.fontMontserrat400, size: 32),
+        font: UIFont(name: Constants.fontMontserrat400, size: 32),
         lines: 2
     )
-    
+
     let pickerView = UIPickerView()
-    
+
     lazy var fetchButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .black
@@ -43,41 +44,44 @@ final class MainView: UIView {
         button.layer.borderColor = UIColor.systemCyan.cgColor
         return button
     }()
-    
+
     let emptyContentStackView = UIStackView(
         axis: .vertical,
         spacing: 8,
         isHidden: true
     )
-    
+
     lazy var notFoundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(resource: .turtle)
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
+
     let notFoundLabel = UILabel(
-        text: K.notFound,
+        text: Constants.notFound,
         textColor: .heavyGray.withAlphaComponent(0.8),
         alignment: .center,
-        font: UIFont(name: K.fontMontserrat400, size: 16)
+        font: UIFont(name: Constants.fontMontserrat400, size: 16)
     )
-    
+
     // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupUI()
         configureUI()
         setupConstraints()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Set Views
+
     private func setupUI() {
         addSubview(searchBar)
         addSubview(segmentControl)
@@ -92,6 +96,7 @@ final class MainView: UIView {
 }
 
 // MARK: - Configure UI
+
 extension MainView {
     private func configureUI() {
         backgroundColor = UIColor(resource: .snow)
@@ -100,6 +105,7 @@ extension MainView {
 }
 
 // MARK: - Setup Constraints
+
 extension MainView {
     private func setupConstraints() {
         setupSearchBarConstraints()
@@ -111,7 +117,7 @@ extension MainView {
         setupNotFoundImageViewConstraints()
         setupFetchButtonConstraints()
     }
-    
+
     private func setupSearchBarConstraints() {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide)
@@ -119,14 +125,14 @@ extension MainView {
             make.height.equalTo(Metrics.searchBarHeight)
         }
     }
-    
+
     private func setupSegmentControlConstraints() {
         segmentControl.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
     }
-    
+
     private func setupSectionImageViewConstraints() {
         sectionImageView.snp.makeConstraints { make in
             make.top.equalTo(segmentControl.snp.bottom).offset(10)
@@ -134,14 +140,14 @@ extension MainView {
             make.width.height.equalTo(Metrics.sectionImageHeight)
         }
     }
-    
+
     private func setupSectionLabelConstraints() {
         sectionLabel.snp.makeConstraints { make in
             make.top.equalTo(sectionImageView.snp.bottom).offset(Metrics.quotesTitleOffsetTop)
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(25)
         }
     }
-    
+
     func updateSectionLabelConstraints(for section: SectionType) {
         sectionLabel.snp.updateConstraints { make in
             switch section {
@@ -154,7 +160,7 @@ extension MainView {
             }
         }
     }
-    
+
     private func setupPickerViewConstraints() {
         pickerView.snp.makeConstraints { make in
             make.top.equalTo(sectionLabel.snp.bottom).offset(10)
@@ -162,19 +168,19 @@ extension MainView {
             make.height.equalTo(Metrics.pickerViewHeight)
         }
     }
-    
+
     private func setupEmptyContentViewConstraints() {
         emptyContentStackView.snp.makeConstraints { make in
             make.center.equalTo(pickerView)
         }
     }
-    
+
     private func setupNotFoundImageViewConstraints() {
         notFoundImageView.snp.makeConstraints { make in
             make.height.equalTo(Metrics.notFoundImageHeight)
         }
     }
-    
+
     private func setupFetchButtonConstraints() {
         fetchButton.snp.makeConstraints { make in
             make.top.equalTo(pickerView.snp.bottom).offset(15)
@@ -191,11 +197,11 @@ extension MainView {
         static let sectionImageHeight: CGFloat = 85.0
         static let notFoundImageHeight: CGFloat = 50.0
         static let fetchButtonHeight: CGFloat = 50.0
-        
+
         static let quotesTitleOffsetTop: CGFloat = -18
         static let jokesTitleOffsetTop: CGFloat = -12
         static let chuckTitleOffsetTop: CGFloat = -4
-        
-        private init () {}
+
+        private init() {}
     }
 }

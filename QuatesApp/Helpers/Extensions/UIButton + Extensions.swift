@@ -12,14 +12,14 @@ extension UIButton {
         let shadow = NSShadow()
         shadow.shadowColor = shadowColor
         shadow.shadowBlurRadius = shadowRadius
-        
-        let attributes: [NSAttributedString.Key : Any] = [
+
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: font ?? UIFont.systemFont(ofSize: 18),
             .foregroundColor: foregroundColor,
             .shadow: shadow
         ]
-        
+
         let attributesString = NSAttributedString(string: title, attributes: attributes)
-        self.setAttributedTitle(attributesString, for: .normal)
+        setAttributedTitle(attributesString, for: .normal)
     }
 }
